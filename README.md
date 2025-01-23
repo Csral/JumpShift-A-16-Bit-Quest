@@ -4,6 +4,8 @@ A simple runner parkour game.
 
 To test: Load Graphics as a directory for running.
 
+* When gravity changes the player doesn't animate but dashes to the nearest (place where the player gets enough time to react) safety point thus eliminating need of animations.
+
 To add (Csral):
 1) Gravity mechanics ( World dirn changes )
 2) Player Abilities ( Jump, Abilities (2). Dash ability )
