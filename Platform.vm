@@ -555,7 +555,7 @@ goto IF_FALSE2
 label IF_TRUE2
 push this 2
 push constant 1
-add
+sub
 pop this 2
 goto IF_END2
 label IF_FALSE2
@@ -567,7 +567,7 @@ goto IF_FALSE3
 label IF_TRUE3
 push this 2
 push constant 1
-sub
+add
 pop this 2
 label IF_FALSE3
 label IF_END2
