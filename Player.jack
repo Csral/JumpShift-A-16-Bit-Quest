@@ -1,0 +1,18 @@
+//todo: implement player class
+class player
+{
+    field int x, y; // player's x and y position
+
+    constructor player new(int x, int y)
+    {
+        let x = x;
+        let y = y;
+        return this;
+    }
+
+    method void dispose()
+    {
+        do Memory.deAlloc(this);
+        return;
+    }
+}
