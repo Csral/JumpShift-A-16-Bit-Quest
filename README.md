@@ -6,7 +6,7 @@ To test: Load Graphics as a directory for running.
 
 To add (Csral):
 1) Gravity mechanics ( World dirn changes )
-2) Player Abilities ( Jump, Abilities (2). )
+2) Player Abilities ( Jump, Abilities (2). Dash ability )
 3) Collision System ( Advanced )
 
 To add (God-Gamer):
