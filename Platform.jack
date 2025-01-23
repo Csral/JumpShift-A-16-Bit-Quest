@@ -1,16 +1,36 @@
-// screen size: 512x256
-// axis - x: 0-31, y: 0-15
+// imp:screen size: 512x256
+// imp:axis - x: 0-31, y: 0-15
+//important: dir - 1 - forward, 2 - backward, 3 - up, 4 - down
+//done: created platform draw, move, dispose methods
 class Platform
 {
-    field int length, x, y;
+    field int length;      // length of the platform
+    field int x;           // x position of the platform
+    field int y;           // y position of the platform
+    field int dispDir;        //display direction of the platform
+    field int moveDir;        //move direction of the platform
     
-    constructor Platform new(int x1, int y1, int l)
-    {
-        let length = l;
+    constructor Platform new(int x1, int y1, int l, int d, int m) {
         let x = x1;
         let y = y1;
+        let length = l;
+        let dispDir = d;
+        let moveDir = m;
         return this;
     }
+
+    method void setDispDirection (int d) 
+    {
+        let dispDir = d;
+        return;
+    }
+
+    method void setMoveDirection (int d) 
+    {
+        let moveDir = d;
+        return;
+    }
+
  
     method void draw(boolean show) {
 		var int memAddress, i, loc, len;
@@ -19,42 +39,120 @@ class Platform
         // calculate the memory address from the x and y position
         let loc = (y * 512) + x; // 32*16 = 512
         // handle the platform going out of bounds
-        if (x<0)
+        if (x<0) //handle left right out of bounds
         {
-            let len = len + x;
-            // recalculate the memory address from the x and y position
-            let loc = (y * 512); // 32*16 = 512
+            if (dispDir < 3)
+            {
+                let len = len + x;
+                // recalculate the memory address from the x and y position
+                let loc = (y * 512); // 32*16 = 512
+            }
+            else
+            {
+                return;
+            }
         }
-        if (x+len>31)
+        else
         {
-            let len = 32 - x;
+            if (dispDir < 3)
+            {
+                if (x+len>31)
+                {
+                    let len = 32 - x;
+                }
+            }
+            else
+            {
+                if(x > 31)
+                {
+                    return;
+                }
+            }
+        }
+    
+        if (y<0) // handle top bottom out of bounds
+        {
+            if (dispDir > 2)
+            {
+                let len = len + y;
+                // recalculate the memory address from the x and y position
+                let loc = x;
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (dispDir > 2)
+            {
+                if (y+len>15)
+                {
+                    let len = 16 - y;
+                }
+            }
+            else
+            {
+                if(y > 15)
+                {
+                    return;
+                }
+            }
+            //if (y+len>15)
+            //{
+              //  let len = 16 - y;
+            //}
         }
         if (len < 1)
         {
             return;
         }
+        
 		let memAddress = 16384 + loc;
         // draw the sprite till the length
         while(i < len)
         {
             if (show)
             {
-                do Memory.poke(memAddress + 0, -1);
-                do Memory.poke(memAddress + 32, -1);
-                do Memory.poke(memAddress + 64, -1);
-                do Memory.poke(memAddress + 96, -1);
-                do Memory.poke(memAddress + 128, -1);
-                do Memory.poke(memAddress + 160, -1);
-                do Memory.poke(memAddress + 192, -1);
-                do Memory.poke(memAddress + 224, -1);
-                do Memory.poke(memAddress + 256, -1);
-                do Memory.poke(memAddress + 288, -1);
-                do Memory.poke(memAddress + 320, -1);
-                do Memory.poke(memAddress + 352, 0);
-                do Memory.poke(memAddress + 384, 0);
-                do Memory.poke(memAddress + 416, 0);
-                do Memory.poke(memAddress + 448, 0);
-                do Memory.poke(memAddress + 480, 0);
+                if (dispDir < 3)
+                {
+                    do Memory.poke(memAddress + 0, -1);
+                    do Memory.poke(memAddress + 32, -1);
+                    do Memory.poke(memAddress + 64, -1);
+                    do Memory.poke(memAddress + 96, -1);
+                    do Memory.poke(memAddress + 128, -1);
+                    do Memory.poke(memAddress + 160, -1);
+                    do Memory.poke(memAddress + 192, -1);
+                    do Memory.poke(memAddress + 224, -1);
+                    do Memory.poke(memAddress + 256, -1);
+                    do Memory.poke(memAddress + 288, -1);
+                    do Memory.poke(memAddress + 320, -1);
+                    do Memory.poke(memAddress + 352, 0);
+                    do Memory.poke(memAddress + 384, 0);
+                    do Memory.poke(memAddress + 416, 0);
+                    do Memory.poke(memAddress + 448, 0);
+                    do Memory.poke(memAddress + 480, 0);
+                }
+                else
+                {
+                    do Memory.poke(memAddress + 0, 1023);
+                    do Memory.poke(memAddress + 32, 1023);
+                    do Memory.poke(memAddress + 64, 1023);
+                    do Memory.poke(memAddress + 96, 1023);
+                    do Memory.poke(memAddress + 128, 1023);
+                    do Memory.poke(memAddress + 160, 1023);
+                    do Memory.poke(memAddress + 192, 1023);
+                    do Memory.poke(memAddress + 224, 1023);
+                    do Memory.poke(memAddress + 256, 1023);
+                    do Memory.poke(memAddress + 288, 1023);
+                    do Memory.poke(memAddress + 320, 1023);
+                    do Memory.poke(memAddress + 352, 1023);
+                    do Memory.poke(memAddress + 384, 1023);
+                    do Memory.poke(memAddress + 416, 1023);
+                    do Memory.poke(memAddress + 448, 1023);
+                    do Memory.poke(memAddress + 480, 1023);
+                }
             }
             else
             {
@@ -75,15 +173,46 @@ class Platform
                 do Memory.poke(memAddress + 448, 0);
                 do Memory.poke(memAddress + 480, 0);
             }
-            let memAddress = memAddress + 1;
+            if (dispDir < 3)
+            {
+                let memAddress = memAddress + 1;
+            }
+            else
+            {
+                let memAddress = memAddress + 512;
+            }
             let i = i + 1;
         }
 		return;
 	}
-    method void move () 
+    method void move() //the move direction is independent of the platform display direction
     {
         do draw(false);
-        let x = x - 1;
+        if(moveDir = 1)
+        {
+            let x = x - 1;
+        }
+        else
+        {
+            if(moveDir = 2)
+            {
+                let x = x + 1;
+            }
+            else
+            {
+                if(moveDir = 3)
+                {
+                    let y = y + 1;
+                }
+                else
+                {
+                    if(moveDir = 4)
+                    {
+                        let y = y - 1;
+                    }
+                }
+            }
+        }
         do draw(true);
         return;
     }

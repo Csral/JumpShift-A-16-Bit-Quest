@@ -1,4 +1,9 @@
 //todo: implement player
+//Todo: implement platform chunk loader
+
+// imp:screen size: 512x256
+// imp:axis - x: 0-31, y: 0-15
+//important: dir - 1 - forward, 2 - backward, 3 - up, 4 - down
 class GameController
 {
    field int delay;           //wait time between each frame
@@ -13,11 +18,10 @@ class GameController
 
    method void start()
    {
-      //Todo: implement platform chunk loader
       var Platform platform;
       var char key;
 
-      let platform = Platform.new(31,0, 7);
+      let platform = Platform.new(15, 6, 3, 2, 1);
       do platform.draw(true);
 
       while (~exit)

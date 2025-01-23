@@ -9,10 +9,12 @@ return
 function GameController.start 2
 push argument 0
 pop pointer 0
-push constant 31
-push constant 0
-push constant 7
-call Platform.new 3
+push constant 15
+push constant 6
+push constant 3
+push constant 2
+push constant 1
+call Platform.new 5
 pop local 0
 push local 0
 push constant 0
