@@ -1,0 +1,11 @@
+class Main
+{
+    function void main()
+    {
+        var GameController controll;
+        let controll = GameController.new();
+        do controll.start();
+        do controll.dispose();
+        return;
+    }
+}

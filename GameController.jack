@@ -1,0 +1,67 @@
+//todo: implement player
+class GameController
+{
+   field int delay;           //wait time between each frame
+   field boolean exit;       // true when the game is over
+
+
+   constructor GameController new()
+   {
+      let delay = 50;
+      return this;
+   }
+
+   method void start()
+   {
+      //Todo: implement platform chunk loader
+      var Platform platform;
+      var char key;
+
+      let platform = Platform.new(31,0, 7);
+      do platform.draw(true);
+
+      while (~exit)
+      {
+         // waits for a key to be pressed.
+         // update screen and move platform
+         while ((key = 0) & (~exit)) {
+               let key = Keyboard.keyPressed();
+               do platform.move();
+               do Sys.wait(50);
+         }
+
+         
+         if (key = 32) // jump when space is pressed
+         {
+            // todo: perform player jump when space key is pressed
+         }
+         else 
+         {
+            if (key = 140) { let exit = true; } // exit when esc is pressed
+
+         }
+
+         // Waits for the key to be released.
+         // update screen and move platform
+         while ((~(key = 0)) & (~exit)) {
+               let key = Keyboard.keyPressed();
+               do platform.move();
+               do Sys.wait(50);
+         }
+      }
+
+      // todo: implement game over screen
+      if (exit) {
+         do Output.moveCursor(10,27);
+         do Output.printString("Game Over");
+      }
+
+      return;
+   }
+
+   method void dispose()
+   {
+      do Memory.deAlloc(this);
+      return;
+   }
+}
