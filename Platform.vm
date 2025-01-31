@@ -1,31 +1,255 @@
 function Platform.new 0
-push constant 5
+push constant 7
 call Memory.alloc 1
 pop pointer 0
 push argument 0
-pop this 1
-push argument 1
 pop this 2
-push argument 2
-pop this 0
-push argument 3
+push argument 1
 pop this 3
-push argument 4
+push argument 3
 pop this 4
+push argument 4
+pop this 5
+push constant 3
+pop this 6
+push argument 2
+pop this 1
+push constant 0
+pop this 0
+push static 2
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+pop static 0
+push pointer 0
+pop static 1
+goto IF_END0
+label IF_FALSE0
+push static 1
+push pointer 0
+call Platform.setNext 2
+pop temp 0
+push pointer 0
+pop static 1
+label IF_END0
+push static 2
+push constant 1
+add
+pop static 2
 push pointer 0
 return
-function Platform.setDispDirection 0
+function Platform.getFirst 0
+push static 0
+return
+function Platform.getLast 0
+push static 1
+return
+function Platform.getY 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Platform.getX 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Platform.setNext 0
 push argument 0
 pop pointer 0
 push argument 1
-pop this 3
+pop this 0
 push constant 0
 return
-function Platform.setMoveDirection 0
+function Platform.getNext 0
 push argument 0
 pop pointer 0
-push argument 1
-pop this 4
+push this 0
+return
+function Platform.hasNext 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push constant 0
+not
+return
+function Platform.hasFullyEnteredScene 1
+push argument 0
+pop pointer 0
+push this 2
+push this 1
+add
+pop local 0
+push this 5
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push this 6
+add
+push constant 32
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+push constant 0
+return
+label IF_FALSE0
+push this 5
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 0
+push this 6
+sub
+push constant 0
+gt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+not
+return
+label IF_FALSE3
+push constant 0
+return
+label IF_FALSE2
+push this 3
+push this 1
+add
+pop local 0
+push this 5
+push constant 3
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 0
+push this 6
+add
+push constant 16
+lt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 0
+not
+return
+label IF_FALSE5
+push constant 0
+return
+label IF_FALSE4
+push local 0
+push this 6
+sub
+push constant 0
+gt
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 0
+not
+return
+label IF_FALSE6
+push constant 0
+return
+function Platform.hasExittedScreen 1
+push argument 0
+pop pointer 0
+push this 2
+push this 1
+add
+pop local 0
+push this 5
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push constant 0
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+push constant 0
+return
+label IF_FALSE0
+push this 5
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 2
+push constant 32
+gt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+not
+return
+label IF_FALSE3
+push constant 0
+return
+label IF_FALSE2
+push this 5
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push this 3
+push constant 16
+gt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 0
+not
+return
+label IF_FALSE5
+push constant 0
+return
+label IF_FALSE4
+push this 3
+push this 1
+add
+pop local 0
+push local 0
+push constant 0
+lt
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 0
+not
+return
+label IF_FALSE6
 push constant 0
 return
 function Platform.draw 4
@@ -33,31 +257,31 @@ push argument 0
 pop pointer 0
 push constant 0
 pop local 1
-push this 0
+push this 1
 pop local 3
-push this 2
+push this 3
 push constant 512
 call Math.multiply 2
-push this 1
+push this 2
 add
 pop local 2
-push this 1
+push this 2
 push constant 0
 lt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 3
+push this 4
 push constant 3
 lt
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push local 3
-push this 1
+push this 2
 add
 pop local 3
-push this 2
+push this 3
 push constant 512
 call Math.multiply 2
 pop local 2
@@ -68,13 +292,13 @@ return
 label IF_END1
 goto IF_END0
 label IF_FALSE0
-push this 3
+push this 4
 push constant 3
 lt
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
-push this 1
+push this 2
 push local 3
 add
 push constant 31
@@ -83,13 +307,13 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 32
-push this 1
+push this 2
 sub
 pop local 3
 label IF_FALSE3
 goto IF_END2
 label IF_FALSE2
-push this 1
+push this 2
 push constant 31
 gt
 if-goto IF_TRUE4
@@ -100,23 +324,23 @@ return
 label IF_FALSE4
 label IF_END2
 label IF_END0
-push this 2
+push this 3
 push constant 0
 lt
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
-push this 3
+push this 4
 push constant 2
 gt
 if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
 push local 3
-push this 2
+push this 3
 add
 pop local 3
-push this 1
+push this 2
 pop local 2
 goto IF_END6
 label IF_FALSE6
@@ -125,13 +349,13 @@ return
 label IF_END6
 goto IF_END5
 label IF_FALSE5
-push this 3
+push this 4
 push constant 2
 gt
 if-goto IF_TRUE7
 goto IF_FALSE7
 label IF_TRUE7
-push this 2
+push this 3
 push local 3
 add
 push constant 15
@@ -140,13 +364,13 @@ if-goto IF_TRUE8
 goto IF_FALSE8
 label IF_TRUE8
 push constant 16
-push this 2
+push this 3
 sub
 pop local 3
 label IF_FALSE8
 goto IF_END7
 label IF_FALSE7
-push this 2
+push this 3
 push constant 15
 gt
 if-goto IF_TRUE9
@@ -180,7 +404,7 @@ push argument 1
 if-goto IF_TRUE11
 goto IF_FALSE11
 label IF_TRUE11
-push this 3
+push this 4
 push constant 3
 lt
 if-goto IF_TRUE12
@@ -491,7 +715,7 @@ push constant 0
 call Memory.poke 2
 pop temp 0
 label IF_END11
-push this 3
+push this 4
 push constant 3
 lt
 if-goto IF_TRUE13
@@ -523,52 +747,52 @@ push pointer 0
 push constant 0
 call Platform.draw 2
 pop temp 0
-push this 4
+push this 5
 push constant 1
 eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 1
+push this 2
 push constant 1
 sub
-pop this 1
+pop this 2
 goto IF_END0
 label IF_FALSE0
-push this 4
+push this 5
 push constant 2
 eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 1
+push this 2
 push constant 1
 add
-pop this 1
+pop this 2
 goto IF_END1
 label IF_FALSE1
-push this 4
+push this 5
 push constant 3
 eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
-push this 2
+push this 3
 push constant 1
 sub
-pop this 2
+pop this 3
 goto IF_END2
 label IF_FALSE2
-push this 4
+push this 5
 push constant 4
 eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 2
+push this 3
 push constant 1
 add
-pop this 2
+pop this 3
 label IF_FALSE3
 label IF_END2
 label IF_END1
@@ -583,8 +807,21 @@ return
 function Platform.dispose 0
 push argument 0
 pop pointer 0
+push static 0
+push pointer 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+pop static 0
+push static 2
+push constant 1
+sub
+pop static 2
 push pointer 0
 call Memory.deAlloc 1
 pop temp 0
+label IF_FALSE0
 push constant 0
 return

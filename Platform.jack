@@ -1,35 +1,163 @@
-// imp:screen size: 512x256
-// imp:axis - x: 0-31, y: 0-15
-//important: dir - 1 - forward, 2 - backward, 3 - up, 4 - down
+//important:screen size: 512x256
+//important: axis - x: 0-31, y: 0-15
+//important: dir(as felt by user) - 1 - forward(plat -> left), 2 - backward(plat -> right), 3 - up(plat -> down), 4 - down(plat -> up)
 //important: sprite - 16x16 - https://arieljannai.gitlab.io/Nand2TetrisBitmapEditor/
 //done: created platform draw, move, dispose methods
+//done: created platform Que, random length and position generation
 class Platform
 {
+    // platform Que variables
+    static Platform first; //first element in the Que
+    static Platform last; //last element in the Que
+    static int queSize; //size of the Que
+
+    field Platform next; //next element after this element
+
+    // platform variables
     field int length;      // length of the platform
     field int x;           // x position of the platform
     field int y;           // y position of the platform
     field int dispDir;        //display direction of the platform
     field int moveDir;        //move direction of the platform
+    field int gap;        //gap between the platforms
     
-    constructor Platform new(int x1, int y1, int l, int d, int m) {
+    constructor Platform new(int x1, int y1, int l, int d, int m)
+    {
         let x = x1;
         let y = y1;
-        let length = l;
         let dispDir = d;
         let moveDir = m;
+        let gap = 3;
+        let length = l;
+
+        let next = null; //initialize next to null
+        if (queSize = 0) // handle first element case
+        {
+            let first = this;
+            let last = this;
+        }
+        else // update the last element in que to point to this element
+        {
+            do last.setNext(this);
+            let last = this;
+        }
+        let queSize = queSize + 1;
+
         return this;
     }
 
-    method void setDispDirection (int d) 
+    // getters and setters
+    function Platform getFirst()
     {
-        let dispDir = d;
+        return first;
+    }
+
+    function Platform getLast()
+    {
+        return last;
+    }
+
+    method int getY()
+    {
+        return y;
+    }
+
+    method int getX()
+    {
+        return x;
+    }
+
+    method void setNext(Platform p)
+    {
+        let next = p;
         return;
     }
 
-    method void setMoveDirection (int d) 
+    method Platform getNext()
     {
-        let moveDir = d;
-        return;
+        return next;
+    }
+
+    // memeber functions
+    method boolean hasNext() // check if platform is linked to another platform
+    {
+        if (next = null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    method boolean hasFullyEnteredScene() // check if the platform has fully entered the scene with specified gap
+    {
+        var int bound;
+        let bound = x + length;
+        if (moveDir = 1) // for direction forwards
+        {
+            if (bound + gap < 32)
+            {
+                return true;
+            }
+            return false;
+        }
+        if (moveDir = 2) // for direction backwards
+        {
+            if (bound - gap > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        let bound = y + length;
+        if (moveDir = 3) // for direction up
+        {
+            if (bound + gap < 16)
+            {
+                return true;
+            }
+            return false;
+        }
+        if (bound - gap > 0) // for direction down
+        {
+            return true;
+        }
+        return false;
+    }
+
+    method boolean hasExittedScreen() //check if the platfrom has exitted the scene
+    {
+        var int bound;
+        let bound = x + length;
+        if (moveDir = 1) // for direction forwards
+        {
+            if (bound < 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        if (moveDir = 2) // for direction backwards
+        {
+            if (x > 32)
+            {
+                return true;
+            }
+            return false;
+        }
+        if (moveDir = 4) // for direction down
+        {
+            if (y > 16)
+            {
+                return true;
+            }
+            return false;
+        }
+        let bound = y + length;
+        if (bound < 0) // for direction up
+        {
+            return true;
+        }
+        return false;
     }
 
     // draw the platform object
@@ -217,8 +345,14 @@ class Platform
     }
 
     // delete the platform object
-    method void dispose () {
-        do Memory.deAlloc(this);
+    method void dispose() 
+    {
+        if (first = this)
+        {
+            let first = next;
+            let queSize = queSize - 1;
+            do Memory.deAlloc(this);
+        }
         return;
     }
 }

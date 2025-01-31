@@ -1,26 +1,48 @@
-//Todo: implement platform chunk loader
-
-// imp:screen size: 512x256
-// imp:axis - x: 0-31, y: 0-15
+//note: A class must have atleast one field var, otherwisw it gives 'Allocated memory size must be postivie' error
+//important: screen size: 512x256
+//important: axis - x: 0-31, y: 0-15
 //important: dir - 1 - forward, 2 - backward, 3 - up, 4 - down
 class GameController
 {
-   field int delay;           //wait time between each frame
+   static int moveDir;       // direction of the motion
+   static int dispDir;       // direction in which the upcoming platforms must be displayed
+   static int delay;           //wait time between each frame
+
    field boolean exit;       // true when the game is over
+   field int spawnDiff;
 
 
    constructor GameController new()
    {
       let delay = 50;
+      let moveDir = 1;
+      let dispDir = 1;
+      let spawnDiff = 2;
       return this;
+   }
+
+   method void setDelay(int d)
+   {
+      let delay = d;
+      return;
+   }
+
+   method int random(int x, int y)
+   {
+      do Random.seed(Memory.peek(Random.between(16384, 24577) + Memory.peek(0)));
+      return Random.between(x, y);
    }
 
    method void start()
    {
       var Platform platform;
+      var Player player;
       var char key;
 
-      let platform = Platform.new(15, 6, 3, 2, 1);
+      //TODO: implement the start config of platform and player
+      let platform = Platform.new(15, 15, 3, dispDir, moveDir);
+      let player = Player.new(19, 15);
+      do player.draw(true);
       do platform.draw(true);
 
       while (~exit)
@@ -29,7 +51,8 @@ class GameController
          // update screen and move platform
          while ((key = 0) & (~exit)) {
                let key = Keyboard.keyPressed();
-               do platform.move();
+               //do platform.move();
+               do handlePlatform();
                do Sys.wait(50);
          }
 
@@ -48,7 +71,8 @@ class GameController
          // update screen and move platform
          while ((~(key = 0)) & (~exit)) {
                let key = Keyboard.keyPressed();
-               do platform.move();
+               //do platform.move();
+               //do handlePlatform();
                do Sys.wait(50);
          }
       }
@@ -57,6 +81,108 @@ class GameController
       if (exit) {
          do Output.moveCursor(10,27);
          do Output.printString("Game Over");
+      }
+
+      return;
+   }
+
+   // control the movement and procedural generation of the platform
+   method void handlePlatform()
+   {
+      var Platform curPlatform, nextplatform;
+      var int x,y,l,rand;
+      let curPlatform = Platform.getFirst();
+      
+      while(curPlatform.hasNext()) //update the position of all the platforms except last
+      {
+         do curPlatform.move();
+         let curPlatform = curPlatform.getNext();
+      }
+
+      do curPlatform.move(); // update the position of the last platform
+      //todo: implement change direction of the platform
+      if(curPlatform.hasFullyEnteredScene()) // generate a new platform if the last platform has fully entered the scene
+      {
+         let rand = Random.between(0, 10); //0-4 -> spawn down or spawn left, 5-9 -> spawn up or spawn right
+         let l = Random.between(3, 8);
+         if (moveDir < 3)
+         {          
+            if (rand < 5)
+            {
+               if(curPlatform.getY() + spawnDiff > 15)
+               {
+                  let y = curPlatform.getY() - spawnDiff;
+               }
+               else
+               {
+                  let y = curPlatform.getY() + spawnDiff;
+               }
+            }
+            else
+            {
+               if(curPlatform.getY() - spawnDiff < 2)
+               {
+                  let y = curPlatform.getY() + spawnDiff;
+               }
+               else
+               {
+                  let y = curPlatform.getY() - spawnDiff;
+               }
+            }           
+
+            if (moveDir = 1)
+            {
+               let x = 32;
+            }
+            else
+            {
+               let x = -1 - l;
+            }
+         }
+         else
+         {
+            if (rand < 5)
+               {
+                  if(curPlatform.getX() - spawnDiff < 3)
+                  {
+                     let x = curPlatform.getX() + spawnDiff;
+                  }
+                  else
+                  {
+                     let x = curPlatform.getX() - spawnDiff;
+                  }
+               }
+               else
+               {
+                  if(curPlatform.getX() + spawnDiff > 29)
+                  {
+                     let x = curPlatform.getX() - spawnDiff;
+                  }
+                  else
+                  {
+                     let x = curPlatform.getX() + spawnDiff;
+                  }
+               }           
+
+               if (moveDir = 3)
+               {
+                  let y = 16;
+               }
+               else
+               {
+                  let y = -1 - l;
+               }
+         }
+
+         do Output.printInt(2);
+         do Platform.new(x, y, l, dispDir, moveDir);      
+      }
+
+      let curPlatform = Platform.getFirst();
+      if(curPlatform.hasExittedScreen())
+      {
+         do Output.printInt(1);
+         do curPlatform.dispose();
       }
 
       return;
