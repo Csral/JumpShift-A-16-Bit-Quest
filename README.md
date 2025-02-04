@@ -1,6 +1,8 @@
 # JumpShift-A-16-Bit-Quest 
 
-A simple runner parkour game.
+JumpShift is a 16-bit endless runner where the world defies your existence, standing against you pushing you to give up on chasing the stars.
+
+Dodge obstacles, jump with precision and reshape the very core of the game's world to your advantage. Master the art of gravity manipulation to defy all odds and survive as long as you can.
 
 To test: Load Graphics as a directory for running.
 
