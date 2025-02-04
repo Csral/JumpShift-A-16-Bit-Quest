@@ -45,9 +45,9 @@ class Random {
 	Returns a random value between x (inclusive) and y (non-inclusive).
 	y must be greater than x.
 	*/
-	function int between(int x, int y) {
+	function int between(int x1, int y1) {
 		var int diff;
-		let diff = y - x;
+		let diff = y1 - x1;
 		return Random.mod(Random.next(), diff) + x;
 	}
 }
