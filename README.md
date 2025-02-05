@@ -4,6 +4,8 @@ JumpShift is a 16-bit endless runner where the world defies your existence, stan
 
 Dodge obstacles, jump with precision and reshape the very core of the game's world to your advantage. Master the art of gravity manipulation to defy all odds and survive as long as you can.
 
+**NOTE: It is prohibited to re-distribute, use, claim or copy this code until later notice**
+
 To test: Load Graphics as a directory for running.
 
 * When gravity changes the player doesn't animate but dashes to the nearest (place where the player gets enough time to react) safety point thus eliminating need of animations.
