@@ -4,6 +4,7 @@ class Main
     {
         var GameController controll;
         let controll = GameController.new();
+        
         do controll.start();
         do controll.dispose();
         return;

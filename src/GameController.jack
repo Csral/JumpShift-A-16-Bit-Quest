@@ -47,19 +47,29 @@ class GameController
 
       while (~exit)
       {
+
          // waits for a key to be pressed.
          // update screen and move platform
-         while ((key = 0) & (~exit)) {
-               let key = Keyboard.keyPressed();
-               //do platform.move();
-               do handlePlatform();
-               do Sys.wait(50);
-         }
 
+         while ((key = 0) & (~exit)) {
+            let key = Keyboard.keyPressed();
+            //do platform.move();
+
+            if (~player.on_ground()) {
+
+               do player.enforce_gravity();
+
+            }
+
+            do handlePlatform();
+            do Sys.wait(50);
+         }
+         
          
          if (key = 32) // jump when space is pressed
          {
             // todo: perform player jump when space key is pressed
+            do player.jump();
          }
          else 
          {
@@ -72,7 +82,7 @@ class GameController
          while ((~(key = 0)) & (~exit)) {
                let key = Keyboard.keyPressed();
                //do platform.move();
-               //do handlePlatform();
+               do handlePlatform();
                do Sys.wait(50);
          }
       }

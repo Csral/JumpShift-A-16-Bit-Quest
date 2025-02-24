@@ -1,12 +1,20 @@
 //todo: implement player class
 class Player
 {
-    field int xpos, ypos; // player's x and y position
+    field int xpos, ypos, gravity_direction; // player's x and y position
+
+    /*
+        * 1: down
+        * 2: up
+        * 3: right
+        * 4: left
+    */
 
     constructor Player new(int x, int y)
     {
         let xpos = x;
         let ypos = y;
+        let gravity_direction = 1;
         return this;
     }
 
@@ -14,6 +22,153 @@ class Player
     {
         do Memory.deAlloc(this);
         return;
+    }
+
+    method void update(int x, int y) {
+
+        let xpos = x;
+        let ypos = y;
+        return;
+
+    }
+
+    method void set_gravity_direction(int dir) {
+
+        if ( (dir < 4) & (dir > 0) ) {
+            let gravity_direction = dir;
+        }
+
+        return;
+
+    }
+
+    method int get_gravity_direction() {
+        return gravity_direction;
+    }
+
+    method void enforce_gravity() {
+
+        var int looper;
+
+        if (gravity_direction = 1) {
+
+            let looper = 15 - ypos; //* How high is the player and drop him per 200 ms.
+
+            while (looper > 0) {
+
+                do draw(false);
+                do update(xpos, ypos+1);
+                do draw(true);
+
+                do Sys.wait(200);
+
+                let looper = 15 - ypos;
+
+            }
+
+        } else {
+            if (gravity_direction = 2) {
+
+                let looper = ypos; //* How high is the player and drop him per 200 ms.
+
+                while (looper > 0) {
+
+                    do draw(false);
+                    do update(xpos, ypos-1);
+                    do draw(true);
+
+                    do Sys.wait(200);
+
+                    let looper = ypos - 1;
+
+                }
+            
+            } else {
+                
+                if (gravity_direction = 3) {
+
+                    let looper = 31 - xpos; //* How high is the player and drop him per 200 ms.
+
+                    while (looper > 0) {
+
+                        do draw(false);
+                        do update(xpos+1, ypos);
+                        do draw(true);
+
+                        do Sys.wait(200);
+
+                        let looper = 31 - xpos;
+
+                    }
+
+                } else { //* Assumes 4 by default unless there is some fault in code
+
+                    let looper = xpos; //* How high is the player and drop him per 200 ms.
+
+                    while (looper > 0) {
+
+                        do draw(false);
+                        do update(xpos-1, ypos);
+                        do draw(true);
+
+                        do Sys.wait(200);
+
+                        let looper = xpos - 1;
+
+                    }
+
+                }
+
+            }
+        }
+
+        return;
+    }
+
+
+    method boolean on_ground() {
+
+        var boolean result;
+        let result = (ypos = 15);  // Store comparison result
+        return result;
+
+    }
+
+    method void dash() {
+
+        return;
+        
+    }
+
+    method void jump() {
+
+        var int looper;
+
+        let looper = 5; //* Height
+
+        while (looper > 0) {
+
+            /*
+
+                * Clears current player
+                * Updates location
+                * Draws player at updated location
+
+            */
+
+            do draw(false);
+            do update(xpos, ypos-1); //* Update xpos and ypos.
+            do draw(true);
+
+            do Sys.wait(300); //* Wait 1s before continuing. Adjust for animation
+            let looper = looper - 1; //* Adjust 1 for smoother/rougher animation
+
+        }
+
+        //* Falling down will be handled by enforce gravity.
+
+        return;
+
     }
 
     method void draw(boolean show)
