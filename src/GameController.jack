@@ -56,8 +56,11 @@ class GameController
             //do platform.move();
 
             if (~player.on_ground()) {
-
-               do player.enforce_gravity();
+               if (~player.is_jumping()) {
+                  do player.enforce_gravity();
+               } else {
+                  do player.jump();
+               }
 
             }
 
@@ -65,10 +68,10 @@ class GameController
             do Sys.wait(50);
          }
          
-         
-         if (key = 32) // jump when space is pressed
+         if ( key = 32 & ~player.is_jumping() ) // jump when space is pressed and player is not already jumping
          {
             // todo: perform player jump when space key is pressed
+            do player.set_jumping_height(5);
             do player.jump();
          }
          else 
