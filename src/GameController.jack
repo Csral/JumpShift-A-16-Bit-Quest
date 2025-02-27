@@ -53,7 +53,6 @@ class GameController
 
          while ((key = 0) & (~exit)) {
             let key = Keyboard.keyPressed();
-            //do platform.move();
 
             if (~player.on_ground()) {
                if (~player.is_jumping()) {
@@ -84,7 +83,6 @@ class GameController
          // update screen and move platform
          while ((~(key = 0)) & (~exit)) {
                let key = Keyboard.keyPressed();
-               //do platform.move();
                do handlePlatform();
                do Sys.wait(50);
          }
@@ -187,14 +185,14 @@ class GameController
                }
          }
 
-         do Output.printInt(2);
+         //do Output.printInt(2);
          do Platform.new(x, y, l, dispDir, moveDir);      
       }
 
       let curPlatform = Platform.getFirst();
       if(curPlatform.hasExittedScreen())
       {
-         do Output.printInt(1);
+         //do Output.printInt(1);
          do curPlatform.dispose();
       }
 
