@@ -40,7 +40,7 @@ class GameController
       var Rd rand;
       var char key;
       var int timer; //* Timer to update gravity
-      var int g_dir; //* Gravity direction
+      var int g_dir, g_n1_count; //* Gravity direction, no. of times gravity went without 1.
 
       //TODO: implement the start config of platform and player
       let platform = Platform.new(15, 15, 3, dispDir, moveDir);
@@ -50,6 +50,8 @@ class GameController
 
       let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
       let g_dir = 1;
+      
+      let g_n1_count = 0;
 
       while (~exit)
       {
@@ -62,6 +64,17 @@ class GameController
             if (timer = 0) {
                let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
                let g_dir = rand.between(1,4, player.c_xpos_d());
+
+               if (~(g_dir = 1)) {
+                  if (g_n1_count > 4) {
+                     let g_dir = 1;
+                     g_n1_count = 0;
+                  } else {
+                     let g_n1_count = g_n1_count + 1;
+                  }
+               } else {
+                  g_n1_count = 0;
+               }
                
                do Output.printInt(g_dir);
                do player.set_gravity_direction(g_dir);

@@ -35,7 +35,7 @@ push argument 1
 push argument 2
 call Random.between 2
 return
-function GameController.start 6
+function GameController.start 7
 push argument 0
 pop pointer 0
 push constant 15
@@ -87,6 +87,8 @@ add
 pop local 4
 push constant 1
 pop local 5
+push constant 0
+pop local 6
 label WHILE_EXP0
 push this 0
 not
@@ -141,6 +143,29 @@ call Player.c_xpos_d 1
 call Rd.between 4
 pop local 5
 push local 5
+push constant 1
+eq
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 6
+push constant 4
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 1
+pop local 5
+goto IF_END2
+label IF_FALSE2
+push local 6
+push constant 1
+add
+pop local 6
+label IF_END2
+label IF_FALSE1
+push local 5
 call Output.printInt 1
 pop temp 0
 push local 1
@@ -159,25 +184,25 @@ pop local 3
 push local 1
 call Player.on_ground 1
 not
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
 push local 1
 call Player.is_jumping 1
 not
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
 push local 1
 call Player.enforce_gravity 1
 pop temp 0
-goto IF_END2
-label IF_FALSE2
+goto IF_END4
+label IF_FALSE4
 push local 1
 call Player.jump 1
 pop temp 0
-label IF_END2
-label IF_FALSE1
+label IF_END4
+label IF_FALSE3
 push pointer 0
 call GameController.handlePlatform 1
 pop temp 0
@@ -193,9 +218,9 @@ push local 1
 call Player.is_jumping 1
 not
 and
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
 push local 1
 push constant 5
 call Player.set_jumping_height 2
@@ -203,19 +228,19 @@ pop temp 0
 push local 1
 call Player.jump 1
 pop temp 0
-goto IF_END3
-label IF_FALSE3
+goto IF_END5
+label IF_FALSE5
 push local 3
 push constant 140
 eq
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
 push constant 0
 not
 pop this 0
-label IF_FALSE4
-label IF_END3
+label IF_FALSE6
+label IF_END5
 label WHILE_EXP2
 push local 3
 push constant 0
@@ -239,9 +264,9 @@ label WHILE_END2
 goto WHILE_EXP0
 label WHILE_END0
 push this 0
-if-goto IF_TRUE5
-goto IF_FALSE5
-label IF_TRUE5
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
 push constant 10
 push constant 27
 call Output.moveCursor 2
@@ -268,7 +293,7 @@ push constant 114
 call String.appendChar 2
 call Output.printString 1
 pop temp 0
-label IF_FALSE5
+label IF_FALSE7
 push constant 0
 return
 function GameController.handlePlatform 6
