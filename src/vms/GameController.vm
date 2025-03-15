@@ -157,6 +157,8 @@ goto IF_FALSE2
 label IF_TRUE2
 push constant 1
 pop local 5
+push constant 0
+pop local 6
 goto IF_END2
 label IF_FALSE2
 push local 6
@@ -164,7 +166,11 @@ push constant 1
 add
 pop local 6
 label IF_END2
+goto IF_END1
 label IF_FALSE1
+push constant 0
+pop local 6
+label IF_END1
 push local 5
 call Output.printInt 1
 pop temp 0
@@ -179,6 +185,9 @@ push constant 1
 sub
 pop local 4
 label IF_END0
+push local 1
+call Player.stimulate_time 1
+pop temp 0
 call Keyboard.keyPressed 0
 pop local 3
 push local 1
@@ -239,7 +248,19 @@ label IF_TRUE6
 push constant 0
 not
 pop this 0
+goto IF_END6
 label IF_FALSE6
+push local 3
+push constant 70
+eq
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push local 1
+call Player.dash 1
+pop temp 0
+label IF_FALSE7
+label IF_END6
 label IF_END5
 label WHILE_EXP2
 push local 3
@@ -264,9 +285,9 @@ label WHILE_END2
 goto WHILE_EXP0
 label WHILE_END0
 push this 0
-if-goto IF_TRUE7
-goto IF_FALSE7
-label IF_TRUE7
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
 push constant 10
 push constant 27
 call Output.moveCursor 2
@@ -293,7 +314,7 @@ push constant 114
 call String.appendChar 2
 call Output.printString 1
 pop temp 0
-label IF_FALSE7
+label IF_FALSE8
 push constant 0
 return
 function GameController.handlePlatform 6

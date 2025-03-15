@@ -1,7 +1,8 @@
 //todo: implement player class
 class Player
 {
-    field int xpos, ypos, gravity_direction, jump_height; // player's x and y position
+    field int xpos, ypos, gravity_direction, jump_height, dash_cooldown; // player's x and y position
+    field boolean is_on_surface;
 
     /*
         * 1: down
@@ -15,6 +16,8 @@ class Player
         let xpos = x;
         let ypos = y;
         let gravity_direction = 1;
+        let is_on_surface = true;
+        let dash_cooldown = 0; //* Can use dash
         return this;
     }
 
@@ -167,7 +170,88 @@ class Player
 
     }
 
+    method void collision() { //* Invoked at every jump
+
+        /*
+            
+            * Where do i get platform coords?
+
+        */
+
+        return;
+
+    }
+
+    method boolean has_surface() {
+
+        if (on_ground()) {
+            return true;
+        } else {
+            if (jump_height > 0) {
+                return false;
+            } else {
+                //* Assumes collision system to handle everything!
+                return is_on_surface;
+            }
+        }
+        
+    }
+
+    method void stimulate_time() {
+
+        /*
+
+            * Game controller calls this function every time it loops.
+            * Each loop has a delay of 50 ms.
+            * 1000 ms = 1s.
+            * So 20 loop rotations of game controller = 1 second irl.
+            * So for 10 seconds cooldown, 10000 ms should become 0 in 200 rotation.
+            * So each rotation should cut out 10000/200 => 100/2 => 50 ms.
+
+        */
+
+        if (dash_cooldown > 0) {
+            let dash_cooldown = dash_cooldown - 50;
+        }
+
+        return; 
+
+    }
+
     method void dash() {
+
+        if (dash_cooldown = 0) {
+
+            let dash_cooldown = 10000; //10 secs.
+
+            do draw(false); //* remove player's current position
+            
+            if (gravity_direction = 1) {
+                if (xpos+5 > 31) {let xpos = 19;}
+
+                do update(xpos+5,ypos);
+            } else {
+                if (gravity_direction = 2) {
+
+                    if (xpos+5 > 31) {let xpos = 19;}
+
+                    do update(xpos+5,ypos);
+                } else {
+                    if (gravity_direction = 3) {
+                        if (ypos-5 < 0) {let ypos = 19;}
+                        do update(xpos,ypos-5);
+                    } else {
+                        if (gravity_direction = 4) {
+                            if (ypos-5 < 0) {let ypos = 19;}
+                            do update(xpos+5,ypos-5);
+                        }
+                    }
+                }
+            }
+
+            do draw(true);
+
+        }
 
         return;
         
@@ -175,7 +259,7 @@ class Player
 
     method void jump() {
 
-        if (jump_height > 0) {
+        if ((jump_height > 0) & is_on_surface) {
 
             /*
 

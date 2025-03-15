@@ -61,6 +61,13 @@ class GameController
 
          while ((key = 0) & (~exit)) {
 
+            /* 
+
+               * Randomly change gravity
+               * At a randomly generated time
+
+            */
+
             if (timer = 0) {
                let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
                let g_dir = rand.between(1,4, player.c_xpos_d());
@@ -68,12 +75,12 @@ class GameController
                if (~(g_dir = 1)) {
                   if (g_n1_count > 4) {
                      let g_dir = 1;
-                     g_n1_count = 0;
+                     let g_n1_count = 0;
                   } else {
                      let g_n1_count = g_n1_count + 1;
                   }
                } else {
-                  g_n1_count = 0;
+                  let g_n1_count = 0;
                }
                
                do Output.printInt(g_dir);
@@ -81,6 +88,12 @@ class GameController
             } else {
                let timer = timer - 1;
             }
+
+            //* Decrease dash cooldown
+
+            do player.stimulate_time();
+
+            // Handle user inputs
 
             let key = Keyboard.keyPressed();
 
@@ -106,7 +119,14 @@ class GameController
          else 
          {
             if (key = 140) { let exit = true; } // exit when esc is pressed
+            else {
+               if (key = 70) {
+                  //* Key: F
 
+                  do player.dash();
+
+               }
+            }
          }
 
          // Waits for the key to be released.
