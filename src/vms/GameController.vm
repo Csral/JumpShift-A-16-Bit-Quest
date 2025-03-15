@@ -35,7 +35,7 @@ push argument 1
 push argument 2
 call Random.between 2
 return
-function GameController.start 3
+function GameController.start 6
 push argument 0
 pop pointer 0
 push constant 15
@@ -59,13 +59,41 @@ push constant 0
 not
 call Platform.draw 2
 pop temp 0
+push local 2
+push constant 10
+push constant 60
+push local 1
+call Player.c_ypos_d 1
+push local 2
+push constant 12
+push constant 22
+push constant 18
+call Rd.between 4
+add
+call Rd.between 4
+push local 2
+push constant 10
+push constant 60
+push local 1
+call Player.c_ypos_d 1
+push local 2
+push constant 22
+push constant 42
+push constant 86
+call Rd.between 4
+add
+call Rd.between 4
+add
+pop local 4
+push constant 1
+pop local 5
 label WHILE_EXP0
 push this 0
 not
 not
 if-goto WHILE_END0
 label WHILE_EXP1
-push local 2
+push local 3
 push constant 0
 eq
 push this 0
@@ -73,30 +101,83 @@ not
 and
 not
 if-goto WHILE_END1
-call Keyboard.keyPressed 0
-pop local 2
-push local 1
-call Player.on_ground 1
-not
+push local 4
+push constant 0
+eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
+push local 2
+push constant 10
+push constant 60
 push local 1
-call Player.is_jumping 1
+call Player.c_ypos_d 1
+push local 2
+push constant 12
+push constant 22
+push constant 18
+call Rd.between 4
+add
+call Rd.between 4
+push local 2
+push constant 10
+push constant 60
+push local 1
+call Player.c_ypos_d 1
+push local 2
+push constant 22
+push constant 42
+push constant 86
+call Rd.between 4
+add
+call Rd.between 4
+add
+pop local 4
+push local 2
+push constant 1
+push constant 4
+push local 1
+call Player.c_xpos_d 1
+call Rd.between 4
+pop local 5
+push local 5
+call Output.printInt 1
+pop temp 0
+push local 1
+push local 5
+call Player.set_gravity_direction 2
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push local 4
+push constant 1
+sub
+pop local 4
+label IF_END0
+call Keyboard.keyPressed 0
+pop local 3
+push local 1
+call Player.on_ground 1
 not
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push local 1
+call Player.is_jumping 1
+not
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 1
 call Player.enforce_gravity 1
 pop temp 0
-goto IF_END1
-label IF_FALSE1
+goto IF_END2
+label IF_FALSE2
 push local 1
 call Player.jump 1
 pop temp 0
-label IF_END1
-label IF_FALSE0
+label IF_END2
+label IF_FALSE1
 push pointer 0
 call GameController.handlePlatform 1
 pop temp 0
@@ -105,16 +186,16 @@ call Sys.wait 1
 pop temp 0
 goto WHILE_EXP1
 label WHILE_END1
-push local 2
+push local 3
 push constant 32
 eq
 push local 1
 call Player.is_jumping 1
 not
 and
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
 push local 1
 push constant 5
 call Player.set_jumping_height 2
@@ -122,21 +203,21 @@ pop temp 0
 push local 1
 call Player.jump 1
 pop temp 0
-goto IF_END2
-label IF_FALSE2
-push local 2
+goto IF_END3
+label IF_FALSE3
+push local 3
 push constant 140
 eq
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
 push constant 0
 not
 pop this 0
-label IF_FALSE3
-label IF_END2
+label IF_FALSE4
+label IF_END3
 label WHILE_EXP2
-push local 2
+push local 3
 push constant 0
 eq
 not
@@ -146,7 +227,7 @@ and
 not
 if-goto WHILE_END2
 call Keyboard.keyPressed 0
-pop local 2
+pop local 3
 push pointer 0
 call GameController.handlePlatform 1
 pop temp 0
@@ -158,9 +239,9 @@ label WHILE_END2
 goto WHILE_EXP0
 label WHILE_END0
 push this 0
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
 push constant 10
 push constant 27
 call Output.moveCursor 2
@@ -187,7 +268,7 @@ push constant 114
 call String.appendChar 2
 call Output.printString 1
 pop temp 0
-label IF_FALSE4
+label IF_FALSE5
 push constant 0
 return
 function GameController.handlePlatform 6

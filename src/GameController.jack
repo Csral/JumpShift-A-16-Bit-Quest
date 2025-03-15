@@ -37,13 +37,19 @@ class GameController
    {
       var Platform platform;
       var Player player;
+      var Rd rand;
       var char key;
+      var int timer; //* Timer to update gravity
+      var int g_dir; //* Gravity direction
 
       //TODO: implement the start config of platform and player
       let platform = Platform.new(15, 15, 3, dispDir, moveDir);
       let player = Player.new(19, 15);
       do player.draw(true);
       do platform.draw(true);
+
+      let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
+      let g_dir = 1;
 
       while (~exit)
       {
@@ -52,6 +58,17 @@ class GameController
          // update screen and move platform
 
          while ((key = 0) & (~exit)) {
+
+            if (timer = 0) {
+               let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
+               let g_dir = rand.between(1,4, player.c_xpos_d());
+               
+               do Output.printInt(g_dir);
+               do player.set_gravity_direction(g_dir);
+            } else {
+               let timer = timer - 1;
+            }
+
             let key = Keyboard.keyPressed();
 
             if (~player.on_ground()) {

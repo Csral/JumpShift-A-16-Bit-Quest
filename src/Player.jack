@@ -18,6 +18,14 @@ class Player
         return this;
     }
 
+    method int c_xpos_d() {
+        return xpos;
+    }
+
+    method int c_ypos_d() {
+        return ypos;
+    }
+
     method void dispose()
     {
         do Memory.deAlloc(this);
@@ -43,7 +51,7 @@ class Player
 
     method void set_gravity_direction(int dir) {
 
-        if ( (dir < 4) & (dir > 0) ) {
+        if ( (dir < 5) & (dir > 0) ) {
             let gravity_direction = dir;
         }
 
@@ -138,7 +146,23 @@ class Player
     method boolean on_ground() {
 
         var boolean result;
-        let result = (ypos = 15);  // Store comparison result
+
+        if (gravity_direction = 1) {
+            let result = (ypos = 15);  // Store comparison result
+        } else {
+            if (gravity_direction = 2) {
+                let result = (ypos = 0);  // Store comparison result
+            } else {
+                if (gravity_direction = 3) {
+                    let result = (xpos = 31);  // Store comparison result
+                } else {
+                    if (gravity_direction = 4) {
+                        let result = (xpos = 0);  // Store comparison result
+                    }
+                }
+            }
+        }
+
         return result;
 
     }
@@ -162,7 +186,23 @@ class Player
             */
 
             do draw(false);
-            do update(xpos, ypos-1); //* Update xpos and ypos.
+
+            if (gravity_direction = 1) {
+                do update(xpos, ypos-1); //* Update xpos and ypos.
+            } else {
+                if (gravity_direction = 2) {
+                    do update(xpos, ypos+1); //* Update xpos and ypos.
+                } else {
+                    if (gravity_direction = 3) {
+                        do update(xpos-1, ypos); //* Update xpos and ypos.
+                    } else {
+                        if (gravity_direction = 4) {
+                            do update(xpos+1, ypos); //* Update xpos and ypos.
+                        }
+                    }
+                }
+            }
+
             do draw(true);
 
             do Sys.wait(20); //* Wait 1s before continuing. Adjust for animation

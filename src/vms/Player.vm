@@ -10,6 +10,16 @@ push constant 1
 pop this 2
 push pointer 0
 return
+function Player.c_xpos_d 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Player.c_ypos_d 0
+push argument 0
+pop pointer 0
+push this 1
+return
 function Player.dispose 0
 push argument 0
 pop pointer 0
@@ -45,7 +55,7 @@ function Player.set_gravity_direction 0
 push argument 0
 pop pointer 0
 push argument 1
-push constant 4
+push constant 5
 lt
 push argument 1
 push constant 0
@@ -231,10 +241,56 @@ return
 function Player.on_ground 1
 push argument 0
 pop pointer 0
+push this 2
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
 push this 1
 push constant 15
 eq
 pop local 0
+goto IF_END0
+label IF_FALSE0
+push this 2
+push constant 2
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 1
+push constant 0
+eq
+pop local 0
+goto IF_END1
+label IF_FALSE1
+push this 2
+push constant 3
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 0
+push constant 31
+eq
+pop local 0
+goto IF_END2
+label IF_FALSE2
+push this 2
+push constant 4
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 0
+push constant 0
+eq
+pop local 0
+label IF_FALSE3
+label IF_END2
+label IF_END1
+label IF_END0
 push local 0
 return
 function Player.dash 0
@@ -255,6 +311,12 @@ push pointer 0
 push constant 0
 call Player.draw 2
 pop temp 0
+push this 2
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
 push pointer 0
 push this 0
 push this 1
@@ -262,6 +324,55 @@ push constant 1
 sub
 call Player.update 3
 pop temp 0
+goto IF_END1
+label IF_FALSE1
+push this 2
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push this 0
+push this 1
+push constant 1
+add
+call Player.update 3
+pop temp 0
+goto IF_END2
+label IF_FALSE2
+push this 2
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+push this 0
+push constant 1
+sub
+push this 1
+call Player.update 3
+pop temp 0
+goto IF_END3
+label IF_FALSE3
+push this 2
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+push this 0
+push constant 1
+add
+push this 1
+call Player.update 3
+pop temp 0
+label IF_FALSE4
+label IF_END3
+label IF_END2
+label IF_END1
 push pointer 0
 push constant 0
 not

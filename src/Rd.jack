@@ -1,0 +1,55 @@
+class Rd {
+    static int seed;
+
+    /** Seeds the random number generator. */
+    method void seed(int s) {
+        let seed = s;
+        return;
+    }
+
+    /** Returns the next random number using LCG: X(n+1) = (A * X(n) + C) mod M */
+    method int next() {
+        let seed = (16645 * seed + 11393) & 32767; // Modulo 2^15 (Jack lacks % operator)
+        return seed;
+    }
+
+    method int mod(int a, int b) {
+        var int quotient, remainder;
+
+        if (~(b > 0)) {
+            return -1; // Error handling (Jack lacks exceptions)
+        }
+
+        let quotient = a / b; // Integer division
+        let remainder = a - (quotient * b); // Compute remainder
+
+        return remainder;
+    }
+
+    method int buffer(int val, int low, int high) {
+
+        var int res;
+
+        let res = val;
+
+        while (res < low) {
+            let res = res + high;
+        }
+
+        while ( res > high ) {
+            let res = res - low;
+        }
+
+        return res;
+
+    }
+
+    /** Returns a random number between x (inclusive) and y (exclusive). */
+    method int between(int x, int y, int f) {
+        var int range, temp;
+        let range = y - x;
+        let temp = next();
+        let temp = mod(temp, range) + x + f;
+        return buffer(temp, x, y);
+    }
+}
