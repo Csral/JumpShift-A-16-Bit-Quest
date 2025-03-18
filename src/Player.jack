@@ -1,7 +1,8 @@
 //todo: implement player class
 class Player
 {
-    field int xpos, ypos, gravity_direction, jump_height, dash_cooldown; // player's x and y position
+    static int gravity_direction;
+    field int xpos, ypos, jump_height, dash_cooldown; // player's x and y position
     field boolean is_on_surface;
 
     /*
@@ -15,7 +16,7 @@ class Player
     {
         let xpos = x;
         let ypos = y;
-        let gravity_direction = 1;
+        let gravity_direction = 2;
         let is_on_surface = true;
         let dash_cooldown = 0; //* Can use dash
         return this;
@@ -52,7 +53,8 @@ class Player
         return (jump_height>0);
     }
 
-    method void set_gravity_direction(int dir) {
+    ///// changed from method to function by rtamanyu /////////////////////
+    function void set_gravity_direction(int dir) {
 
         if ( (dir < 5) & (dir > 0) ) {
             let gravity_direction = dir;
@@ -62,9 +64,11 @@ class Player
 
     }
 
-    method int get_gravity_direction() {
+    function int get_gravity_direction() {
         return gravity_direction;
     }
+    // I change it so that it can be used in other classes
+    ///////////////////////////////////////////////////////////
 
     method void enforce_gravity() {
 

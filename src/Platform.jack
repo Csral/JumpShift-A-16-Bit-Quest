@@ -161,7 +161,8 @@ class Platform
     }
 
     // draw the platform object
-    method void draw(boolean show) {
+    method void draw(boolean show, boolean isPersistant)
+    {
 		var int memAddress, i, loc, len;
         let i = 0;
         let len = length;
@@ -229,19 +230,103 @@ class Platform
                 }
             }
         }
-        if (len < 1)
+        if (len < 0)//1
         {
             return;
         }
+
+        // do Output.printInt(len);
         
 		let memAddress = 16384 + loc;
-        // draw the sprite till the length
-        while(i < len)
+
+        // to draw the whole block
+        if(~isPersistant)
         {
-            if (show)
+            // draw the sprite till the length
+            while(i < len)
+            {
+                if (show)
+                {
+                    if (dispDir < 3) //forward or backward sprite rendering
+                    {
+                        do Memory.poke(memAddress + 0, -1);
+                        do Memory.poke(memAddress + 32, -1);
+                        do Memory.poke(memAddress + 64, -1);
+                        do Memory.poke(memAddress + 96, -1);
+                        do Memory.poke(memAddress + 128, -1);
+                        do Memory.poke(memAddress + 160, -1);
+                        do Memory.poke(memAddress + 192, -1);
+                        do Memory.poke(memAddress + 224, -1);
+                        do Memory.poke(memAddress + 256, -1);
+                        do Memory.poke(memAddress + 288, -1);
+                        do Memory.poke(memAddress + 320, -1);
+                        do Memory.poke(memAddress + 352, 0);
+                        do Memory.poke(memAddress + 384, 0);
+                        do Memory.poke(memAddress + 416, 0);
+                        do Memory.poke(memAddress + 448, 0);
+                        do Memory.poke(memAddress + 480, 0);
+                    }
+                    else //up or down sprite rendering
+                    {
+                        do Memory.poke(memAddress + 0, 1023);
+                        do Memory.poke(memAddress + 32, 1023);
+                        do Memory.poke(memAddress + 64, 1023);
+                        do Memory.poke(memAddress + 96, 1023);
+                        do Memory.poke(memAddress + 128, 1023);
+                        do Memory.poke(memAddress + 160, 1023);
+                        do Memory.poke(memAddress + 192, 1023);
+                        do Memory.poke(memAddress + 224, 1023);
+                        do Memory.poke(memAddress + 256, 1023);
+                        do Memory.poke(memAddress + 288, 1023);
+                        do Memory.poke(memAddress + 320, 1023);
+                        do Memory.poke(memAddress + 352, 1023);
+                        do Memory.poke(memAddress + 384, 1023);
+                        do Memory.poke(memAddress + 416, 1023);
+                        do Memory.poke(memAddress + 448, 1023);
+                        do Memory.poke(memAddress + 480, 1023);
+                    }
+                }
+                else //clear the sprite
+                {
+                    do Memory.poke(memAddress + 0, 0);
+                    do Memory.poke(memAddress + 32, 0);
+                    do Memory.poke(memAddress + 64, 0);
+                    do Memory.poke(memAddress + 96, 0);
+                    do Memory.poke(memAddress + 128, 0);
+                    do Memory.poke(memAddress + 160, 0);
+                    do Memory.poke(memAddress + 192, 0);
+                    do Memory.poke(memAddress + 224, 0);
+                    do Memory.poke(memAddress + 256, 0);
+                    do Memory.poke(memAddress + 288, 0);
+                    do Memory.poke(memAddress + 320, 0);
+                    do Memory.poke(memAddress + 352, 0);
+                    do Memory.poke(memAddress + 384, 0);
+                    do Memory.poke(memAddress + 416, 0);
+                    do Memory.poke(memAddress + 448, 0);
+                    do Memory.poke(memAddress + 480, 0);
+                }
+                if (dispDir < 3)
+                {
+                    let memAddress = memAddress + 1;
+                }
+                else
+                {
+                    let memAddress = memAddress + 512;
+                }
+                let i = i + 1;
+            }
+        }
+        else //todo fix the persistant rendering code
+        {
+            // render only the next frame's first block
+            if ((y > -1) & (y<16))
             {
                 if (dispDir < 3) //forward or backward sprite rendering
                 {
+                    if (dispDir = 2)
+                    {
+                        let memAddress = memAddress + len - 1;
+                    }
                     do Memory.poke(memAddress + 0, -1);
                     do Memory.poke(memAddress + 32, -1);
                     do Memory.poke(memAddress + 64, -1);
@@ -261,6 +346,10 @@ class Platform
                 }
                 else //up or down sprite rendering
                 {
+                    if (dispDir = 3)
+                    {
+                        let memAddress = memAddress + 512*(len+1);
+                    }
                     do Memory.poke(memAddress + 0, 1023);
                     do Memory.poke(memAddress + 32, 1023);
                     do Memory.poke(memAddress + 64, 1023);
@@ -279,34 +368,49 @@ class Platform
                     do Memory.poke(memAddress + 480, 1023);
                 }
             }
-            else //clear the sprite
+
+            // calculate the memory address for the prevoius frame's last block
+            if (dispDir = 1)
             {
-                do Memory.poke(memAddress + 0, 0);
-                do Memory.poke(memAddress + 32, 0);
-                do Memory.poke(memAddress + 64, 0);
-                do Memory.poke(memAddress + 96, 0);
-                do Memory.poke(memAddress + 128, 0);
-                do Memory.poke(memAddress + 160, 0);
-                do Memory.poke(memAddress + 192, 0);
-                do Memory.poke(memAddress + 224, 0);
-                do Memory.poke(memAddress + 256, 0);
-                do Memory.poke(memAddress + 288, 0);
-                do Memory.poke(memAddress + 320, 0);
-                do Memory.poke(memAddress + 352, 0);
-                do Memory.poke(memAddress + 384, 0);
-                do Memory.poke(memAddress + 416, 0);
-                do Memory.poke(memAddress + 448, 0);
-                do Memory.poke(memAddress + 480, 0);
+                let memAddress = memAddress + len;
             }
-            if (dispDir < 3)
+            if(dispDir = 2)
             {
-                let memAddress = memAddress + 1;
+                let memAddress = memAddress - len;
             }
-            else
+            if (dispDir = 3)
             {
-                let memAddress = memAddress + 512;
+               
+                let memAddress = memAddress - 512*(len+1);  //
+                do Output.printString("HI");
+                do Output.printInt(memAddress);
+                // if ((memAddress < 16384) | (memAddress > 24094))
+                // {
+                //     return;
+                // }
             }
-            let i = i + 1;
+            if ((memAddress < 16384) | (memAddress > 24094))
+            {
+                return;
+            }
+
+            //clear the the blprevoius frame's last block
+            do Memory.poke(memAddress + 0, 0);
+            do Memory.poke(memAddress + 32, 0);
+            do Memory.poke(memAddress + 64, 0);
+            do Memory.poke(memAddress + 96, 0);
+            do Memory.poke(memAddress + 128, 0);
+            do Memory.poke(memAddress + 160, 0);
+            do Memory.poke(memAddress + 192, 0);
+            do Memory.poke(memAddress + 224, 0);
+            do Memory.poke(memAddress + 256, 0);
+            do Memory.poke(memAddress + 288, 0);
+            do Memory.poke(memAddress + 320, 0);
+            do Memory.poke(memAddress + 352, 0);
+            do Memory.poke(memAddress + 384, 0);
+            do Memory.poke(memAddress + 416, 0);
+            do Memory.poke(memAddress + 448, 0);
+            do Memory.poke(memAddress + 480, 0);            
         }
 		return;
 	}
@@ -314,7 +418,7 @@ class Platform
     // move the platform object
     method void move()
     {
-        do draw(false);
+        do draw(false, false);
         if(moveDir = 1) //forward
         {
             let x = x - 1;
@@ -340,7 +444,7 @@ class Platform
                 }
             }
         }
-        do draw(true);
+        do draw(true, false);
         return;
     }
 
@@ -355,4 +459,14 @@ class Platform
         }
         return;
     }
+
+    // delete all the platform objects from the queue
+    function void disposeAll()
+    {
+        while(~(first = null))
+        {
+            do first.dispose();
+        }
+        return;
+    } 
 }

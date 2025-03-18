@@ -1,5 +1,5 @@
 function GameController.new 0
-push constant 2
+push constant 4
 call Memory.alloc 1
 pop pointer 0
 push constant 50
@@ -10,6 +10,10 @@ push constant 1
 pop static 1
 push constant 2
 pop this 1
+push constant 3
+pop this 2
+push constant 5
+pop this 3
 push pointer 0
 return
 function GameController.setDelay 0
@@ -19,21 +23,14 @@ push argument 1
 pop static 2
 push constant 0
 return
-function GameController.random 0
+function GameController.random 1
 push argument 0
 pop pointer 0
-push constant 16384
-push constant 24577
-call Random.between 2
-push constant 0
-call Memory.peek 1
-add
-call Memory.peek 1
-call Random.seed 1
-pop temp 0
+push local 0
 push argument 1
 push argument 2
-call Random.between 2
+push constant 0
+call Rd.between 4
 return
 function GameController.start 7
 push argument 0
@@ -57,7 +54,8 @@ pop temp 0
 push local 0
 push constant 0
 not
-call Platform.draw 2
+push constant 0
+call Platform.draw 3
 pop temp 0
 push local 2
 push constant 10
@@ -174,9 +172,8 @@ label IF_END1
 push local 5
 call Output.printInt 1
 pop temp 0
-push local 1
 push local 5
-call Player.set_gravity_direction 2
+call Player.set_gravity_direction 1
 pop temp 0
 goto IF_END0
 label IF_FALSE0
@@ -214,6 +211,11 @@ label IF_END4
 label IF_FALSE3
 push pointer 0
 call GameController.handlePlatform 1
+pop temp 0
+push local 1
+push constant 0
+not
+call Player.draw 2
 pop temp 0
 push constant 50
 call Sys.wait 1
@@ -317,9 +319,124 @@ pop temp 0
 label IF_FALSE8
 push constant 0
 return
-function GameController.handlePlatform 6
+function GameController.handlePlatform 9
 push argument 0
 pop pointer 0
+call Player.get_gravity_direction 0
+pop local 8
+push static 0
+push local 8
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+call Platform.disposeAll 0
+pop temp 0
+call Screen.clearScreen 0
+pop temp 0
+push local 8
+pop static 0
+push local 8
+pop static 1
+push local 8
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 15
+push constant 15
+push constant 5
+push static 1
+push static 0
+call Platform.new 5
+pop local 2
+push constant 22
+push constant 15
+push constant 5
+push static 1
+push static 0
+call Platform.new 5
+pop local 3
+goto IF_END1
+label IF_FALSE1
+push local 8
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 15
+push constant 15
+push constant 5
+push static 1
+push static 0
+call Platform.new 5
+pop local 2
+push constant 7
+push constant 15
+push constant 5
+push static 1
+push static 0
+call Platform.new 5
+pop local 3
+goto IF_END2
+label IF_FALSE2
+push local 8
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 15
+push constant 15
+push constant 5
+push static 1
+push static 0
+call Platform.new 5
+pop local 2
+push constant 15
+push constant 8
+push constant 5
+push static 1
+push static 0
+call Platform.new 5
+pop local 3
+goto IF_END3
+label IF_FALSE3
+push constant 15
+push constant 2
+push constant 5
+push static 1
+push static 0
+call Platform.new 5
+pop local 2
+push constant 15
+push constant 10
+push constant 5
+push static 1
+push static 0
+call Platform.new 5
+pop local 3
+label IF_END3
+label IF_END2
+label IF_END1
+push local 2
+push constant 0
+not
+push constant 0
+call Platform.draw 3
+pop temp 0
+push local 3
+push constant 0
+not
+push constant 0
+call Platform.draw 3
+pop temp 0
+push constant 0
+return
+label IF_FALSE0
 call Platform.getFirst 0
 pop local 0
 label WHILE_EXP0
@@ -340,183 +457,187 @@ call Platform.move 1
 pop temp 0
 push local 0
 call Platform.hasFullyEnteredScene 1
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push constant 0
-push constant 10
-call Random.between 2
-pop local 5
-push constant 3
-push constant 8
-call Random.between 2
-pop local 4
-push static 0
-push constant 3
-lt
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
-push local 5
-push constant 5
-lt
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
-push local 0
-call Platform.getY 1
-push this 1
-add
-push constant 15
-gt
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
-push local 0
-call Platform.getY 1
-push this 1
-sub
-pop local 3
-goto IF_END3
-label IF_FALSE3
-push local 0
-call Platform.getY 1
-push this 1
-add
-pop local 3
-label IF_END3
-goto IF_END2
-label IF_FALSE2
-push local 0
-call Platform.getY 1
-push this 1
-sub
-push constant 2
-lt
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push local 0
-call Platform.getY 1
-push this 1
-add
-pop local 3
-goto IF_END4
-label IF_FALSE4
-push local 0
-call Platform.getY 1
-push this 1
-sub
-pop local 3
-label IF_END4
-label IF_END2
+push constant 0
+push constant 10
+call Random.between 2
+pop local 7
+push constant 3
+push constant 8
+call Random.between 2
+pop local 6
 push static 0
-push constant 1
-eq
+push constant 3
+lt
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
-push constant 32
-pop local 2
-goto IF_END5
-label IF_FALSE5
-push constant 1
-neg
-push local 4
-sub
-pop local 2
-label IF_END5
-goto IF_END1
-label IF_FALSE1
-push local 5
+push local 7
 push constant 5
 lt
 if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
 push local 0
+call Platform.getY 1
+push this 1
+add
+push constant 15
+gt
+push this 2
+sub
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push local 0
+call Platform.getY 1
+push this 1
+sub
+pop local 5
+goto IF_END7
+label IF_FALSE7
+push local 0
+call Platform.getY 1
+push this 1
+add
+pop local 5
+label IF_END7
+goto IF_END6
+label IF_FALSE6
+push local 0
+call Platform.getY 1
+push this 1
+sub
+push constant 2
+lt
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push local 0
+call Platform.getY 1
+push this 1
+add
+pop local 5
+goto IF_END8
+label IF_FALSE8
+push local 0
+call Platform.getY 1
+push this 1
+sub
+pop local 5
+label IF_END8
+label IF_END6
+push static 0
+push constant 1
+eq
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push constant 32
+pop local 4
+goto IF_END9
+label IF_FALSE9
+push constant 1
+neg
+push local 6
+sub
+pop local 4
+label IF_END9
+goto IF_END5
+label IF_FALSE5
+push local 7
+push constant 5
+lt
+if-goto IF_TRUE10
+goto IF_FALSE10
+label IF_TRUE10
+push local 0
 call Platform.getX 1
 push this 1
 sub
 push constant 3
 lt
-if-goto IF_TRUE7
-goto IF_FALSE7
-label IF_TRUE7
+if-goto IF_TRUE11
+goto IF_FALSE11
+label IF_TRUE11
 push local 0
 call Platform.getX 1
 push this 1
 add
-pop local 2
-goto IF_END7
-label IF_FALSE7
+pop local 4
+goto IF_END11
+label IF_FALSE11
 push local 0
 call Platform.getX 1
 push this 1
 sub
-pop local 2
-label IF_END7
-goto IF_END6
-label IF_FALSE6
+pop local 4
+label IF_END11
+goto IF_END10
+label IF_FALSE10
 push local 0
 call Platform.getX 1
 push this 1
 add
 push constant 29
 gt
-if-goto IF_TRUE8
-goto IF_FALSE8
-label IF_TRUE8
+push this 3
+sub
+if-goto IF_TRUE12
+goto IF_FALSE12
+label IF_TRUE12
 push local 0
 call Platform.getX 1
 push this 1
 sub
-pop local 2
-goto IF_END8
-label IF_FALSE8
+pop local 4
+goto IF_END12
+label IF_FALSE12
 push local 0
 call Platform.getX 1
 push this 1
 add
-pop local 2
-label IF_END8
-label IF_END6
+pop local 4
+label IF_END12
+label IF_END10
 push static 0
 push constant 3
 eq
-if-goto IF_TRUE9
-goto IF_FALSE9
-label IF_TRUE9
+if-goto IF_TRUE13
+goto IF_FALSE13
+label IF_TRUE13
 push constant 16
-pop local 3
-goto IF_END9
-label IF_FALSE9
+pop local 5
+goto IF_END13
+label IF_FALSE13
 push constant 1
 neg
-push local 4
+push local 6
 sub
-pop local 3
-label IF_END9
-label IF_END1
-push local 2
-push local 3
+pop local 5
+label IF_END13
+label IF_END5
 push local 4
+push local 5
+push local 6
 push static 1
 push static 0
 call Platform.new 5
 pop temp 0
-label IF_FALSE0
+label IF_FALSE4
 call Platform.getFirst 0
 pop local 0
 push local 0
 call Platform.hasExittedScreen 1
-if-goto IF_TRUE10
-goto IF_FALSE10
-label IF_TRUE10
+if-goto IF_TRUE14
+goto IF_FALSE14
+label IF_TRUE14
 push local 0
 call Platform.dispose 1
 pop temp 0
-label IF_FALSE10
+label IF_FALSE14
 push constant 0
 return
 function GameController.dispose 0
