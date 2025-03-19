@@ -16,7 +16,7 @@ class Player
     {
         let xpos = x;
         let ypos = y;
-        let gravity_direction = 2;
+        let gravity_direction = 1;
         let is_on_surface = true;
         let dash_cooldown = 0; //* Can use dash
         return this;

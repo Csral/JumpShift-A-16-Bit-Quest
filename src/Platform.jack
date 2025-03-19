@@ -94,7 +94,7 @@ class Platform
         let bound = x + length;
         if (moveDir = 1) // for direction forwards
         {
-            if (bound + gap < 32)
+            if ((bound + gap) < 32)
             {
                 return true;
             }
@@ -102,7 +102,7 @@ class Platform
         }
         if (moveDir = 2) // for direction backwards
         {
-            if (bound - gap > 0)
+            if ((bound - gap) > 0)
             {
                 return true;
             }
@@ -111,13 +111,13 @@ class Platform
         let bound = y + length;
         if (moveDir = 3) // for direction up
         {
-            if (bound + gap < 16)
+            if ((bound + gap) < 16)
             {
                 return true;
             }
             return false;
         }
-        if (bound - gap > 0) // for direction down
+        if ((bound - gap) > 0) // for direction down
         {
             return true;
         }
@@ -179,6 +179,10 @@ class Platform
             }
             else
             {
+                // do Output.printString("<");
+                // do Output.printInt(moveDir);
+                // do Output.printInt(dispDir);
+                // do Output.printString(" ");
                 return;
             }
         }
@@ -186,7 +190,7 @@ class Platform
         {
             if (dispDir < 3)
             {
-                if (x+len>31)
+                if ((x+len) > 31)
                 {
                     let len = 32 - x;
                 }
@@ -195,6 +199,7 @@ class Platform
             {
                 if(x > 31)
                 {
+                    // do Output.printString(">");
                     return;
                 }
             }
@@ -210,6 +215,7 @@ class Platform
             }
             else
             {
+                // do Output.printString("^");
                 return;
             }
         }
@@ -217,7 +223,7 @@ class Platform
         {
             if (dispDir > 2)
             {
-                if (y+len>15)
+                if ((y+len) > 15)
                 {
                     let len = 16 - y;
                 }
@@ -226,6 +232,7 @@ class Platform
             {
                 if(y > 15)
                 {
+                    // do Output.printString("low");
                     return;
                 }
             }
@@ -234,8 +241,6 @@ class Platform
         {
             return;
         }
-
-        // do Output.printInt(len);
         
 		let memAddress = 16384 + loc;
 
@@ -316,57 +321,69 @@ class Platform
                 let i = i + 1;
             }
         }
-        else //todo fix the persistant rendering code
+        else
         {
             // render only the next frame's first block
-            if ((y > -1) & (y<16))
+            if (dispDir < 3) //forward or backward sprite rendering
             {
-                if (dispDir < 3) //forward or backward sprite rendering
+                if (dispDir = 2)
                 {
-                    if (dispDir = 2)
-                    {
-                        let memAddress = memAddress + len - 1;
-                    }
-                    do Memory.poke(memAddress + 0, -1);
-                    do Memory.poke(memAddress + 32, -1);
-                    do Memory.poke(memAddress + 64, -1);
-                    do Memory.poke(memAddress + 96, -1);
-                    do Memory.poke(memAddress + 128, -1);
-                    do Memory.poke(memAddress + 160, -1);
-                    do Memory.poke(memAddress + 192, -1);
-                    do Memory.poke(memAddress + 224, -1);
-                    do Memory.poke(memAddress + 256, -1);
-                    do Memory.poke(memAddress + 288, -1);
-                    do Memory.poke(memAddress + 320, -1);
-                    do Memory.poke(memAddress + 352, 0);
-                    do Memory.poke(memAddress + 384, 0);
-                    do Memory.poke(memAddress + 416, 0);
-                    do Memory.poke(memAddress + 448, 0);
-                    do Memory.poke(memAddress + 480, 0);
+                    let memAddress = memAddress + len - 1;
                 }
-                else //up or down sprite rendering
+                do Memory.poke(memAddress + 0, -1);
+                do Memory.poke(memAddress + 32, -1);
+                do Memory.poke(memAddress + 64, -1);
+                do Memory.poke(memAddress + 96, -1);
+                do Memory.poke(memAddress + 128, -1);
+                do Memory.poke(memAddress + 160, -1);
+                do Memory.poke(memAddress + 192, -1);
+                do Memory.poke(memAddress + 224, -1);
+                do Memory.poke(memAddress + 256, -1);
+                do Memory.poke(memAddress + 288, -1);
+                do Memory.poke(memAddress + 320, -1);
+                do Memory.poke(memAddress + 352, 0);
+                do Memory.poke(memAddress + 384, 0);
+                do Memory.poke(memAddress + 416, 0);
+                do Memory.poke(memAddress + 448, 0);
+                do Memory.poke(memAddress + 480, 0);
+            }
+            //todo: fix this
+            else //up or down sprite rendering
+            {
+                if (dispDir = 3)
                 {
-                    if (dispDir = 3)
-                    {
-                        let memAddress = memAddress + 512*(len+1);
-                    }
-                    do Memory.poke(memAddress + 0, 1023);
-                    do Memory.poke(memAddress + 32, 1023);
-                    do Memory.poke(memAddress + 64, 1023);
-                    do Memory.poke(memAddress + 96, 1023);
-                    do Memory.poke(memAddress + 128, 1023);
-                    do Memory.poke(memAddress + 160, 1023);
-                    do Memory.poke(memAddress + 192, 1023);
-                    do Memory.poke(memAddress + 224, 1023);
-                    do Memory.poke(memAddress + 256, 1023);
-                    do Memory.poke(memAddress + 288, 1023);
-                    do Memory.poke(memAddress + 320, 1023);
-                    do Memory.poke(memAddress + 352, 1023);
-                    do Memory.poke(memAddress + 384, 1023);
-                    do Memory.poke(memAddress + 416, 1023);
-                    do Memory.poke(memAddress + 448, 1023);
-                    do Memory.poke(memAddress + 480, 1023);
+
                 }
+                else
+                {
+                    let memAddress = memAddress + (512*(len-1));
+                }
+
+                if ((memAddress < 16384) | (memAddress > 24096))
+                {
+                    // do Output.printString("ROB");
+                    // do Output.printInt(memAddress);
+                    // do Output.printString(" ");
+
+                    return;
+                }
+
+                do Memory.poke(memAddress + 0, 1023);
+                do Memory.poke(memAddress + 32, 1023);
+                do Memory.poke(memAddress + 64, 1023);
+                do Memory.poke(memAddress + 96, 1023);
+                do Memory.poke(memAddress + 128, 1023);
+                do Memory.poke(memAddress + 160, 1023);
+                do Memory.poke(memAddress + 192, 1023);
+                do Memory.poke(memAddress + 224, 1023);
+                do Memory.poke(memAddress + 256, 1023);
+                do Memory.poke(memAddress + 288, 1023);
+                do Memory.poke(memAddress + 320, 1023);
+                do Memory.poke(memAddress + 352, 1023);
+                do Memory.poke(memAddress + 384, 1023);
+                do Memory.poke(memAddress + 416, 1023);
+                do Memory.poke(memAddress + 448, 1023);
+                do Memory.poke(memAddress + 480, 1023);
             }
 
             // calculate the memory address for the prevoius frame's last block
@@ -380,17 +397,18 @@ class Platform
             }
             if (dispDir = 3)
             {
-               
-                let memAddress = memAddress - 512*(len+1);  //
-                do Output.printString("HI");
-                do Output.printInt(memAddress);
-                // if ((memAddress < 16384) | (memAddress > 24094))
-                // {
-                //     return;
-                // }
+                let memAddress = memAddress + (512*(len));            
             }
-            if ((memAddress < 16384) | (memAddress > 24094))
+            if(dispDir = 4)
             {
+                let memAddress = memAddress - (512*(len));
+            }
+            if ((memAddress < 16384) | (memAddress > 24096))
+            {
+                // do Output.printString("EOB");
+                // do Output.printInt(memAddress);
+                // do Output.printString(" ");
+
                 return;
             }
 
@@ -418,7 +436,7 @@ class Platform
     // move the platform object
     method void move()
     {
-        do draw(false, false);
+        do draw(false, true);
         if(moveDir = 1) //forward
         {
             let x = x - 1;
@@ -444,7 +462,7 @@ class Platform
                 }
             }
         }
-        do draw(true, false);
+        do draw(true, true);
         return;
     }
 

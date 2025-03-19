@@ -219,12 +219,12 @@ class GameController
             {
                if (curDir = 3)
                {
-                  let p1 =  Platform.new(15, 15, 5, dispDir, moveDir);            
-                  let p2 = Platform.new(15, 8, 5, dispDir, moveDir);         
+                  let p1 =  Platform.new(15, 8, 5, dispDir, moveDir);            
+                  let p2 = Platform.new(15, 15, 5, dispDir, moveDir);         
                }
                else
                {
-                  let p1 =  Platform.new(15, 2, 5, dispDir, moveDir);            
+                  let p1 =  Platform.new(15, 2, 5, dispDir, moveDir);
                   let p2 = Platform.new(15, 10, 5, dispDir, moveDir);
                }
             }
@@ -246,16 +246,19 @@ class GameController
 
       do curPlatform.move(); // update the position of the last platform
 
+      //note: uncomment below if individual platform testing is required
+      // return;
+      
       // generate a new platform if the last platform has fully entered the scene
       if(curPlatform.hasFullyEnteredScene()) 
       {
          let rand = Random.between(0, 10); //0-4 -> spawn down or spawn left, 5-9 -> spawn up or spawn right
          let l = Random.between(3, 8);
-         if (moveDir < 3) //if the direction is forward or backward
+         if (moveDir < 3) //if the direction is forward or backward (0-4 -> spawn down, 5-9 -> spawn up)
          {          
             if (rand < 5)
             {
-               if(curPlatform.getY() + spawnDiff > 15 - baseHeight)
+               if((curPlatform.getY() + spawnDiff) > (15 - baseHeight))
                {
                   let y = curPlatform.getY() - spawnDiff;
                }
@@ -266,7 +269,7 @@ class GameController
             }
             else
             {
-               if(curPlatform.getY() - spawnDiff < 2)
+               if((curPlatform.getY() - spawnDiff) < 2)
                {
                   let y = curPlatform.getY() + spawnDiff;
                }
@@ -285,11 +288,11 @@ class GameController
                let x = -1 - l;
             }
          }
-         else //if the direction is up or down
+         else //if the direction is up or down (0-4 -> spawn left, 5-9 -> spawn right)
          {
             if (rand < 5)
                {
-                  if(curPlatform.getX() - spawnDiff < 3)
+                  if((curPlatform.getX() - spawnDiff) < 3)
                   {
                      let x = curPlatform.getX() + spawnDiff;
                   }
@@ -300,7 +303,7 @@ class GameController
                }
                else
                {
-                  if(curPlatform.getX() + spawnDiff > 29 - baseWidth)
+                  if((curPlatform.getX() + spawnDiff) > (29 - baseWidth))
                   {
                      let x = curPlatform.getX() - spawnDiff;
                   }
@@ -321,7 +324,7 @@ class GameController
          }
 
          //do Output.printInt(2);
-         do Platform.new(x, y, l, dispDir, moveDir);      
+         do Platform.new(x, y, l, dispDir, moveDir);   
       }
 
       let curPlatform = Platform.getFirst();

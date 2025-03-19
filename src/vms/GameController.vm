@@ -390,14 +390,14 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 15
-push constant 15
+push constant 8
 push constant 5
 push static 1
 push static 0
 call Platform.new 5
 pop local 2
 push constant 15
-push constant 8
+push constant 15
 push constant 5
 push static 1
 push static 0
@@ -485,9 +485,9 @@ call Platform.getY 1
 push this 1
 add
 push constant 15
-gt
 push this 2
 sub
+gt
 if-goto IF_TRUE7
 goto IF_FALSE7
 label IF_TRUE7
@@ -582,9 +582,9 @@ call Platform.getX 1
 push this 1
 add
 push constant 29
-gt
 push this 3
 sub
+gt
 if-goto IF_TRUE12
 goto IF_FALSE12
 label IF_TRUE12
