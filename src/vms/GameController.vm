@@ -63,9 +63,7 @@ call Player.draw 2
 pop temp 0
 push local 0
 push constant 0
-not
-push constant 0
-call Platform.draw 3
+call Platform.draw 2
 pop temp 0
 push local 2
 push constant 10
@@ -492,15 +490,11 @@ label IF_END3
 label IF_END2
 push local 2
 push constant 0
-not
-push constant 0
-call Platform.draw 3
+call Platform.draw 2
 pop temp 0
 push local 3
 push constant 0
-not
-push constant 0
-call Platform.draw 3
+call Platform.draw 2
 pop temp 0
 push constant 0
 return

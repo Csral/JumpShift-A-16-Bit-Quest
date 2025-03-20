@@ -247,7 +247,7 @@ class Platform
     }
 
     // draw the platform object
-    method void draw(boolean show, boolean isPersistant)
+    method void draw(boolean isPersistant)
     {
 		var int memAddress, i, loc, len;
         let i = 0;
@@ -499,7 +499,7 @@ class Platform
     // move the platform object
     method void move()
     {
-        do draw(false, true);
+        // do draw(false, true);
         if(moveDir = 1) //forward
         {
             let x = x - 1;
@@ -525,7 +525,7 @@ class Platform
                 }
             }
         }
-        do draw(true, true);
+        do draw(true);
         return;
     }
 

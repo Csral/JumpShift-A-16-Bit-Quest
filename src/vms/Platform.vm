@@ -834,7 +834,7 @@ push constant 16384
 push local 2
 add
 pop local 0
-push argument 2
+push argument 1
 not
 if-goto IF_TRUE11
 goto IF_FALSE11
@@ -1119,12 +1119,6 @@ return
 function Platform.move 0
 push argument 0
 pop pointer 0
-push pointer 0
-push constant 0
-push constant 0
-not
-call Platform.draw 3
-pop temp 0
 push this 5
 push constant 1
 eq
@@ -1178,9 +1172,7 @@ label IF_END0
 push pointer 0
 push constant 0
 not
-push constant 0
-not
-call Platform.draw 3
+call Platform.draw 2
 pop temp 0
 push constant 0
 return

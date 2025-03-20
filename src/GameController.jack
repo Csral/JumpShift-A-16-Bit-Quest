@@ -71,7 +71,7 @@ class GameController
       let platform = Platform.new(15, 15, 3, dispDir, moveDir);
       let player = Player.new(19, 15);
       do player.draw(true);
-      do platform.draw(true, false);
+      do platform.draw(false);
 
       let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
       let g_dir = 1;
@@ -271,8 +271,8 @@ class GameController
          }
          
          // draw those initial platforms
-         do p1.draw(true, false);
-         do p2.draw(true, false);
+         do p1.draw(false);
+         do p2.draw(false);
          return;
       }
       
