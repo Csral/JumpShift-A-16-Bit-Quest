@@ -52,6 +52,92 @@ class Platform
         return first;
     }
 
+    method void renderForwardBackwardToMemory(int memAddress, boolean day)
+    {
+        if(day)
+        {
+            do Memory.poke(memAddress + 0, -1);
+            do Memory.poke(memAddress + 32, -1);
+            do Memory.poke(memAddress + 64, -1);
+            do Memory.poke(memAddress + 96, -1);
+            do Memory.poke(memAddress + 128, -1);
+            do Memory.poke(memAddress + 160, -1);
+            do Memory.poke(memAddress + 192, -1);
+            do Memory.poke(memAddress + 224, -1);
+            do Memory.poke(memAddress + 256, -1);
+            do Memory.poke(memAddress + 288, -1);
+            do Memory.poke(memAddress + 320, -1);
+            do Memory.poke(memAddress + 352, -1);
+            do Memory.poke(memAddress + 384, -1);
+            do Memory.poke(memAddress + 416, -1);
+            do Memory.poke(memAddress + 448, -1);
+            do Memory.poke(memAddress + 480, -1);
+        }
+        else
+        {
+            do Memory.poke(memAddress + 0, 0);
+            do Memory.poke(memAddress + 32, 0);
+            do Memory.poke(memAddress + 64, 0);
+            do Memory.poke(memAddress + 96, 0);
+            do Memory.poke(memAddress + 128, 0);
+            do Memory.poke(memAddress + 160, 0);
+            do Memory.poke(memAddress + 192, 0);
+            do Memory.poke(memAddress + 224, 0);
+            do Memory.poke(memAddress + 256, 0);
+            do Memory.poke(memAddress + 288, 0);
+            do Memory.poke(memAddress + 320, 0);
+            do Memory.poke(memAddress + 352, 0);
+            do Memory.poke(memAddress + 384, 0);
+            do Memory.poke(memAddress + 416, 0);
+            do Memory.poke(memAddress + 448, 0);
+            do Memory.poke(memAddress + 480, 0);
+        }
+        return;
+    }
+
+    method void renderUpDownToMemory(int memAddress, boolean day)
+    {
+        if(day)
+        {
+            do Memory.poke(memAddress + 0, -1);
+            do Memory.poke(memAddress + 32, -1);
+            do Memory.poke(memAddress + 64, -1);
+            do Memory.poke(memAddress + 96, -1);
+            do Memory.poke(memAddress + 128, -1);
+            do Memory.poke(memAddress + 160, -1);
+            do Memory.poke(memAddress + 192, -1);
+            do Memory.poke(memAddress + 224, -1);
+            do Memory.poke(memAddress + 256, -1);
+            do Memory.poke(memAddress + 288, -1);
+            do Memory.poke(memAddress + 320, -1);
+            do Memory.poke(memAddress + 352, -1);
+            do Memory.poke(memAddress + 384, -1);
+            do Memory.poke(memAddress + 416, -1);
+            do Memory.poke(memAddress + 448, -1);
+            do Memory.poke(memAddress + 480, -1);
+        }
+        else
+        {
+            do Memory.poke(memAddress + 0, 0);
+            do Memory.poke(memAddress + 32, 0);
+            do Memory.poke(memAddress + 64, 0);
+            do Memory.poke(memAddress + 96, 0);
+            do Memory.poke(memAddress + 128, 0);
+            do Memory.poke(memAddress + 160, 0);
+            do Memory.poke(memAddress + 192, 0);
+            do Memory.poke(memAddress + 224, 0);
+            do Memory.poke(memAddress + 256, 0);
+            do Memory.poke(memAddress + 288, 0);
+            do Memory.poke(memAddress + 320, 0);
+            do Memory.poke(memAddress + 352, 0);
+            do Memory.poke(memAddress + 384, 0);
+            do Memory.poke(memAddress + 416, 0);
+            do Memory.poke(memAddress + 448, 0);
+            do Memory.poke(memAddress + 480, 0);
+        }
+        return;
+    }
+
     function Platform getLast()
     {
         return last;
@@ -250,66 +336,51 @@ class Platform
             // draw the sprite till the length
             while(i < len)
             {
-                if (show)
+                // if (show)
+                // {
+                if(GameController.getIsDay())// day sprite rendering
                 {
                     if (dispDir < 3) //forward or backward sprite rendering
                     {
-                        do Memory.poke(memAddress + 0, -1);
-                        do Memory.poke(memAddress + 32, -1);
-                        do Memory.poke(memAddress + 64, -1);
-                        do Memory.poke(memAddress + 96, -1);
-                        do Memory.poke(memAddress + 128, -1);
-                        do Memory.poke(memAddress + 160, -1);
-                        do Memory.poke(memAddress + 192, -1);
-                        do Memory.poke(memAddress + 224, -1);
-                        do Memory.poke(memAddress + 256, -1);
-                        do Memory.poke(memAddress + 288, -1);
-                        do Memory.poke(memAddress + 320, -1);
-                        do Memory.poke(memAddress + 352, 0);
-                        do Memory.poke(memAddress + 384, 0);
-                        do Memory.poke(memAddress + 416, 0);
-                        do Memory.poke(memAddress + 448, 0);
-                        do Memory.poke(memAddress + 480, 0);
+                        do renderForwardBackwardToMemory(memAddress, true);
                     }
                     else //up or down sprite rendering
                     {
-                        do Memory.poke(memAddress + 0, 1023);
-                        do Memory.poke(memAddress + 32, 1023);
-                        do Memory.poke(memAddress + 64, 1023);
-                        do Memory.poke(memAddress + 96, 1023);
-                        do Memory.poke(memAddress + 128, 1023);
-                        do Memory.poke(memAddress + 160, 1023);
-                        do Memory.poke(memAddress + 192, 1023);
-                        do Memory.poke(memAddress + 224, 1023);
-                        do Memory.poke(memAddress + 256, 1023);
-                        do Memory.poke(memAddress + 288, 1023);
-                        do Memory.poke(memAddress + 320, 1023);
-                        do Memory.poke(memAddress + 352, 1023);
-                        do Memory.poke(memAddress + 384, 1023);
-                        do Memory.poke(memAddress + 416, 1023);
-                        do Memory.poke(memAddress + 448, 1023);
-                        do Memory.poke(memAddress + 480, 1023);
+                        do renderUpDownToMemory(memAddress, true);
                     }
                 }
-                else //clear the sprite
+                else //night sprite rendering
                 {
-                    do Memory.poke(memAddress + 0, 0);
-                    do Memory.poke(memAddress + 32, 0);
-                    do Memory.poke(memAddress + 64, 0);
-                    do Memory.poke(memAddress + 96, 0);
-                    do Memory.poke(memAddress + 128, 0);
-                    do Memory.poke(memAddress + 160, 0);
-                    do Memory.poke(memAddress + 192, 0);
-                    do Memory.poke(memAddress + 224, 0);
-                    do Memory.poke(memAddress + 256, 0);
-                    do Memory.poke(memAddress + 288, 0);
-                    do Memory.poke(memAddress + 320, 0);
-                    do Memory.poke(memAddress + 352, 0);
-                    do Memory.poke(memAddress + 384, 0);
-                    do Memory.poke(memAddress + 416, 0);
-                    do Memory.poke(memAddress + 448, 0);
-                    do Memory.poke(memAddress + 480, 0);
+                    //todo: change the no. when night sprite is ready
+                    if (dispDir < 3) //forward or backward sprite rendering
+                    {
+                        do renderForwardBackwardToMemory(memAddress, false);
+                    }
+                    else //up or down sprite rendering
+                    {
+                        do renderUpDownToMemory(memAddress, false);
+                    }
                 }
+                // }
+                // else //clear the sprite
+                // {
+                //     do Memory.poke(memAddress + 0, 0);
+                //     do Memory.poke(memAddress + 32, 0);
+                //     do Memory.poke(memAddress + 64, 0);
+                //     do Memory.poke(memAddress + 96, 0);
+                //     do Memory.poke(memAddress + 128, 0);
+                //     do Memory.poke(memAddress + 160, 0);
+                //     do Memory.poke(memAddress + 192, 0);
+                //     do Memory.poke(memAddress + 224, 0);
+                //     do Memory.poke(memAddress + 256, 0);
+                //     do Memory.poke(memAddress + 288, 0);
+                //     do Memory.poke(memAddress + 320, 0);
+                //     do Memory.poke(memAddress + 352, 0);
+                //     do Memory.poke(memAddress + 384, 0);
+                //     do Memory.poke(memAddress + 416, 0);
+                //     do Memory.poke(memAddress + 448, 0);
+                //     do Memory.poke(memAddress + 480, 0);
+                // }
                 if (dispDir < 3)
                 {
                     let memAddress = memAddress + 1;
@@ -330,24 +401,16 @@ class Platform
                 {
                     let memAddress = memAddress + len - 1;
                 }
-                do Memory.poke(memAddress + 0, -1);
-                do Memory.poke(memAddress + 32, -1);
-                do Memory.poke(memAddress + 64, -1);
-                do Memory.poke(memAddress + 96, -1);
-                do Memory.poke(memAddress + 128, -1);
-                do Memory.poke(memAddress + 160, -1);
-                do Memory.poke(memAddress + 192, -1);
-                do Memory.poke(memAddress + 224, -1);
-                do Memory.poke(memAddress + 256, -1);
-                do Memory.poke(memAddress + 288, -1);
-                do Memory.poke(memAddress + 320, -1);
-                do Memory.poke(memAddress + 352, 0);
-                do Memory.poke(memAddress + 384, 0);
-                do Memory.poke(memAddress + 416, 0);
-                do Memory.poke(memAddress + 448, 0);
-                do Memory.poke(memAddress + 480, 0);
+                
+                if(GameController.getIsDay()) // day sprite rendering forward or backward
+                {
+                    do renderForwardBackwardToMemory(memAddress, true);
+                }
+                else//night sprite rendering forward or backword //todo: change the no. when night sprite is ready
+                {
+                    do renderForwardBackwardToMemory(memAddress, false);
+                }
             }
-            //todo: fix this
             else //up or down sprite rendering
             {
                 if (dispDir = 3)
@@ -368,22 +431,15 @@ class Platform
                     return;
                 }
 
-                do Memory.poke(memAddress + 0, 1023);
-                do Memory.poke(memAddress + 32, 1023);
-                do Memory.poke(memAddress + 64, 1023);
-                do Memory.poke(memAddress + 96, 1023);
-                do Memory.poke(memAddress + 128, 1023);
-                do Memory.poke(memAddress + 160, 1023);
-                do Memory.poke(memAddress + 192, 1023);
-                do Memory.poke(memAddress + 224, 1023);
-                do Memory.poke(memAddress + 256, 1023);
-                do Memory.poke(memAddress + 288, 1023);
-                do Memory.poke(memAddress + 320, 1023);
-                do Memory.poke(memAddress + 352, 1023);
-                do Memory.poke(memAddress + 384, 1023);
-                do Memory.poke(memAddress + 416, 1023);
-                do Memory.poke(memAddress + 448, 1023);
-                do Memory.poke(memAddress + 480, 1023);
+
+                if(GameController.getIsDay()) // day sprite rendering up or down
+                {
+                    do renderUpDownToMemory(memAddress, true);
+                }
+                else //night sprite rendering up or down //todo: change the no. when night sprite is ready
+                {
+                    do renderUpDownToMemory(memAddress, false);
+                }
             }
 
             // calculate the memory address for the prevoius frame's last block
@@ -412,23 +468,30 @@ class Platform
                 return;
             }
 
-            //clear the the blprevoius frame's last block
-            do Memory.poke(memAddress + 0, 0);
-            do Memory.poke(memAddress + 32, 0);
-            do Memory.poke(memAddress + 64, 0);
-            do Memory.poke(memAddress + 96, 0);
-            do Memory.poke(memAddress + 128, 0);
-            do Memory.poke(memAddress + 160, 0);
-            do Memory.poke(memAddress + 192, 0);
-            do Memory.poke(memAddress + 224, 0);
-            do Memory.poke(memAddress + 256, 0);
-            do Memory.poke(memAddress + 288, 0);
-            do Memory.poke(memAddress + 320, 0);
-            do Memory.poke(memAddress + 352, 0);
-            do Memory.poke(memAddress + 384, 0);
-            do Memory.poke(memAddress + 416, 0);
-            do Memory.poke(memAddress + 448, 0);
-            do Memory.poke(memAddress + 480, 0);            
+            //clear the the prevoius frame's last block
+            //todo: change the no. when night sprite is ready
+            if(GameController.getIsDay()) // night sprite rendering
+            {
+                if(dispDir < 3) // forward or backword
+                {            
+                    do renderForwardBackwardToMemory(memAddress, false);
+                }
+                else // up or down
+                {
+                    do renderUpDownToMemory(memAddress, false);
+                }
+            }
+            else // day sprite rendering
+            {
+                if (dispDir < 3) //forward or backward sprite rendering
+                {
+                    do renderForwardBackwardToMemory(memAddress, true);
+                }
+                else //up or down sprite rendering
+                {
+                    do renderUpDownToMemory(memAddress, true);
+                }
+            }            
         }
 		return;
 	}

@@ -9,11 +9,15 @@ class GameController
    static int moveDir;       // direction of the motion
    static int dispDir;       // direction in which the upcoming platforms must be displayed
    static int delay;           //wait time between each frame
+   static boolean isDay;   // true if the game is in day mode
 
    field boolean exit;       // true when the game is over
    field int spawnDiff;      // difference between the y position of the current platform and the next platform
    field int baseHeight;     // buffer height to be maintained between the platform and the screen boundary when forward or backward
    field int baseWidth;     // buffer width to be maintained between the platform and the screen boundary when up or down
+
+   field int dayNightTimer;  // timer to switch between day and night mode
+   field int dayNightDelay;  // delay between each switch between day and night mode   
 
 
    constructor GameController new()
@@ -24,7 +28,15 @@ class GameController
       let spawnDiff = 2;
       let baseHeight = 3;
       let baseWidth = 5;
+      let isDay = true;
+      let dayNightDelay = 15;
+      let dayNightTimer = dayNightDelay;
       return this;
+   }
+
+   function boolean getIsDay()
+   {
+      return isDay;
    }
 
    method void setDelay(int d)
@@ -51,6 +63,10 @@ class GameController
       var int timer; //* Timer to update gravity
       var int g_dir, g_n1_count; //* Gravity direction, no. of times gravity went without 1.
 
+      ///note: for testing
+      // do Screen.setColor(true);
+      // do Screen.drawRectangle(0,0,511,255);
+      //////////////
       //TODO: implement the start config of platform and player
       let platform = Platform.new(15, 15, 3, dispDir, moveDir);
       let player = Player.new(19, 15);
@@ -70,13 +86,26 @@ class GameController
 
          while ((key = 0) & (~exit)) {
 
-            /* 
+            // Switch between day and night mode
+            if (dayNightTimer = 0) 
+            {
+               let dayNightTimer = dayNightDelay;
+               let isDay = ~isDay;
+               if (~isDay) {
+                  do Screen.setColor(true);
+               } else {
+                  do Screen.setColor(false);
+               }
+               do Screen.drawRectangle(0,0,511,255);
+            } 
+            else {
+               let dayNightTimer = dayNightTimer - 1;
+            }
 
+            /* 
                * Randomly change gravity
                * At a randomly generated time
-
             */
-
             if (timer = 0) {
                let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
                let g_dir = rand.between(1,4, player.c_xpos_d());
@@ -198,7 +227,18 @@ class GameController
       if (~(moveDir = curDir))   
       {
          do Platform.disposeAll();
-         do Screen.clearScreen();
+
+         //render BG acoording to the day/night mode
+         if (~isDay)
+         {
+            do Screen.setColor(true);       
+         }
+         else
+         {
+            do Screen.setColor(false);
+         }
+         do Screen.drawRectangle(0,0,511,255);
+
          let moveDir = curDir;
          let dispDir = curDir;
 
