@@ -9,6 +9,7 @@ class GameController
    static int moveDir;       // direction of the motion
    static int dispDir;       // direction in which the upcoming platforms must be displayed
    static int delay;           //wait time between each frame
+   static int randomizer;
    static boolean isDay;   // true if the game is in day mode
 
    field boolean exit;       // true when the game is over
@@ -26,6 +27,7 @@ class GameController
       let moveDir = 1;
       let dispDir = 1;
       let spawnDiff = 2;
+      let randomizer = 2912;
       let baseHeight = 3;
       let baseWidth = 5;
       let isDay = true;
@@ -54,29 +56,37 @@ class GameController
       return rd.between(x, y, 0);
    }
 
+   function int get_randomizer() {
+      return randomizer;
+   }
+
    method void start()
    {
+      var Rd tempRd;
+      
+      var int t;
+
       var Platform platform;
       var Player player;
-      var Rd rand;
       var char key;
-      var int timer; //* Timer to update gravity
-      var int g_dir, g_n1_count; //* Gravity direction, no. of times gravity went without 1.
 
-      ///note: for testing
-      // do Screen.setColor(true);
-      // do Screen.drawRectangle(0,0,511,255);
-      //////////////
+      let randomizer = Keyboard.readInt("Enter some random digits (seed)> ");
+      let randomizer = randomizer + tempRd.mod( tempRd.between(123,391, tempRd.buffer( 229+randomizer+2912 , 50 , 150 )), 4972);
+
+      let t = Keyboard.readInt("Enter time (24 hrs format)> ");
+      let t = t*60;
+      let t = t + tempRd.mod(tempRd.between(2933, 2391 , tempRd.buffer(t, t+549, t+1024)), 2829);
+
+      let randomizer = randomizer + t;
+
+      //do tempRd.dispose();
+      do Screen.clearScreen();
+
       //TODO: implement the start config of platform and player
       let platform = Platform.new(15, 15, 3, dispDir, moveDir);
       let player = Player.new(19, 15);
       do player.draw(true);
       do platform.draw(false);
-
-      let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
-      let g_dir = 1;
-      
-      let g_n1_count = 0;
 
       while (~exit)
       {
@@ -86,6 +96,7 @@ class GameController
 
          while ((key = 0) & (~exit)) {
 
+            //* Stimulate time
             // Switch between day and night mode
             if (dayNightTimer = 0) 
             {
@@ -102,48 +113,11 @@ class GameController
                let dayNightTimer = dayNightTimer - 1;
             }
 
-            /* 
-               * Randomly change gravity
-               * At a randomly generated time
-            */
-            if (timer = 0) {
-               let timer = rand.between(10,60, player.c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, player.c_ypos_d() + rand.between(22,42,86) ) ;
-               let g_dir = rand.between(1,4, player.c_xpos_d());
-
-               if (~(g_dir = 1)) {
-                  if (g_n1_count > 4) {
-                     let g_dir = 1;
-                     let g_n1_count = 0;
-                  } else {
-                     let g_n1_count = g_n1_count + 1;
-                  }
-               } else {
-                  let g_n1_count = 0;
-               }
-               
-               do Output.printInt(g_dir);
-               // do player.set_gravity_direction(g_dir);
-               do Player.set_gravity_direction(g_dir);
-            } else {
-               let timer = timer - 1;
-            }
-
-            //* Decrease dash cooldown
-
             do player.stimulate_time();
 
             // Handle user inputs
 
             let key = Keyboard.keyPressed();
-
-            if (~player.on_ground()) {
-               if (~player.is_jumping()) {
-                  do player.enforce_gravity();
-               } else {
-                  do player.jump();
-               }
-
-            }
 
             do handlePlatform();
             do player.draw(true);
@@ -153,8 +127,13 @@ class GameController
          if ( key = 32 & ~player.is_jumping() ) // jump when space is pressed and player is not already jumping
          {
             // todo: perform player jump when space key is pressed
-            do player.set_jumping_height(5);
-            do player.jump();
+
+            if (player.has_surface()) {
+
+               do player.set_jumping_height(5);
+               do player.jump();
+
+            }
          }
          else 
          {
@@ -164,6 +143,48 @@ class GameController
                   //* Key: F
 
                   do player.dash();
+
+               } else {
+                  
+                  if ( (key = 68) & ~player.has_gravity_cooldown()) {
+                     //* Key: D
+
+                     do Player.set_gravity_direction(3);
+                     do player.set_gravity_cooldown();
+                     
+                  } else {
+
+                     if ( (key = 65) & ~player.has_gravity_cooldown()) {
+                        //* Key: A
+
+                        do Player.set_gravity_direction(4);
+                        do player.set_gravity_cooldown();
+
+                     } else {
+
+                        if ( (key = 87) & ~player.has_gravity_cooldown() ) {
+                           
+                           //* Key: W
+                           
+                           do Player.set_gravity_direction(2);
+                           do player.set_gravity_cooldown();
+
+                        } else {
+
+                           if ((key = 83) & ~player.has_gravity_cooldown()) {
+
+                              //* Key: S
+
+                              do Player.set_gravity_direction(1);
+                              do player.set_gravity_cooldown();
+
+                           }
+
+                        }
+
+                     }
+
+                  }
 
                }
             }

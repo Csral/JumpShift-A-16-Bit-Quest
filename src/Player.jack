@@ -1,9 +1,13 @@
 //todo: implement player class
 class Player
 {
-    static int gravity_direction;
-    field int xpos, ypos, jump_height, dash_cooldown; // player's x and y position
+    static int gravity_direction, uptime, ground_level;
+    field int xpos, ypos, jump_height, dash_cooldown, gravity_cooldown; // player's x and y position
     field boolean is_on_surface;
+    field Rd rand;
+    
+    field int timer; //* Timer to update gravity
+    field int g_dir, g_n1_count; //* Gravity direction, no. of times gravity went without 1.
 
     /*
         * 1: down
@@ -19,6 +23,14 @@ class Player
         let gravity_direction = 1;
         let is_on_surface = true;
         let dash_cooldown = 0; //* Can use dash
+        let timer = rand.between(10,60, c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, c_ypos_d() + rand.between(22,42,86) ) ;
+        let g_dir = 1;
+        let g_n1_count = 0;
+        let uptime = 0;
+        let gravity_cooldown = 0;
+        let ground_level = 15;
+
+
         return this;
     }
 
@@ -60,6 +72,22 @@ class Player
             let gravity_direction = dir;
         }
 
+        if (dir = 1) {
+            let ground_level = 15;
+        } else {
+            if (dir = 2) {
+                let ground_level = 0;
+            } else {
+                if (dir = 3) {
+                    let ground_level = 31;
+                } else {
+                    if (dir = 4) {
+                        let ground_level = 0;
+                    }
+                }
+            }
+        }
+
         return;
 
     }
@@ -76,7 +104,7 @@ class Player
 
         if (gravity_direction = 1) {
 
-            let looper = 15 - ypos; //* How high is the player and drop him per 200 ms.
+            let looper = ground_level - ypos; //* How high is the player and drop him per 200 ms.
 
             if (looper > 0) {
 
@@ -86,14 +114,14 @@ class Player
 
                 do Sys.wait(20);
 
-                let looper = 15 - ypos;
+                let looper = ground_level - ypos;
 
             }
 
         } else {
             if (gravity_direction = 2) {
 
-                let looper = ypos; //* How high is the player and drop him per 200 ms.
+                let looper = ypos - ground_level; //* How high is the player and drop him per 200 ms.
 
                 if (looper > 0) {
 
@@ -103,7 +131,7 @@ class Player
 
                     do Sys.wait(20);
 
-                    let looper = ypos - 1;
+                    let looper = ypos - ground_level;
 
                 }
             
@@ -111,7 +139,7 @@ class Player
                 
                 if (gravity_direction = 3) {
 
-                    let looper = 31 - xpos; //* How high is the player and drop him per 200 ms.
+                    let looper = ground_level - xpos; //* How high is the player and drop him per 200 ms.
 
                     if (looper > 0) {
 
@@ -121,13 +149,13 @@ class Player
 
                         do Sys.wait(20);
 
-                        let looper = 31 - xpos;
+                        let looper = ground_level - xpos;
 
                     }
 
                 } else { //* Assumes 4 by default unless there is some fault in code
 
-                    let looper = xpos; //* How high is the player and drop him per 200 ms.
+                    let looper = xpos - ground_level; //* How high is the player and drop him per 200 ms.
 
                     if (looper > 0) {
 
@@ -137,7 +165,7 @@ class Player
 
                         do Sys.wait(20);
 
-                        let looper = xpos - 1;
+                        let looper = xpos - ground_level;
 
                     }
 
@@ -155,19 +183,22 @@ class Player
         var boolean result;
 
         if (gravity_direction = 1) {
-            let result = (ypos = 15);  // Store comparison result
+            let result = (ypos = ground_level);  // Store comparison result
         } else {
-            if (gravity_direction = 2) {
-                let result = (ypos = 0);  // Store comparison result
+
+            if ( gravity_direction = 2) {
+                let result = (ypos = ground_level);
             } else {
+
                 if (gravity_direction = 3) {
-                    let result = (xpos = 31);  // Store comparison result
+                    let result = (xpos = ground_level);  // Store comparison result
                 } else {
                     if (gravity_direction = 4) {
-                        let result = (xpos = 0);  // Store comparison result
+                        let result = (xpos = ground_level);
                     }
                 }
             }
+
         }
 
         return result;
@@ -181,6 +212,42 @@ class Player
             * Where do i get platform coords?
 
         */
+
+        var int under; //* address of under median
+
+        if (gravity_direction = 1) {
+
+            //* Median is xpos + 1 / 2.
+            let under = 16384 + ( (ypos-1) * 512) + xpos;
+
+            if (~(Memory.peek(under) = 0)) {
+                let ground_level = ypos;
+                let is_on_surface = true;
+                
+            do Output.printString("Set ground to: ");
+            do Output.printInt(ground_level);
+                return;
+            }
+
+        } else {
+
+            if (gravity_direction = 2) {
+
+            } else {
+
+                if (gravity_direction = 3) {
+
+                } else {
+
+                    if (gravity_direction = 4) {
+
+                    }
+
+                }
+
+            }
+
+        }
 
         return;
 
@@ -201,6 +268,20 @@ class Player
         
     }
 
+    function int get_time() {
+        return uptime;
+    }
+
+    method boolean has_gravity_cooldown() {
+        return (gravity_cooldown > 0);
+    }
+
+    method void set_gravity_cooldown() {
+
+        let gravity_cooldown = 10200;
+        return;
+    }
+
     method void stimulate_time() {
 
         /*
@@ -214,11 +295,69 @@ class Player
 
         */
 
+        /* 
+
+            * Randomly change gravity
+            * At a randomly generated time
+
+        */
+
+        if (uptime > 13000) {
+            let uptime = 9;
+        }
+
+        let uptime = uptime + 1;
+
+        if (timer = 0) {
+            let timer = rand.between(10,60, c_ypos_d() + rand.between(12,22,18) ) + rand.between(10,60, c_ypos_d() + rand.between(22,42,86) ) ;
+            let g_dir = rand.between(1,4, c_xpos_d());
+
+            if (~(g_dir = 1)) {
+                if (g_n1_count > 4) {
+                    let g_dir = 1;
+                    let g_n1_count = 0;
+                } else {
+                    let g_n1_count = g_n1_count + 1;
+                }
+            } else {
+                let g_n1_count = 0;
+            }
+            
+            do Output.printInt(g_dir);
+            do Player.set_gravity_direction(g_dir);
+        } else {
+            let timer = timer - 1;
+        }
+
+        if (~on_ground()) {
+            if (~is_jumping()) {
+                do enforce_gravity();
+            } else {
+                do jump();
+            }
+
+        }
+
+        /*
+
+            * Cooldown guide: (precision errors of 0-1)
+            * Dash: 10-11 secs (200 rotations)
+            * Gravity Control: 30-31 secs (600 rotations) -> (10200 ; -17 per rotation)
+
+        */
+
         if (dash_cooldown > 0) {
             let dash_cooldown = dash_cooldown - 50;
         }
 
-        return; 
+        
+        if (gravity_cooldown > 0) {
+            let gravity_cooldown = gravity_cooldown - 17;
+        }
+
+        do collision();
+
+        return;
 
     }
 
@@ -263,7 +402,7 @@ class Player
 
     method void jump() {
 
-        if ((jump_height > 0) & is_on_surface) {
+        if ((jump_height > 0)) {
 
             /*
 
@@ -312,22 +451,25 @@ class Player
 
         if (show)
         {
-            do Memory.poke(memAddress + 0, -1);
-            do Memory.poke(memAddress + 32, -32767);
-            do Memory.poke(memAddress + 64, -385);
-            do Memory.poke(memAddress + 96, -15805);
-            do Memory.poke(memAddress + 128, -9637);
-            do Memory.poke(memAddress + 160, -9637);
-            do Memory.poke(memAddress + 192, -32189);
-            do Memory.poke(memAddress + 224, -385);
-            do Memory.poke(memAddress + 256, -32383);
-            do Memory.poke(memAddress + 288, -32383);
-            do Memory.poke(memAddress + 320, -28663);
-            do Memory.poke(memAddress + 352, -24583);
-            do Memory.poke(memAddress + 384, -27223);
-            do Memory.poke(memAddress + 416, -24583);
-            do Memory.poke(memAddress + 448, -32767);
-            do Memory.poke(memAddress + 480, -1);
+            do Memory.poke(memAddress + 0, 0);
+            do Memory.poke(memAddress + 32, 4064);
+            do Memory.poke(memAddress + 64, 4064);
+            do Memory.poke(memAddress + 96, 1760);
+            do Memory.poke(memAddress + 128, 1376);
+            do Memory.poke(memAddress + 160, 1728);
+            do Memory.poke(memAddress + 192, 904);
+            do Memory.poke(memAddress + 224, 1736);
+            do Memory.poke(memAddress + 256, 7928);
+            do Memory.poke(memAddress + 288, 5184);
+            do Memory.poke(memAddress + 320, 5824);
+            do Memory.poke(memAddress + 352, 1984);
+            do Memory.poke(memAddress + 384, 896);
+            do Memory.poke(memAddress + 416, 896);
+            do Memory.poke(memAddress + 448, 1728);
+            do Memory.poke(memAddress + 480, 1088); //* This filled by 256 and rest by 0 to get median point.
+            
+            //* Median: 16384 + (ypos * 512) + xpos + 480
+            
         }
         else //clear the sprite
         {
@@ -348,6 +490,34 @@ class Player
             do Memory.poke(memAddress + 448, 0);
             do Memory.poke(memAddress + 480, 0);
         }
+
+        // negation:
+
+        /*
+
+            method void draw(int location) {
+                let memAddress = 16384 + location;
+                do Memory.poke(memAddress + 0, -1);
+                do Memory.poke(memAddress + 32, -4065);
+                do Memory.poke(memAddress + 64, -4065);
+                do Memory.poke(memAddress + 96, -1761);
+                do Memory.poke(memAddress + 128, -1377);
+                do Memory.poke(memAddress + 160, -1729);
+                do Memory.poke(memAddress + 192, -905);
+                do Memory.poke(memAddress + 224, -1737);
+                do Memory.poke(memAddress + 256, -7929);
+                do Memory.poke(memAddress + 288, -5185);
+                do Memory.poke(memAddress + 320, -5825);
+                do Memory.poke(memAddress + 352, -1985);
+                do Memory.poke(memAddress + 384, -897);
+                do Memory.poke(memAddress + 416, -897);
+                do Memory.poke(memAddress + 448, -1729);
+                do Memory.poke(memAddress + 480, -1089);
+                return;
+            }
+
+        */
+
 		return;
     }
 }

@@ -44,12 +44,19 @@ class Rd {
 
     }
 
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
     /** Returns a random number between x (inclusive) and y (exclusive). */
     method int between(int x, int y, int f) {
+
         var int range, temp;
         let range = y - x;
         let temp = next();
-        let temp = mod(temp, range) + x + f;
+        let temp = mod(mod(temp, range) + ( GameController.get_randomizer() + x )+ ( GameController.get_randomizer() * Player.get_time() ) + f, 4);
         return buffer(temp, x, y);
     }
+
 }

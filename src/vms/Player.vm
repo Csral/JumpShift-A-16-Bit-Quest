@@ -1,5 +1,5 @@
 function Player.new 0
-push constant 5
+push constant 10
 call Memory.alloc 1
 pop pointer 0
 push argument 0
@@ -10,9 +10,45 @@ push constant 1
 pop static 0
 push constant 0
 not
-pop this 4
+pop this 5
 push constant 0
 pop this 3
+push this 6
+push constant 10
+push constant 60
+push pointer 0
+call Player.c_ypos_d 1
+push this 6
+push constant 12
+push constant 22
+push constant 18
+call Rd.between 4
+add
+call Rd.between 4
+push this 6
+push constant 10
+push constant 60
+push pointer 0
+call Player.c_ypos_d 1
+push this 6
+push constant 22
+push constant 42
+push constant 86
+call Rd.between 4
+add
+call Rd.between 4
+add
+pop this 7
+push constant 1
+pop this 8
+push constant 0
+pop this 9
+push constant 0
+pop static 1
+push constant 0
+pop this 4
+push constant 15
+pop static 2
 push pointer 0
 return
 function Player.c_xpos_d 0
@@ -70,6 +106,48 @@ label IF_TRUE0
 push argument 0
 pop static 0
 label IF_FALSE0
+push argument 0
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 15
+pop static 2
+goto IF_END1
+label IF_FALSE1
+push argument 0
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+pop static 2
+goto IF_END2
+label IF_FALSE2
+push argument 0
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 31
+pop static 2
+goto IF_END3
+label IF_FALSE3
+push argument 0
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 0
+pop static 2
+label IF_FALSE4
+label IF_END3
+label IF_END2
+label IF_END1
 push constant 0
 return
 function Player.get_gravity_direction 0
@@ -84,7 +162,7 @@ eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push constant 15
+push static 2
 push this 1
 sub
 pop local 0
@@ -113,7 +191,7 @@ pop temp 0
 push constant 20
 call Sys.wait 1
 pop temp 0
-push constant 15
+push static 2
 push this 1
 sub
 pop local 0
@@ -127,6 +205,8 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push this 1
+push static 2
+sub
 pop local 0
 push local 0
 push constant 0
@@ -154,7 +234,7 @@ push constant 20
 call Sys.wait 1
 pop temp 0
 push this 1
-push constant 1
+push static 2
 sub
 pop local 0
 label IF_FALSE3
@@ -166,7 +246,7 @@ eq
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push constant 31
+push static 2
 push this 0
 sub
 pop local 0
@@ -195,7 +275,7 @@ pop temp 0
 push constant 20
 call Sys.wait 1
 pop temp 0
-push constant 31
+push static 2
 push this 0
 sub
 pop local 0
@@ -203,6 +283,8 @@ label IF_FALSE5
 goto IF_END4
 label IF_FALSE4
 push this 0
+push static 2
+sub
 pop local 0
 push local 0
 push constant 0
@@ -230,7 +312,7 @@ push constant 20
 call Sys.wait 1
 pop temp 0
 push this 0
-push constant 1
+push static 2
 sub
 pop local 0
 label IF_FALSE6
@@ -249,7 +331,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push this 1
-push constant 15
+push static 2
 eq
 pop local 0
 goto IF_END0
@@ -261,7 +343,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push this 1
-push constant 0
+push static 2
 eq
 pop local 0
 goto IF_END1
@@ -273,7 +355,7 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push this 0
-push constant 31
+push static 2
 eq
 pop local 0
 goto IF_END2
@@ -285,7 +367,7 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push this 0
-push constant 0
+push static 2
 eq
 pop local 0
 label IF_FALSE3
@@ -294,9 +376,106 @@ label IF_END1
 label IF_END0
 push local 0
 return
-function Player.collision 0
+function Player.collision 1
 push argument 0
 pop pointer 0
+push static 0
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 16384
+push this 1
+push constant 1
+sub
+push constant 512
+call Math.multiply 2
+add
+push this 0
+add
+pop local 0
+push local 0
+call Memory.peek 1
+push constant 0
+eq
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 1
+pop static 2
+push constant 0
+not
+pop this 5
+push constant 15
+call String.new 1
+push constant 83
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 103
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push static 2
+call Output.printInt 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE1
+goto IF_END0
+label IF_FALSE0
+push static 0
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+goto IF_END2
+label IF_FALSE2
+push static 0
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+goto IF_END3
+label IF_FALSE3
+push static 0
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+label IF_FALSE4
+label IF_END3
+label IF_END2
+label IF_END0
 push constant 0
 return
 function Player.has_surface 0
@@ -322,24 +501,171 @@ push constant 0
 return
 goto IF_END1
 label IF_FALSE1
-push this 4
+push this 5
 return
 label IF_END1
 label IF_END0
+function Player.get_time 0
+push static 1
+return
+function Player.has_gravity_cooldown 0
+push argument 0
+pop pointer 0
+push this 4
+push constant 0
+gt
+return
+function Player.set_gravity_cooldown 0
+push argument 0
+pop pointer 0
+push constant 10200
+pop this 4
+push constant 0
+return
 function Player.stimulate_time 0
 push argument 0
 pop pointer 0
-push this 3
-push constant 0
+push static 1
+push constant 13000
 gt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
+push constant 9
+pop static 1
+label IF_FALSE0
+push static 1
+push constant 1
+add
+pop static 1
+push this 7
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 6
+push constant 10
+push constant 60
+push pointer 0
+call Player.c_ypos_d 1
+push this 6
+push constant 12
+push constant 22
+push constant 18
+call Rd.between 4
+add
+call Rd.between 4
+push this 6
+push constant 10
+push constant 60
+push pointer 0
+call Player.c_ypos_d 1
+push this 6
+push constant 22
+push constant 42
+push constant 86
+call Rd.between 4
+add
+call Rd.between 4
+add
+pop this 7
+push this 6
+push constant 1
+push constant 4
+push pointer 0
+call Player.c_xpos_d 1
+call Rd.between 4
+pop this 8
+push this 8
+push constant 1
+eq
+not
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 9
+push constant 4
+gt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 1
+pop this 8
+push constant 0
+pop this 9
+goto IF_END3
+label IF_FALSE3
+push this 9
+push constant 1
+add
+pop this 9
+label IF_END3
+goto IF_END2
+label IF_FALSE2
+push constant 0
+pop this 9
+label IF_END2
+push this 8
+call Output.printInt 1
+pop temp 0
+push this 8
+call Player.set_gravity_direction 1
+pop temp 0
+goto IF_END1
+label IF_FALSE1
+push this 7
+push constant 1
+sub
+pop this 7
+label IF_END1
+push pointer 0
+call Player.on_ground 1
+not
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+call Player.is_jumping 1
+not
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push pointer 0
+call Player.enforce_gravity 1
+pop temp 0
+goto IF_END5
+label IF_FALSE5
+push pointer 0
+call Player.jump 1
+pop temp 0
+label IF_END5
+label IF_FALSE4
+push this 3
+push constant 0
+gt
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
 push this 3
 push constant 50
 sub
 pop this 3
-label IF_FALSE0
+label IF_FALSE6
+push this 4
+push constant 0
+gt
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push this 4
+push constant 17
+sub
+pop this 4
+label IF_FALSE7
+push pointer 0
+call Player.collision 1
+pop temp 0
 push constant 0
 return
 function Player.dash 0
@@ -479,8 +805,6 @@ pop pointer 0
 push this 2
 push constant 0
 gt
-push this 4
-and
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
@@ -585,113 +909,97 @@ label IF_TRUE0
 push local 0
 push constant 0
 add
-push constant 1
-neg
+push constant 0
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 32
 add
-push constant 32767
-neg
+push constant 4064
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 64
 add
-push constant 385
-neg
+push constant 4064
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 96
 add
-push constant 15805
-neg
+push constant 1760
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 128
 add
-push constant 9637
-neg
+push constant 1376
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 160
 add
-push constant 9637
-neg
+push constant 1728
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 192
 add
-push constant 32189
-neg
+push constant 904
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 224
 add
-push constant 385
-neg
+push constant 1736
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 256
 add
-push constant 32383
-neg
+push constant 7928
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 288
 add
-push constant 32383
-neg
+push constant 5184
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 320
 add
-push constant 28663
-neg
+push constant 5824
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 352
 add
-push constant 24583
-neg
+push constant 1984
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 384
 add
-push constant 27223
-neg
+push constant 896
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 416
 add
-push constant 24583
-neg
+push constant 896
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 448
 add
-push constant 32767
-neg
+push constant 1728
 call Memory.poke 2
 pop temp 0
 push local 0
 push constant 480
 add
-push constant 1
-neg
+push constant 1088
 call Memory.poke 2
 pop temp 0
 goto IF_END0

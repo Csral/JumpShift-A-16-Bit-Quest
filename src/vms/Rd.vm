@@ -75,6 +75,14 @@ goto WHILE_EXP1
 label WHILE_END1
 push local 0
 return
+function Rd.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
 function Rd.between 2
 push argument 0
 pop pointer 0
@@ -86,13 +94,22 @@ push pointer 0
 call Rd.next 1
 pop local 1
 push pointer 0
+push pointer 0
 push local 1
 push local 0
 call Rd.mod 3
+call GameController.get_randomizer 0
 push argument 1
+add
+add
+call GameController.get_randomizer 0
+call Player.get_time 0
+call Math.multiply 2
 add
 push argument 3
 add
+push constant 4
+call Rd.mod 3
 pop local 1
 push pointer 0
 push local 1
