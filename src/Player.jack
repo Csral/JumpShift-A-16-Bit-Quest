@@ -224,14 +224,30 @@ class Player
             if (ypos < 15) {
                 let under = ( 16384 + ( (ypos) * 512) + ( xpos + 1 ) ) + 512;
 
-                if (~(Memory.peek(under) = 0)) {
+                if (GameController.getIsDay()) {
 
-                    let ground_level = ypos;
-                    let is_on_surface = true;
-                    return;
-                
+                    if (~(Memory.peek(under) = 0)) {
+
+                        let ground_level = ypos;
+                        let is_on_surface = true;
+                        return;
+                    
+                    } else {
+                        let ground_level = 15;
+                    }
+
                 } else {
-                    let ground_level = 15;
+                    
+                    if ((Memory.peek(under) = 0)) {
+
+                        let ground_level = ypos;
+                        let is_on_surface = true;
+                        return;
+                    
+                    } else {
+                        let ground_level = 15;
+                    }
+
                 }
             }
 
@@ -242,14 +258,30 @@ class Player
                 if (ypos > 0) {
                     let under = ( 16384 + ( (ypos) * 512) + ( xpos + 1 ) ) - 512;
 
-                    if (~(Memory.peek(under) = 0)) {
+                    if (GameController.getIsDay()) {
 
-                        let ground_level = ypos;
-                        let is_on_surface = true;
-                        return;
-                    
+                        if (~(Memory.peek(under) = 0)) {
+
+                            let ground_level = ypos;
+                            let is_on_surface = true;
+                            return;
+                        
+                        } else {
+                            let ground_level = 0;
+                        }
+
                     } else {
-                        let ground_level = 0;
+
+                        if ((Memory.peek(under) = 0)) {
+
+                            let ground_level = ypos;
+                            let is_on_surface = true;
+                            return;
+                        
+                        } else {
+                            let ground_level = 0;
+                        }
+
                     }
                 }
 
@@ -260,13 +292,28 @@ class Player
                     if (xpos < 31) {
                         let under = ( 16384 + ( (ypos) * 512) + ( xpos ) ) + 257;
 
-                        if (~(Memory.peek(under) = 0)) {
-                            let ground_level = xpos;
-                            let is_on_surface = true;
-                            return;
-                        
+                        if (GameController.getIsDay()) {
+
+                            if (~(Memory.peek(under) = 0)) {
+                                let ground_level = xpos;
+                                let is_on_surface = true;
+                                return;
+                            
+                            } else {
+                                let ground_level = 31;
+                            }
+
                         } else {
-                            let ground_level = 31;
+
+                            if ((Memory.peek(under) = 0)) {
+                                let ground_level = xpos;
+                                let is_on_surface = true;
+                                return;
+                            
+                            } else {
+                                let ground_level = 31;
+                            }
+
                         }
                     }
 
@@ -277,13 +324,26 @@ class Player
                         if (xpos > 0) {
                             let under = ( 16384 + ( (ypos) * 512) + ( xpos ) ) - 257;
 
-                            if (~(Memory.peek(under) = 0)) {
-                                let ground_level = xpos;
-                                let is_on_surface = true;
-                                return;
-                            
+                            if (GameController.getIsDay()) {
+
+                                if (~(Memory.peek(under) = 0)) {
+                                    let ground_level = xpos;
+                                    let is_on_surface = true;
+                                    return;
+                                
+                                } else {
+                                    let ground_level = 0;
+                                }
+
                             } else {
-                                let ground_level = 0;
+                                if ((Memory.peek(under) = 0)) {
+                                    let ground_level = xpos;
+                                    let is_on_surface = true;
+                                    return;
+                                
+                                } else {
+                                    let ground_level = 0;
+                                }
                             }
                         }
 
@@ -444,6 +504,12 @@ class Player
         
     }
 
+    method void summon_ground_ability() {
+
+        return;
+
+    }
+
     method void jump() {
 
         if ((jump_height > 0)) {
@@ -517,22 +583,41 @@ class Player
         }
         else //clear the sprite
         {
-            do Memory.poke(memAddress + 0, 0);
-            do Memory.poke(memAddress + 32, 0);
-            do Memory.poke(memAddress + 64, 0);
-            do Memory.poke(memAddress + 96, 0);
-            do Memory.poke(memAddress + 128, 0);
-            do Memory.poke(memAddress + 160, 0);
-            do Memory.poke(memAddress + 192, 0);
-            do Memory.poke(memAddress + 224, 0);
-            do Memory.poke(memAddress + 256, 0);
-            do Memory.poke(memAddress + 288, 0);
-            do Memory.poke(memAddress + 320, 0);
-            do Memory.poke(memAddress + 352, 0);
-            do Memory.poke(memAddress + 384, 0);
-            do Memory.poke(memAddress + 416, 0);
-            do Memory.poke(memAddress + 448, 0);
-            do Memory.poke(memAddress + 480, 0);
+            if (GameController.getIsDay()) {
+                do Memory.poke(memAddress + 0, 0);
+                do Memory.poke(memAddress + 32, 0);
+                do Memory.poke(memAddress + 64, 0);
+                do Memory.poke(memAddress + 96, 0);
+                do Memory.poke(memAddress + 128, 0);
+                do Memory.poke(memAddress + 160, 0);
+                do Memory.poke(memAddress + 192, 0);
+                do Memory.poke(memAddress + 224, 0);
+                do Memory.poke(memAddress + 256, 0);
+                do Memory.poke(memAddress + 288, 0);
+                do Memory.poke(memAddress + 320, 0);
+                do Memory.poke(memAddress + 352, 0);
+                do Memory.poke(memAddress + 384, 0);
+                do Memory.poke(memAddress + 416, 0);
+                do Memory.poke(memAddress + 448, 0);
+                do Memory.poke(memAddress + 480, 0);
+            } else {
+                do Memory.poke(memAddress + 0, -1);
+                do Memory.poke(memAddress + 32, -1);
+                do Memory.poke(memAddress + 64, -1);
+                do Memory.poke(memAddress + 96, -1);
+                do Memory.poke(memAddress + 128, -1);
+                do Memory.poke(memAddress + 160, -1);
+                do Memory.poke(memAddress + 192, -1);
+                do Memory.poke(memAddress + 224, -1);
+                do Memory.poke(memAddress + 256, -1);
+                do Memory.poke(memAddress + 288, -1);
+                do Memory.poke(memAddress + 320, -1);
+                do Memory.poke(memAddress + 352, -1);
+                do Memory.poke(memAddress + 384, -1);
+                do Memory.poke(memAddress + 416, -1);
+                do Memory.poke(memAddress + 448, -1);
+                do Memory.poke(memAddress + 480, -1);
+            }
         }
 
         // negation:
