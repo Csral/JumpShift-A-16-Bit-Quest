@@ -85,7 +85,7 @@ class Player
             } else {
                 if (dir = 3) {
                     let ground_level = 31;
-                    let rotation = 270;
+                    let rotation = 2700;
                 } else {
                     if (dir = 4) {
                         let ground_level = 0; 
@@ -249,6 +249,9 @@ class Player
 
                         let ground_level = ypos;
                         let is_on_surface = true;
+
+                        do set_jumping_height(0);
+
                         return;
                     
                     } else {
@@ -261,6 +264,7 @@ class Player
 
                         let ground_level = ypos;
                         let is_on_surface = true;
+                        do set_jumping_height(0);
                         return;
                     
                     } else {
@@ -283,6 +287,7 @@ class Player
 
                             let ground_level = ypos;
                             let is_on_surface = true;
+                            do set_jumping_height(0);
                             return;
                         
                         } else {
@@ -295,6 +300,7 @@ class Player
 
                             let ground_level = ypos;
                             let is_on_surface = true;
+                            do set_jumping_height(0);
                             return;
                         
                         } else {
@@ -316,6 +322,7 @@ class Player
                             if (~(Memory.peek(under) = 0)) {
                                 let ground_level = xpos;
                                 let is_on_surface = true;
+                                do set_jumping_height(0);
                                 return;
                             
                             } else {
@@ -327,6 +334,7 @@ class Player
                             if ((Memory.peek(under) = 0)) {
                                 let ground_level = xpos;
                                 let is_on_surface = true;
+                                do set_jumping_height(0);
                                 return;
                             
                             } else {
@@ -348,6 +356,7 @@ class Player
                                 if (~(Memory.peek(under) = 0)) {
                                     let ground_level = xpos;
                                     let is_on_surface = true;
+                                    do set_jumping_height(0);
                                     return;
                                 
                                 } else {
@@ -358,6 +367,7 @@ class Player
                                 if ((Memory.peek(under) = 0)) {
                                     let ground_level = xpos;
                                     let is_on_surface = true;
+                                    do set_jumping_height(0);
                                     return;
                                 
                                 } else {

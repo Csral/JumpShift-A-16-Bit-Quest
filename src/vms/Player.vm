@@ -140,7 +140,7 @@ goto IF_FALSE3
 label IF_TRUE3
 push constant 31
 pop static 2
-push constant 270
+push constant 2700
 pop static 3
 goto IF_END3
 label IF_FALSE3
@@ -458,6 +458,10 @@ pop static 2
 push constant 0
 not
 pop this 5
+push pointer 0
+push constant 0
+call Player.set_jumping_height 2
+pop temp 0
 push constant 0
 return
 goto IF_END3
@@ -479,6 +483,10 @@ pop static 2
 push constant 0
 not
 pop this 5
+push pointer 0
+push constant 0
+call Player.set_jumping_height 2
+pop temp 0
 push constant 0
 return
 goto IF_END4
@@ -531,6 +539,10 @@ pop static 2
 push constant 0
 not
 pop this 5
+push pointer 0
+push constant 0
+call Player.set_jumping_height 2
+pop temp 0
 push constant 0
 return
 goto IF_END8
@@ -552,6 +564,10 @@ pop static 2
 push constant 0
 not
 pop this 5
+push pointer 0
+push constant 0
+call Player.set_jumping_height 2
+pop temp 0
 push constant 0
 return
 goto IF_END9
@@ -602,6 +618,10 @@ pop static 2
 push constant 0
 not
 pop this 5
+push pointer 0
+push constant 0
+call Player.set_jumping_height 2
+pop temp 0
 push constant 0
 return
 goto IF_END13
@@ -623,6 +643,10 @@ pop static 2
 push constant 0
 not
 pop this 5
+push pointer 0
+push constant 0
+call Player.set_jumping_height 2
+pop temp 0
 push constant 0
 return
 goto IF_END14
@@ -673,6 +697,10 @@ pop static 2
 push constant 0
 not
 pop this 5
+push pointer 0
+push constant 0
+call Player.set_jumping_height 2
+pop temp 0
 push constant 0
 return
 goto IF_END18
@@ -694,6 +722,10 @@ pop static 2
 push constant 0
 not
 pop this 5
+push pointer 0
+push constant 0
+call Player.set_jumping_height 2
+pop temp 0
 push constant 0
 return
 goto IF_END19

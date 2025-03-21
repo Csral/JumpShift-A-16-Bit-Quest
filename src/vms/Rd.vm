@@ -108,7 +108,7 @@ call Math.multiply 2
 add
 push argument 3
 add
-push constant 4
+push argument 2
 call Rd.mod 3
 pop local 1
 push pointer 0

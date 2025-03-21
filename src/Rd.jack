@@ -55,7 +55,7 @@ class Rd {
         var int range, temp;
         let range = y - x;
         let temp = next();
-        let temp = mod(mod(temp, range) + ( GameController.get_randomizer() + x )+ ( GameController.get_randomizer() * Player.get_time() ) + f, 4);
+        let temp = mod(mod(temp, range) + ( GameController.get_randomizer() + x )+ ( GameController.get_randomizer() * Player.get_time() ) + f, y);
         return buffer(temp, x, y);
     }
 
