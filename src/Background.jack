@@ -1,0 +1,32 @@
+class Background {
+
+    //field Ground ground;
+    field Rd rand;
+
+    constructor Background new() {
+
+        //let ground = Ground.new();
+        return this;
+
+    }
+
+    method void render(int relative_to_ground, boolean is_night) {
+
+        //* Expected to be called during time simulation.
+
+        /*
+
+            * Add buildings, pre-determined. Compare player.relative_to_ground for info. If relative_to_ground > 15 (jump height > 15) -> no buildings, swap with clouds.
+            * Clouds: Like buildings but on top. (Preferable random)
+            * Sun / Moon: Constant position, 31/2 -> 16 aka 15 and 15/2 -> 8
+            * Further idea: Swap platform for buildings and buildings to platform if relative_to_ground is higher than 15
+            * Add rain, random instance.
+            * Add stars on top during night
+        
+        */
+
+        return;
+
+    }
+
+}

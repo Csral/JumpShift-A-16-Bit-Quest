@@ -96,7 +96,8 @@ class GameController
 
          while ((key = 0) & (~exit)) {
 
-            //* Stimulate time
+            /*
+
             // Switch between day and night mode
             if (dayNightTimer = 0) 
             {
@@ -113,6 +114,9 @@ class GameController
                let dayNightTimer = dayNightTimer - 1;
             }
 
+            */
+
+            //* Stimulate time
             do player.stimulate_time();
 
             // Handle user inputs

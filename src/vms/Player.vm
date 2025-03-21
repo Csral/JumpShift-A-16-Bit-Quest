@@ -195,7 +195,14 @@ push static 2
 push this 1
 sub
 pop local 0
+push constant 0
+pop this 5
+goto IF_END1
 label IF_FALSE1
+push constant 0
+not
+pop this 5
+label IF_END1
 goto IF_END0
 label IF_FALSE0
 push static 0
@@ -385,14 +392,22 @@ eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
+push this 1
+push constant 15
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
 push constant 16384
 push this 1
-push constant 1
-sub
 push constant 512
 call Math.multiply 2
 add
 push this 0
+push constant 1
+add
+add
+push constant 512
 add
 pop local 0
 push local 0
@@ -400,81 +415,136 @@ call Memory.peek 1
 push constant 0
 eq
 not
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
 push this 1
 pop static 2
 push constant 0
 not
 pop this 5
-push constant 15
-call String.new 1
-push constant 83
-call String.appendChar 2
-push constant 101
-call String.appendChar 2
-push constant 116
-call String.appendChar 2
-push constant 32
-call String.appendChar 2
-push constant 103
-call String.appendChar 2
-push constant 114
-call String.appendChar 2
-push constant 111
-call String.appendChar 2
-push constant 117
-call String.appendChar 2
-push constant 110
-call String.appendChar 2
-push constant 100
-call String.appendChar 2
-push constant 32
-call String.appendChar 2
-push constant 116
-call String.appendChar 2
-push constant 111
-call String.appendChar 2
-push constant 58
-call String.appendChar 2
-push constant 32
-call String.appendChar 2
-call Output.printString 1
-pop temp 0
-push static 2
-call Output.printInt 1
-pop temp 0
 push constant 0
 return
+goto IF_END2
+label IF_FALSE2
+push constant 15
+pop static 2
+label IF_END2
 label IF_FALSE1
 goto IF_END0
 label IF_FALSE0
 push static 0
 push constant 2
 eq
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
-goto IF_END2
-label IF_FALSE2
-push static 0
-push constant 3
-eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-goto IF_END3
-label IF_FALSE3
-push static 0
-push constant 4
-eq
+push this 1
+push constant 0
+gt
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
+push constant 16384
+push this 1
+push constant 512
+call Math.multiply 2
+add
+push this 0
+push constant 1
+add
+add
+push constant 512
+sub
+pop local 0
+push local 0
+call Memory.peek 1
+push constant 0
+eq
+not
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push this 1
+pop static 2
+push constant 0
+not
+pop this 5
+push constant 0
+return
+goto IF_END5
+label IF_FALSE5
+push constant 0
+pop static 2
+label IF_END5
 label IF_FALSE4
+goto IF_END3
+label IF_FALSE3
+push static 0
+push constant 3
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push this 0
+push constant 31
+lt
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push constant 16384
+push this 1
+push constant 512
+call Math.multiply 2
+add
+push this 0
+add
+push constant 257
+add
+pop local 0
+push local 0
+call Memory.peek 1
+push constant 0
+eq
+not
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push constant 2
+call String.new 1
+push constant 71
+call String.appendChar 2
+push constant 71
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push this 0
+pop static 2
+push constant 0
+not
+pop this 5
+push constant 0
+return
+goto IF_END8
+label IF_FALSE8
+push constant 31
+pop static 2
+push static 2
+call Output.printInt 1
+pop temp 0
+label IF_END8
+label IF_FALSE7
+goto IF_END6
+label IF_FALSE6
+push static 0
+push constant 4
+eq
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+label IF_FALSE9
+label IF_END6
 label IF_END3
-label IF_END2
 label IF_END0
 push constant 0
 return
@@ -606,9 +676,6 @@ label IF_FALSE2
 push constant 0
 pop this 9
 label IF_END2
-push this 8
-call Output.printInt 1
-pop temp 0
 push this 8
 call Player.set_gravity_direction 1
 pop temp 0

@@ -115,7 +115,10 @@ class Player
                 do Sys.wait(20);
 
                 let looper = ground_level - ypos;
+                let is_on_surface = false;
 
+            } else {
+                let is_on_surface = true;
             }
 
         } else {
@@ -218,28 +221,71 @@ class Player
         if (gravity_direction = 1) {
 
             //* Median is xpos + 1 / 2.
-            let under = 16384 + ( (ypos-1) * 512) + xpos;
+            if (ypos < 15) {
+                let under = ( 16384 + ( (ypos) * 512) + ( xpos + 1 ) ) + 512;
 
-            if (~(Memory.peek(under) = 0)) {
-                let ground_level = ypos;
-                let is_on_surface = true;
+                if (~(Memory.peek(under) = 0)) {
+
+                    let ground_level = ypos;
+                    let is_on_surface = true;
+                    return;
                 
-            do Output.printString("Set ground to: ");
-            do Output.printInt(ground_level);
-                return;
+                } else {
+                    let ground_level = 15;
+                }
             }
 
         } else {
 
             if (gravity_direction = 2) {
 
+                if (ypos > 0) {
+                    let under = ( 16384 + ( (ypos) * 512) + ( xpos + 1 ) ) - 512;
+
+                    if (~(Memory.peek(under) = 0)) {
+
+                        let ground_level = ypos;
+                        let is_on_surface = true;
+                        return;
+                    
+                    } else {
+                        let ground_level = 0;
+                    }
+                }
+
             } else {
 
                 if (gravity_direction = 3) {
 
+                    if (xpos < 31) {
+                        let under = ( 16384 + ( (ypos) * 512) + ( xpos ) ) + 257;
+
+                        if (~(Memory.peek(under) = 0)) {
+                            let ground_level = xpos;
+                            let is_on_surface = true;
+                            return;
+                        
+                        } else {
+                            let ground_level = 31;
+                        }
+                    }
+
                 } else {
 
                     if (gravity_direction = 4) {
+
+                        if (xpos > 0) {
+                            let under = ( 16384 + ( (ypos) * 512) + ( xpos ) ) - 257;
+
+                            if (~(Memory.peek(under) = 0)) {
+                                let ground_level = xpos;
+                                let is_on_surface = true;
+                                return;
+                            
+                            } else {
+                                let ground_level = 0;
+                            }
+                        }
 
                     }
 
@@ -322,8 +368,6 @@ class Player
             } else {
                 let g_n1_count = 0;
             }
-            
-            do Output.printInt(g_dir);
             do Player.set_gravity_direction(g_dir);
         } else {
             let timer = timer - 1;

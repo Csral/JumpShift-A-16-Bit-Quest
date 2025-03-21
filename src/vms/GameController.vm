@@ -262,45 +262,6 @@ not
 and
 not
 if-goto WHILE_END1
-push this 4
-push constant 0
-eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push this 5
-pop this 4
-push static 4
-not
-pop static 4
-push static 4
-not
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
-push constant 0
-not
-call Screen.setColor 1
-pop temp 0
-goto IF_END1
-label IF_FALSE1
-push constant 0
-call Screen.setColor 1
-pop temp 0
-label IF_END1
-push constant 0
-push constant 0
-push constant 511
-push constant 255
-call Screen.drawRectangle 4
-pop temp 0
-goto IF_END0
-label IF_FALSE0
-push this 4
-push constant 1
-sub
-pop this 4
-label IF_END0
 push local 3
 call Player.stimulate_time 1
 pop temp 0
@@ -326,14 +287,14 @@ push local 3
 call Player.is_jumping 1
 not
 and
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
 push local 3
 call Player.has_surface 1
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
 push local 3
 push constant 5
 call Player.set_jumping_height 2
@@ -341,33 +302,66 @@ pop temp 0
 push local 3
 call Player.jump 1
 pop temp 0
-label IF_FALSE3
-goto IF_END2
-label IF_FALSE2
+label IF_FALSE1
+goto IF_END0
+label IF_FALSE0
 push local 4
 push constant 140
 eq
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
 push constant 0
 not
 pop this 0
-goto IF_END4
-label IF_FALSE4
+goto IF_END2
+label IF_FALSE2
 push local 4
 push constant 70
 eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 3
+call Player.dash 1
+pop temp 0
+goto IF_END3
+label IF_FALSE3
+push local 4
+push constant 68
+eq
+push local 3
+call Player.has_gravity_cooldown 1
+not
+and
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 3
+call Player.set_gravity_direction 1
+pop temp 0
+goto IF_END4
+label IF_FALSE4
+push local 4
+push constant 65
+eq
+push local 3
+call Player.has_gravity_cooldown 1
+not
+and
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
+push constant 4
+call Player.set_gravity_direction 1
+pop temp 0
 push local 3
-call Player.dash 1
+call Player.set_gravity_cooldown 1
 pop temp 0
 goto IF_END5
 label IF_FALSE5
 push local 4
-push constant 68
+push constant 87
 eq
 push local 3
 call Player.has_gravity_cooldown 1
@@ -376,7 +370,7 @@ and
 if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
-push constant 3
+push constant 2
 call Player.set_gravity_direction 1
 pop temp 0
 push local 3
@@ -385,7 +379,7 @@ pop temp 0
 goto IF_END6
 label IF_FALSE6
 push local 4
-push constant 65
+push constant 83
 eq
 push local 3
 call Player.has_gravity_cooldown 1
@@ -394,55 +388,19 @@ and
 if-goto IF_TRUE7
 goto IF_FALSE7
 label IF_TRUE7
-push constant 4
-call Player.set_gravity_direction 1
-pop temp 0
-push local 3
-call Player.set_gravity_cooldown 1
-pop temp 0
-goto IF_END7
-label IF_FALSE7
-push local 4
-push constant 87
-eq
-push local 3
-call Player.has_gravity_cooldown 1
-not
-and
-if-goto IF_TRUE8
-goto IF_FALSE8
-label IF_TRUE8
-push constant 2
-call Player.set_gravity_direction 1
-pop temp 0
-push local 3
-call Player.set_gravity_cooldown 1
-pop temp 0
-goto IF_END8
-label IF_FALSE8
-push local 4
-push constant 83
-eq
-push local 3
-call Player.has_gravity_cooldown 1
-not
-and
-if-goto IF_TRUE9
-goto IF_FALSE9
-label IF_TRUE9
 push constant 1
 call Player.set_gravity_direction 1
 pop temp 0
 push local 3
 call Player.set_gravity_cooldown 1
 pop temp 0
-label IF_FALSE9
-label IF_END8
-label IF_END7
+label IF_FALSE7
 label IF_END6
 label IF_END5
 label IF_END4
+label IF_END3
 label IF_END2
+label IF_END0
 label WHILE_EXP2
 push local 4
 push constant 0
@@ -466,9 +424,9 @@ label WHILE_END2
 goto WHILE_EXP0
 label WHILE_END0
 push this 0
-if-goto IF_TRUE10
-goto IF_FALSE10
-label IF_TRUE10
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
 push constant 10
 push constant 27
 call Output.moveCursor 2
@@ -495,7 +453,7 @@ push constant 114
 call String.appendChar 2
 call Output.printString 1
 pop temp 0
-label IF_FALSE10
+label IF_FALSE8
 push constant 0
 return
 function GameController.handlePlatform 9
