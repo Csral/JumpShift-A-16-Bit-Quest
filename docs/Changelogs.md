@@ -18,6 +18,6 @@ Date: 21 March 2025
 
 Date (RANGE): 21 Jan 2025 - 21 March 2025
 
-Note: ** Primary development started after 31st of Jan 2025. **
+Note: **Primary development started after 31st of Jan 2025.**
 
-** These were pre-developed images and changes weren't accurately tracked. Thus this log begins from the above mentioned! **
+**These were pre-developed images and changes weren't accurately tracked. Thus this log begins from the above mentioned!**
