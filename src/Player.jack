@@ -5,6 +5,8 @@ class Player
     field int xpos, ypos, jump_height, dash_cooldown, gravity_cooldown; // player's x and y position
     field boolean is_on_surface;
     field Rd rand;
+
+    static int rotation; //* Degree rotation! (Only effects drawing, i.e., draw() )
     
     field int timer; //* Timer to update gravity
     field int g_dir, g_n1_count; //* Gravity direction, no. of times gravity went without 1.
@@ -30,6 +32,7 @@ class Player
         let gravity_cooldown = 0;
         let ground_level = 15;
 
+        let rotation = 0; //* Normal
 
         return this;
     }
@@ -74,15 +77,19 @@ class Player
 
         if (dir = 1) {
             let ground_level = 15;
+            let rotation = 0;
         } else {
             if (dir = 2) {
                 let ground_level = 0;
+                let rotation = 1801;
             } else {
                 if (dir = 3) {
                     let ground_level = 31;
+                    let rotation = 270;
                 } else {
                     if (dir = 4) {
-                        let ground_level = 0;
+                        let ground_level = 0; 
+                        let rotation = 2701; //* Vertical mirror + 270 deg.
                     }
                 }
             }
@@ -136,6 +143,10 @@ class Player
 
                     let looper = ypos - ground_level;
 
+                    let is_on_surface = false;
+
+                } else {
+                    let is_on_surface = true;
                 }
             
             } else {
@@ -154,6 +165,10 @@ class Player
 
                         let looper = ground_level - xpos;
 
+                        let is_on_surface = false;
+
+                    } else {
+                        let is_on_surface = true;
                     }
 
                 } else { //* Assumes 4 by default unless there is some fault in code
@@ -170,6 +185,10 @@ class Player
 
                         let looper = xpos - ground_level;
 
+                        let is_on_surface = false;
+
+                    } else {
+                        let is_on_surface = true;
                     }
 
                 }
@@ -553,36 +572,439 @@ class Player
 
     }
 
-    method void draw(boolean show)
-    {
+    method void set_rotation(int angle, int mode) {
+
+        if ( (mode < 0) | (mode > 1) ) {
+            return;
+        }
+
+        if ((angle > 270) | (angle < 0)) {
+            return;
+        }
+
+        if (angle = 18) {
+
+            //* Special case when angle = 18, it means to keep angle the same but apply mode onto it.
+
+            let rotation = (angle/10) + mode;
+            return;
+
+        }
+
+        let rotation = (angle*10) + mode;
+
+        return;
+
+    }
+
+    method void draw(boolean show) {
         var int memAddress, loc;
         let loc = (ypos * 512) + xpos; // 32*16 = 512
 		let memAddress = 16384 + loc;
 
+        /*
+            ! Important to read this:
+
+            * Median: 16384 + (ypos * 512) + xpos + 480
+            * Used median (y) -> 16384 + (ypos * 512) + (xpos + 1) + 512
+            * Used median (x) -> 16384 + (ypos * 512) + xpos + 257
+
+            * Depends on rotation
+
+            * Breakdown of different drawing modes
+            
+            * The rotation angles are as followed: rrrm -> where the first 3 r's define angle of rotation and m defines mode.
+            
+            * Available angles:
+                * 0 (code: 0000)
+                * 90 (code: 0900)
+                * 180 (code: 1800)
+                * 270 (code: 2700)
+            
+            * Available modes:
+
+                * 0 -> No special effects ( Negation taken care by getIsDay() )
+                * 1 -> Vertical Mirror: Inverses the image (or) gets the projection on the perpendicular axes to base
+
+        */
+
         if (show)
         {
-            do Memory.poke(memAddress + 0, 0);
-            do Memory.poke(memAddress + 32, 4064);
-            do Memory.poke(memAddress + 64, 4064);
-            do Memory.poke(memAddress + 96, 1760);
-            do Memory.poke(memAddress + 128, 1376);
-            do Memory.poke(memAddress + 160, 1728);
-            do Memory.poke(memAddress + 192, 904);
-            do Memory.poke(memAddress + 224, 1736);
-            do Memory.poke(memAddress + 256, 7928);
-            do Memory.poke(memAddress + 288, 5184);
-            do Memory.poke(memAddress + 320, 5824);
-            do Memory.poke(memAddress + 352, 1984);
-            do Memory.poke(memAddress + 384, 896);
-            do Memory.poke(memAddress + 416, 896);
-            do Memory.poke(memAddress + 448, 1728);
-            do Memory.poke(memAddress + 480, 1088); //* This filled by 256 and rest by 0 to get median point.
+
+            if (GameController.getIsDay()) {
+
+                //* No negations since day.
+
+                if (rotation = 0) {
+
+                    do Memory.poke(memAddress + 0, 1016);
+                    do Memory.poke(memAddress + 32, 4092);
+                    do Memory.poke(memAddress + 64, 4060);
+                    do Memory.poke(memAddress + 96, 26284);
+                    do Memory.poke(memAddress + 128, 8780);
+                    do Memory.poke(memAddress + 160, 21068);
+                    do Memory.poke(memAddress + 192, 21428);
+                    do Memory.poke(memAddress + 224, 20913);
+                    do Memory.poke(memAddress + 256, 8471);
+                    do Memory.poke(memAddress + 288, 12220);
+                    do Memory.poke(memAddress + 320, 14832);
+                    do Memory.poke(memAddress + 352, 12720);
+                    do Memory.poke(memAddress + 384, 8632);
+                    do Memory.poke(memAddress + 416, 20976);
+                    do Memory.poke(memAddress + 448, 9144);
+                    do Memory.poke(memAddress + 480, 1976); //* This filled by 256 and rest by 0 to get median point.
+
+                } else {
+
+                    if (rotation = 1) {
+
+                        do Memory.poke(memAddress + 0, 8128);
+                        do Memory.poke(memAddress + 32, 16368);
+                        do Memory.poke(memAddress + 64, 15344);
+                        do Memory.poke(memAddress + 96, 13670);
+                        do Memory.poke(memAddress + 128, 12868);
+                        do Memory.poke(memAddress + 160, 12874);
+                        do Memory.poke(memAddress + 192, 11722);
+                        do Memory.poke(memAddress + 224, -29302);
+                        do Memory.poke(memAddress + 256, -6012);
+                        do Memory.poke(memAddress + 288, 15860);
+                        do Memory.poke(memAddress + 320, 3996);
+                        do Memory.poke(memAddress + 352, 3468);
+                        do Memory.poke(memAddress + 384, 7556);
+                        do Memory.poke(memAddress + 416, 3978);
+                        do Memory.poke(memAddress + 448, 7620);
+                        do Memory.poke(memAddress + 480, 7648);
+
+                    } else {
+
+                        if (rotation = 900) {
+
+                            do Memory.poke(memAddress + 0, 384);
+                            do Memory.poke(memAddress + 32, 128);
+                            do Memory.poke(memAddress + 64, 32448);
+                            do Memory.poke(memAddress + 96, -949);
+                            do Memory.poke(memAddress + 128, -7169);
+                            do Memory.poke(memAddress + 160, -11393);
+                            do Memory.poke(memAddress + 192, -5084);
+                            do Memory.poke(memAddress + 224, -3201);
+                            do Memory.poke(memAddress + 256, -7169);
+                            do Memory.poke(memAddress + 288, -445);
+                            do Memory.poke(memAddress + 320, 28737);
+                            do Memory.poke(memAddress + 352, 24672);
+                            do Memory.poke(memAddress + 384, 1844);
+                            do Memory.poke(memAddress + 416, 6394);
+                            do Memory.poke(memAddress + 448, 5892);
+                            do Memory.poke(memAddress + 480, 0);
+
+                        } else {
+
+                            if (rotation = 901) {
+
+                                do Memory.poke(memAddress + 0, 384);
+                                do Memory.poke(memAddress + 32, 256);
+                                do Memory.poke(memAddress + 64, 894);
+                                do Memory.poke(memAddress + 96, -11713);
+                                do Memory.poke(memAddress + 128, -57);
+                                do Memory.poke(memAddress + 160, -309);
+                                do Memory.poke(memAddress + 192, 9271);
+                                do Memory.poke(memAddress + 224, -305);
+                                do Memory.poke(memAddress + 256, -57);
+                                do Memory.poke(memAddress + 288, -15745);
+                                do Memory.poke(memAddress + 320, -32242);
+                                do Memory.poke(memAddress + 352, 1542);
+                                do Memory.poke(memAddress + 384, 11488);
+                                do Memory.poke(memAddress + 416, 24344);
+                                do Memory.poke(memAddress + 448, 8424);
+                                do Memory.poke(memAddress + 480, 0);
+
+                            } else {
+
+                                if (rotation = 1800) {
+
+                                    do Memory.poke(memAddress + 0, 7648);
+                                    do Memory.poke(memAddress + 32, 7620);
+                                    do Memory.poke(memAddress + 64, 3978);
+                                    do Memory.poke(memAddress + 96, 7556);
+                                    do Memory.poke(memAddress + 128, 3468);
+                                    do Memory.poke(memAddress + 160, 3996);
+                                    do Memory.poke(memAddress + 192, 15860);
+                                    do Memory.poke(memAddress + 224, -6012);
+                                    do Memory.poke(memAddress + 256, -29302);
+                                    do Memory.poke(memAddress + 288, 11722);
+                                    do Memory.poke(memAddress + 320, 12874);
+                                    do Memory.poke(memAddress + 352, 12868);
+                                    do Memory.poke(memAddress + 384, 13670);
+                                    do Memory.poke(memAddress + 416, 15344);
+                                    do Memory.poke(memAddress + 448, 16368);
+                                    do Memory.poke(memAddress + 480, 8128);
+
+                                } else {
+
+                                    if (rotation = 1801) {
+
+                                        do Memory.poke(memAddress + 0, 1976);
+                                        do Memory.poke(memAddress + 32, 9144);
+                                        do Memory.poke(memAddress + 64, 20976);
+                                        do Memory.poke(memAddress + 96, 8632);
+                                        do Memory.poke(memAddress + 128, 12720);
+                                        do Memory.poke(memAddress + 160, 14832);
+                                        do Memory.poke(memAddress + 192, 12220);
+                                        do Memory.poke(memAddress + 224, 8471);
+                                        do Memory.poke(memAddress + 256, 20913);
+                                        do Memory.poke(memAddress + 288, 21428);
+                                        do Memory.poke(memAddress + 320, 21068);
+                                        do Memory.poke(memAddress + 352, 8780);
+                                        do Memory.poke(memAddress + 384, 26284);
+                                        do Memory.poke(memAddress + 416, 4060);
+                                        do Memory.poke(memAddress + 448, 4092);
+                                        do Memory.poke(memAddress + 480, 1016);
+
+                                    } else {
+
+                                        if (rotation = 2700) {
+
+                                            do Memory.poke(memAddress + 0, 0);
+                                            do Memory.poke(memAddress + 32, 8424);
+                                            do Memory.poke(memAddress + 64, 24344);
+                                            do Memory.poke(memAddress + 96, 11488);
+                                            do Memory.poke(memAddress + 128, 1542);
+                                            do Memory.poke(memAddress + 160, -32242);
+                                            do Memory.poke(memAddress + 192, -15745);
+                                            do Memory.poke(memAddress + 224, -57);
+                                            do Memory.poke(memAddress + 256, -305);
+                                            do Memory.poke(memAddress + 288, 9271);
+                                            do Memory.poke(memAddress + 320, -309);
+                                            do Memory.poke(memAddress + 352, -57);
+                                            do Memory.poke(memAddress + 384, -11713);
+                                            do Memory.poke(memAddress + 416, 894);
+                                            do Memory.poke(memAddress + 448, 256);
+                                            do Memory.poke(memAddress + 480, 384);
+
+                                        } else {
+
+                                            if (rotation = 2701) {
+
+                                                do Memory.poke(memAddress + 0, 0);
+                                                do Memory.poke(memAddress + 32, 5892);
+                                                do Memory.poke(memAddress + 64, 6394);
+                                                do Memory.poke(memAddress + 96, 1844);
+                                                do Memory.poke(memAddress + 128, 24672);
+                                                do Memory.poke(memAddress + 160, 28737);
+                                                do Memory.poke(memAddress + 192, -445);
+                                                do Memory.poke(memAddress + 224, -7169);
+                                                do Memory.poke(memAddress + 256, -3201);
+                                                do Memory.poke(memAddress + 288, -5084);
+                                                do Memory.poke(memAddress + 320, -11393);
+                                                do Memory.poke(memAddress + 352, -7169);
+                                                do Memory.poke(memAddress + 384, -949);
+                                                do Memory.poke(memAddress + 416, 32448);
+                                                do Memory.poke(memAddress + 448, 128);
+                                                do Memory.poke(memAddress + 480, 384);
+
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            } else {
+                
+                if (rotation = 0) {
+
+                    do Memory.poke(memAddress + 0, -1017);
+                    do Memory.poke(memAddress + 32, -4093);
+                    do Memory.poke(memAddress + 64, -4061);
+                    do Memory.poke(memAddress + 96, -26285);
+                    do Memory.poke(memAddress + 128, -8781);
+                    do Memory.poke(memAddress + 160, -21069);
+                    do Memory.poke(memAddress + 192, -21429);
+                    do Memory.poke(memAddress + 224, -20914);
+                    do Memory.poke(memAddress + 256, -8472);
+                    do Memory.poke(memAddress + 288, -12221);
+                    do Memory.poke(memAddress + 320, -14833);
+                    do Memory.poke(memAddress + 352, -12721);
+                    do Memory.poke(memAddress + 384, -8633);
+                    do Memory.poke(memAddress + 416, -20977);
+                    do Memory.poke(memAddress + 448, -9145);
+                    do Memory.poke(memAddress + 480, -1977);
+
+                } else {
+
+                    if (rotation = 1) {
+
+                        do Memory.poke(memAddress + 0, -8129);
+                        do Memory.poke(memAddress + 32, -16369);
+                        do Memory.poke(memAddress + 64, -15345);
+                        do Memory.poke(memAddress + 96, -13671);
+                        do Memory.poke(memAddress + 128, -12869);
+                        do Memory.poke(memAddress + 160, -12875);
+                        do Memory.poke(memAddress + 192, -11723);
+                        do Memory.poke(memAddress + 224, 29301);
+                        do Memory.poke(memAddress + 256, 6011);
+                        do Memory.poke(memAddress + 288, -15861);
+                        do Memory.poke(memAddress + 320, -3997);
+                        do Memory.poke(memAddress + 352, -3469);
+                        do Memory.poke(memAddress + 384, -7557);
+                        do Memory.poke(memAddress + 416, -3979);
+                        do Memory.poke(memAddress + 448, -7621);
+                        do Memory.poke(memAddress + 480, -7649);
+
+                    } else {
+
+                        if (rotation = 900) {
+
+                            do Memory.poke(memAddress + 0, -385);
+                            do Memory.poke(memAddress + 32, -129);
+                            do Memory.poke(memAddress + 64, -32449);
+                            do Memory.poke(memAddress + 96, 948);
+                            do Memory.poke(memAddress + 128, 7168);
+                            do Memory.poke(memAddress + 160, 11392);
+                            do Memory.poke(memAddress + 192, 5083);
+                            do Memory.poke(memAddress + 224, 3200);
+                            do Memory.poke(memAddress + 256, 7168);
+                            do Memory.poke(memAddress + 288, 444);
+                            do Memory.poke(memAddress + 320, -28738);
+                            do Memory.poke(memAddress + 352, -24673);
+                            do Memory.poke(memAddress + 384, -1845);
+                            do Memory.poke(memAddress + 416, -6395);
+                            do Memory.poke(memAddress + 448, -5893);
+                            do Memory.poke(memAddress + 480, -1);
+
+                        } else {
+
+                            if (rotation = 901) {
+
+                                do Memory.poke(memAddress + 0, -385);
+                                do Memory.poke(memAddress + 32, -257);
+                                do Memory.poke(memAddress + 64, -895);
+                                do Memory.poke(memAddress + 96, 11712);
+                                do Memory.poke(memAddress + 128, 56);
+                                do Memory.poke(memAddress + 160, 308);
+                                do Memory.poke(memAddress + 192, -9272);
+                                do Memory.poke(memAddress + 224, 304);
+                                do Memory.poke(memAddress + 256, 56);
+                                do Memory.poke(memAddress + 288, 15744);
+                                do Memory.poke(memAddress + 320, 32241);
+                                do Memory.poke(memAddress + 352, -1543);
+                                do Memory.poke(memAddress + 384, -11489);
+                                do Memory.poke(memAddress + 416, -24345);
+                                do Memory.poke(memAddress + 448, -8425);
+                                do Memory.poke(memAddress + 480, -1);
+
+                            } else {
+
+                                if (rotation = 1800) {
+
+                                    do Memory.poke(memAddress + 0, -7649);
+                                    do Memory.poke(memAddress + 32, -7621);
+                                    do Memory.poke(memAddress + 64, -3979);
+                                    do Memory.poke(memAddress + 96, -7557);
+                                    do Memory.poke(memAddress + 128, -3469);
+                                    do Memory.poke(memAddress + 160, -3997);
+                                    do Memory.poke(memAddress + 192, -15861);
+                                    do Memory.poke(memAddress + 224, 6011);
+                                    do Memory.poke(memAddress + 256, 29301);
+                                    do Memory.poke(memAddress + 288, -11723);
+                                    do Memory.poke(memAddress + 320, -12875);
+                                    do Memory.poke(memAddress + 352, -12869);
+                                    do Memory.poke(memAddress + 384, -13671);
+                                    do Memory.poke(memAddress + 416, -15345);
+                                    do Memory.poke(memAddress + 448, -16369);
+                                    do Memory.poke(memAddress + 480, -8129);
+
+                                } else {
+
+                                    if (rotation = 1801) {
+
+                                        do Memory.poke(memAddress + 0, -1977);
+                                        do Memory.poke(memAddress + 32, -9145);
+                                        do Memory.poke(memAddress + 64, -20977);
+                                        do Memory.poke(memAddress + 96, -8633);
+                                        do Memory.poke(memAddress + 128, -12721);
+                                        do Memory.poke(memAddress + 160, -14833);
+                                        do Memory.poke(memAddress + 192, -12221);
+                                        do Memory.poke(memAddress + 224, -8472);
+                                        do Memory.poke(memAddress + 256, -20914);
+                                        do Memory.poke(memAddress + 288, -21429);
+                                        do Memory.poke(memAddress + 320, -21069);
+                                        do Memory.poke(memAddress + 352, -8781);
+                                        do Memory.poke(memAddress + 384, -26285);
+                                        do Memory.poke(memAddress + 416, -4061);
+                                        do Memory.poke(memAddress + 448, -4093);
+                                        do Memory.poke(memAddress + 480, -1017);
+
+                                    } else {
+
+                                        if (rotation = 2700) {
+
+                                            do Memory.poke(memAddress + 0, -1);
+                                            do Memory.poke(memAddress + 32, -8425);
+                                            do Memory.poke(memAddress + 64, -24345);
+                                            do Memory.poke(memAddress + 96, -11489);
+                                            do Memory.poke(memAddress + 128, -1543);
+                                            do Memory.poke(memAddress + 160, 32241);
+                                            do Memory.poke(memAddress + 192, 15744);
+                                            do Memory.poke(memAddress + 224, 56);
+                                            do Memory.poke(memAddress + 256, 304);
+                                            do Memory.poke(memAddress + 288, -9272);
+                                            do Memory.poke(memAddress + 320, 308);
+                                            do Memory.poke(memAddress + 352, 56);
+                                            do Memory.poke(memAddress + 384, 11712);
+                                            do Memory.poke(memAddress + 416, -895);
+                                            do Memory.poke(memAddress + 448, -257);
+                                            do Memory.poke(memAddress + 480, -385);
+
+                                        } else {
+
+                                            if (rotation = 2701) {
+
+                                                do Memory.poke(memAddress + 0, -1);
+                                                do Memory.poke(memAddress + 32, -5893);
+                                                do Memory.poke(memAddress + 64, -6395);
+                                                do Memory.poke(memAddress + 96, -1845);
+                                                do Memory.poke(memAddress + 128, -24673);
+                                                do Memory.poke(memAddress + 160, -28738);
+                                                do Memory.poke(memAddress + 192, 444);
+                                                do Memory.poke(memAddress + 224, 7168);
+                                                do Memory.poke(memAddress + 256, 3200);
+                                                do Memory.poke(memAddress + 288, 5083);
+                                                do Memory.poke(memAddress + 320, 11392);
+                                                do Memory.poke(memAddress + 352, 7168);
+                                                do Memory.poke(memAddress + 384, 948);
+                                                do Memory.poke(memAddress + 416, -32449);
+                                                do Memory.poke(memAddress + 448, -129);
+                                                do Memory.poke(memAddress + 480, -385);
+
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        } else { //clear the sprite
             
-            //* Median: 16384 + (ypos * 512) + xpos + 480
-            
-        }
-        else //clear the sprite
-        {
             if (GameController.getIsDay()) {
                 do Memory.poke(memAddress + 0, 0);
                 do Memory.poke(memAddress + 32, 0);
@@ -619,33 +1041,6 @@ class Player
                 do Memory.poke(memAddress + 480, -1);
             }
         }
-
-        // negation:
-
-        /*
-
-            method void draw(int location) {
-                let memAddress = 16384 + location;
-                do Memory.poke(memAddress + 0, -1);
-                do Memory.poke(memAddress + 32, -4065);
-                do Memory.poke(memAddress + 64, -4065);
-                do Memory.poke(memAddress + 96, -1761);
-                do Memory.poke(memAddress + 128, -1377);
-                do Memory.poke(memAddress + 160, -1729);
-                do Memory.poke(memAddress + 192, -905);
-                do Memory.poke(memAddress + 224, -1737);
-                do Memory.poke(memAddress + 256, -7929);
-                do Memory.poke(memAddress + 288, -5185);
-                do Memory.poke(memAddress + 320, -5825);
-                do Memory.poke(memAddress + 352, -1985);
-                do Memory.poke(memAddress + 384, -897);
-                do Memory.poke(memAddress + 416, -897);
-                do Memory.poke(memAddress + 448, -1729);
-                do Memory.poke(memAddress + 480, -1089);
-                return;
-            }
-
-        */
 
 		return;
     }
