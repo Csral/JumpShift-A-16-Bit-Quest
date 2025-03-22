@@ -11,6 +11,7 @@ class GameController
    static int delay;           //wait time between each frame
    static int randomizer;
    static boolean isDay;   // true if the game is in day mode
+   static boolean shouldRestart; // true if the game should restart
 
    field boolean exit;       // true when the game is over
    field int spawnDiff;      // difference between the y position of the current platform and the next platform
@@ -23,6 +24,23 @@ class GameController
 
    constructor GameController new()
    {
+      // let delay = 50;
+      // let moveDir = 1;
+      // let dispDir = 1;
+      // let spawnDiff = 2;
+      // let randomizer = 2912;
+      // let baseHeight = 3;
+      // let baseWidth = 5;
+      // let isDay = true;
+      // let dayNightDelay = 15;
+      // let dayNightTimer = dayNightDelay;
+      // let shouldRestart = true;
+      do reset();
+      return this;
+   }
+
+   method void reset()
+   {
       let delay = 50;
       let moveDir = 1;
       let dispDir = 1;
@@ -33,12 +51,21 @@ class GameController
       let isDay = true;
       let dayNightDelay = 15;
       let dayNightTimer = dayNightDelay;
-      return this;
+      let shouldRestart = true;
+      let exit = false;
+      do Screen.clearScreen();
+      do Output.moveCursor(0,0);
+      return;
    }
 
    function boolean getIsDay()
    {
       return isDay;
+   }
+
+   function boolean getShouldRestart()
+   {
+      return shouldRestart;
    }
 
    method void setDelay(int d)
@@ -62,14 +89,17 @@ class GameController
 
    method void start()
    {
-      var Rd tempRd;
-      
+      var Rd tempRd;     
       var int t;
 
-      var Platform platform;
-      var Player player;
-      var char key;
+      var Platform platform; // the starting platform
+      var Platform curPlatform; // to be used when day/night mode is switched
+      var Player player; //initialize the player
+      var char key; // To store the key pressed by the user
 
+      // prerequisites for the game
+      do reset();
+      
       let randomizer = Keyboard.readInt("Enter some random digits (seed)> ");
       let randomizer = randomizer + tempRd.mod( tempRd.between(123,391, tempRd.buffer( 229+randomizer+2912 , 50 , 150 )), 4972);
 
@@ -83,18 +113,22 @@ class GameController
       do Screen.clearScreen();
 
       //TODO: implement the start config of platform and player
-      let platform = Platform.new(15, 15, 3, dispDir, moveDir);
-      let player = Player.new(19, 15);
+      let platform = Platform.new(5, 15, 26, dispDir, moveDir);
+      let player = Player.new(5, 13);
       do player.draw(true);
       do platform.draw(false);
 
       while (~exit)
       {
-
          // waits for a key to be pressed.
          // update screen and move platform
-
          while ((key = 0) & (~exit)) {
+
+            // game over if player has fallen off the screen
+            if ((player.c_ypos_d() > 14) | (player.c_xpos_d() > 30) | (player.c_xpos_d() < 0))
+            {
+               let exit = true;
+            }
 
             // Switch between day and night mode
             if (dayNightTimer = 0) 
@@ -107,6 +141,17 @@ class GameController
                   do Screen.setColor(false);
                }
                do Screen.drawRectangle(0,0,511,255);
+
+               // redraw the platforms in the current day/night mode
+               let curPlatform = Platform.getFirst();
+               while(curPlatform.hasNext()) //draw the platforms except last
+               {
+                  do curPlatform.draw(false);
+                  let curPlatform = curPlatform.getNext();
+               }
+
+               do curPlatform.draw(false); // draw the last platform
+
             } 
             else {
                let dayNightTimer = dayNightTimer - 1;
@@ -199,10 +244,25 @@ class GameController
          }
       }
 
-      // todo: implement game over screen
+      // Game over scene
       if (exit) {
+         do Screen.clearScreen();
+         do Platform.disposeAll();
          do Output.moveCursor(10,27);
          do Output.printString("Game Over");
+         do Output.moveCursor(11,27);
+         do Output.printString("Restart (y/N): ");  
+         let key = 0;   
+
+         while(key = 0) {
+            let key = Keyboard.keyPressed();         
+         }
+         
+         if (~(key = 89)) {
+            let shouldRestart = false;
+         }
+
+         do Sys.wait(100); // waut till the system refreshes its keyboard memory
       }
 
       return;
