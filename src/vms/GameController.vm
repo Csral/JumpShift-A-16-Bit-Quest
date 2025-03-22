@@ -57,9 +57,37 @@ push argument 1
 pop static 2
 push constant 0
 return
-function GameController.random 1
+function GameController.random 2
 push argument 0
 pop pointer 0
+push constant 16384
+push constant 24577
+call Random.between 2
+push constant 0
+call Memory.peek 1
+add
+call Memory.peek 1
+call Random.seed 1
+pop temp 0
+push local 0
+push constant 16384
+push constant 24577
+push constant 0
+call Rd.between 4
+push constant 0
+call Memory.peek 1
+add
+call Memory.peek 1
+call Random.seed 1
+pop temp 0
+push argument 1
+push argument 2
+call Random.between 2
+pop local 1
+push local 0
+push local 1
+call Rd.seed 2
+pop temp 0
 push local 0
 push argument 1
 push argument 2
@@ -74,6 +102,10 @@ push argument 0
 pop pointer 0
 push pointer 0
 call GameController.reset 1
+pop temp 0
+push local 0
+push constant 3812
+call Rd.seed 2
 pop temp 0
 push constant 33
 call String.new 1
@@ -625,7 +657,7 @@ label IF_TRUE12
 push constant 0
 pop static 5
 label IF_FALSE12
-push constant 500
+push constant 100
 call Sys.wait 1
 pop temp 0
 label IF_FALSE11

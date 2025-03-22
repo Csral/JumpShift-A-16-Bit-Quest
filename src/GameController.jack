@@ -77,9 +77,11 @@ class GameController
    method int random(int x, int y)
    {
       var Rd rd;
-      // do Random.seed(Memory.peek(Random.between(16384, 24577) + Memory.peek(0)));
-      // do Random.seed(Memory.peek(rd.between(16384, 24577, 0) + Memory.peek(0)));
-      // return Random.between(x, y);
+      var int seed;
+      do Random.seed(Memory.peek(Random.between(16384, 24577) + Memory.peek(0)));
+      do Random.seed(Memory.peek(rd.between(16384, 24577, 0) + Memory.peek(0)));
+      let seed = Random.between(x, y);
+      do rd.seed(seed);
       return rd.between(x, y, 0);
    }
 
@@ -100,6 +102,8 @@ class GameController
       // prerequisites for the game
       do reset();
       
+      do tempRd.seed(3812);
+
       let randomizer = Keyboard.readInt("Enter some random digits (seed)> ");
       let randomizer = randomizer + tempRd.mod( tempRd.between(123,391, tempRd.buffer( 229+randomizer+2912 , 50 , 150 )), 4972);
 

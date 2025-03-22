@@ -49,6 +49,10 @@ push constant 0
 pop this 4
 push constant 15
 pop static 2
+push this 6
+push constant 8327
+call Rd.seed 2
+pop temp 0
 push constant 0
 pop static 3
 push pointer 0
