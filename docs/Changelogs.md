@@ -1,5 +1,11 @@
 # Changelogs
 
+## VErsion A.0.2
+
+Date: 22 March 2025
+
+* All instances of Rd classes weren't seeded. The class itself starts with seed unset so it may be 0 or not. THe reason this didn't cause issues yet was because of bitwise operators. Updates instances with valid seeding.
+
 ## Version A.0.1
 
 Date: 21 March 2025
