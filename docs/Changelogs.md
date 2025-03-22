@@ -4,6 +4,7 @@
 Date: 22 March 2025
 
 * While changing modes(day/night), the prevoius rendered platforms were vanishing, fixed it by re-rendering the platform during transisition
+* Added Rd.seed() where i used RD.
 * Added Game over scene
 * Added reset functionalities
 
