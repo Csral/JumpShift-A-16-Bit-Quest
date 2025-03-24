@@ -50,7 +50,7 @@ pop this 4
 push constant 15
 pop static 2
 push this 6
-push constant 8327
+push constant 7978
 call Rd.seed 2
 pop temp 0
 push constant 0

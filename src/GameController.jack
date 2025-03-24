@@ -102,7 +102,7 @@ class GameController
       // prerequisites for the game
       do reset();
       
-      do tempRd.seed(3812);
+      do tempRd.seed(8130);
 
       let randomizer = Keyboard.readInt("Enter some random digits (seed)> ");
       let randomizer = randomizer + tempRd.mod( tempRd.between(123,391, tempRd.buffer( 229+randomizer+2912 , 50 , 150 )), 4972);
@@ -470,3 +470,4 @@ class GameController
       return;
    }
 }
+

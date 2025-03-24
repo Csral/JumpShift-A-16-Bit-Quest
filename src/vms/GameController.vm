@@ -104,7 +104,7 @@ push pointer 0
 call GameController.reset 1
 pop temp 0
 push local 0
-push constant 3812
+push constant 8130
 call Rd.seed 2
 pop temp 0
 push constant 33
