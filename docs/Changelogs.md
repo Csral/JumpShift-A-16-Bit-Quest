@@ -1,5 +1,12 @@
 # Changelogs
 
+
+## Version A.0.4
+Date 28 March 2025
+* Implemented Start Screen (currently space is reserved for backstory)
+* Implemented time recorder
+* Implemented Best time.
+
 ## Version A.0.3
 Date: 22 March 2025
 

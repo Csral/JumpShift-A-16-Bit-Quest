@@ -977,7 +977,7 @@ class GameController
          let isFirstTime = false;
          do Screen.clearScreen();
          do Output.moveCursor(2, 0);
-         do Output.printString("Press any key to start the game...");
+         do Output.printString("Waiting for Backstory...");
          do Output.moveCursor(22, 18);
          do Output.printString("Press Enter to start the game...");
          
