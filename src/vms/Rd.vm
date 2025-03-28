@@ -19,9 +19,7 @@ pop static 0
 push static 0
 return
 function Rd.mod 2
-push argument 0
-pop pointer 0
-push argument 2
+push argument 1
 push constant 0
 gt
 not
@@ -32,13 +30,13 @@ push constant 1
 neg
 return
 label IF_FALSE0
+push argument 0
 push argument 1
-push argument 2
 call Math.divide 2
 pop local 0
-push argument 1
+push argument 0
 push local 0
-push argument 2
+push argument 1
 call Math.multiply 2
 sub
 pop local 1
@@ -93,11 +91,9 @@ pop local 0
 push pointer 0
 call Rd.next 1
 pop local 1
-push pointer 0
-push pointer 0
 push local 1
 push local 0
-call Rd.mod 3
+call Rd.mod 2
 call GameController.get_randomizer 0
 push argument 1
 add
@@ -109,7 +105,7 @@ add
 push argument 3
 add
 push argument 2
-call Rd.mod 3
+call Rd.mod 2
 pop local 1
 push pointer 0
 push local 1

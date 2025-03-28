@@ -49,6 +49,7 @@ class Player
 
     method void dispose()
     {
+        do draw(false); // remove player from screen
         do Memory.deAlloc(this);
         return;
     }
