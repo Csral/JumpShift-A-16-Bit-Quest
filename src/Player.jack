@@ -32,7 +32,7 @@ class Player
         let gravity_cooldown = 0;
         let ground_level = 15;
 
-        do rand.seed(8327);
+        do rand.seed(7978);
 
         let rotation = 0; //* Normal
 
@@ -1058,3 +1058,4 @@ class Player
 		return;
     }
 }
+
