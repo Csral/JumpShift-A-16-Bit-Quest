@@ -1317,8 +1317,8 @@ class GameController
          {
             if (curDir = 2)
             {
-               let p1 =  Platform.new(15, 6, 5, dispDir, moveDir);            
-               let p2 = Platform.new(7, 7, 5, dispDir, moveDir);         
+               let p1 =  Platform.new(15, 7, 5, dispDir, moveDir);            
+               let p2 = Platform.new(7, 8, 5, dispDir, moveDir);         
             }
             else
             {
