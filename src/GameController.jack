@@ -65,7 +65,7 @@ class GameController
       return shouldRestart;
    }
 
-   method void setDelay(int d)
+   function void setDelay(int d)
    {
       let delay = d;
       return;
@@ -1021,7 +1021,7 @@ class GameController
       let player = Player.new(5, 14);
 
       // drawing for the start screen
-      do player.draw(true);
+      do Player.draw(true);
       do platform.draw(false);
 
       do startScreen();
@@ -1042,7 +1042,7 @@ class GameController
 
       do player.dispose();
       let player = Player.new(5, 13);
-      do player.draw(true);
+      do Player.draw(true);
       do platform.draw(false);
 
       while (~exit)
@@ -1092,7 +1092,7 @@ class GameController
             let key = Keyboard.keyPressed();
 
             do handlePlatform();
-            do player.draw(true);
+            do Player.draw(true);
             do updateTime();
             do showTime(timePassed, 0, 0);
             do Sys.wait(delay);
@@ -1152,6 +1152,14 @@ class GameController
                               do Player.set_gravity_direction(1);
                               do player.set_gravity_cooldown();
 
+                           } else {
+                              if (key = 84) { //* T
+                                 do player.slow_time();
+                              } else {
+                                 if (key = 82) { //* R
+                                    do player.summon_ground_ability();
+                                 }
+                              }
                            }
 
                         }
