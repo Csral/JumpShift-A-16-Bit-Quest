@@ -3,16 +3,16 @@ push constant 10
 call Memory.alloc 1
 pop pointer 0
 push argument 0
-pop this 0
-push argument 1
-pop this 1
-push constant 1
 pop static 0
+push argument 1
+pop static 1
+push constant 1
+pop static 2
 push constant 0
 not
-pop this 5
+pop this 4
 push constant 0
-pop this 3
+pop this 1
 push this 6
 push constant 10
 push constant 60
@@ -44,35 +44,36 @@ pop this 8
 push constant 0
 pop this 9
 push constant 0
-pop static 1
+pop static 3
 push constant 0
-pop this 4
+pop this 2
 push constant 15
-pop static 2
+pop static 4
+push constant 0
+pop this 5
 push this 6
 push constant 7978
 call Rd.seed 2
 pop temp 0
 push constant 0
-pop static 3
+pop static 5
 push pointer 0
 return
 function Player.c_xpos_d 0
 push argument 0
 pop pointer 0
-push this 0
+push static 0
 return
 function Player.c_ypos_d 0
 push argument 0
 pop pointer 0
-push this 1
+push static 1
 return
 function Player.dispose 0
 push argument 0
 pop pointer 0
-push pointer 0
 push constant 0
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push pointer 0
 call Memory.deAlloc 1
@@ -83,22 +84,29 @@ function Player.update 0
 push argument 0
 pop pointer 0
 push argument 1
-pop this 0
+pop static 0
 push argument 2
-pop this 1
+pop static 1
+push constant 0
+return
+function Player.update_static 0
+push argument 0
+pop static 0
+push argument 1
+pop static 1
 push constant 0
 return
 function Player.set_jumping_height 0
 push argument 0
 pop pointer 0
 push argument 1
-pop this 2
+pop this 0
 push constant 0
 return
 function Player.is_jumping 0
 push argument 0
 pop pointer 0
-push this 2
+push this 0
 push constant 0
 gt
 return
@@ -114,7 +122,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push argument 0
-pop static 0
+pop static 2
 label IF_FALSE0
 push argument 0
 push constant 1
@@ -123,9 +131,20 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 15
-pop static 2
+pop static 4
 push constant 0
-pop static 3
+pop static 5
+push constant 0
+call Player.draw 1
+pop temp 0
+push constant 15
+pop static 0
+push constant 14
+pop static 1
+push constant 0
+not
+call Player.draw 1
+pop temp 0
 goto IF_END1
 label IF_FALSE1
 push argument 0
@@ -136,9 +155,20 @@ goto IF_FALSE2
 label IF_TRUE2
 push constant 1
 neg
-pop static 2
+pop static 4
 push constant 1801
-pop static 3
+pop static 5
+push constant 0
+call Player.draw 1
+pop temp 0
+push constant 20
+pop static 0
+push constant 9
+pop static 1
+push constant 0
+not
+call Player.draw 1
+pop temp 0
 goto IF_END2
 label IF_FALSE2
 push argument 0
@@ -148,9 +178,20 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 31
-pop static 2
+pop static 4
 push constant 2700
-pop static 3
+pop static 5
+push constant 0
+call Player.draw 1
+pop temp 0
+push constant 13
+pop static 0
+push constant 8
+pop static 1
+push constant 0
+not
+call Player.draw 1
+pop temp 0
 goto IF_END3
 label IF_FALSE3
 push argument 0
@@ -161,9 +202,20 @@ goto IF_FALSE4
 label IF_TRUE4
 push constant 1
 neg
-pop static 2
+pop static 4
 push constant 2701
-pop static 3
+pop static 5
+push constant 0
+call Player.draw 1
+pop temp 0
+push constant 17
+pop static 0
+push constant 13
+pop static 1
+push constant 0
+not
+call Player.draw 1
+pop temp 0
 label IF_FALSE4
 label IF_END3
 label IF_END2
@@ -171,19 +223,19 @@ label IF_END1
 push constant 0
 return
 function Player.get_gravity_direction 0
-push static 0
+push static 2
 return
 function Player.enforce_gravity 1
 push argument 0
 pop pointer 0
-push static 0
+push static 2
 push constant 1
 eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push static 2
-push this 1
+push static 4
+push static 1
 sub
 pop local 0
 push local 0
@@ -192,47 +244,45 @@ gt
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push pointer 0
 push constant 0
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push pointer 0
-push this 0
-push this 1
+push static 0
+push static 1
 push constant 1
 add
 call Player.update 3
 pop temp 0
-push pointer 0
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push constant 20
 call Sys.wait 1
 pop temp 0
-push static 2
-push this 1
+push static 4
+push static 1
 sub
 pop local 0
 push constant 0
-pop this 5
+pop this 4
 goto IF_END1
 label IF_FALSE1
 push constant 0
 not
-pop this 5
+pop this 4
 label IF_END1
 goto IF_END0
 label IF_FALSE0
-push static 0
+push static 2
 push constant 2
 eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
-push this 1
-push static 2
+push static 1
+push static 4
 sub
 pop local 0
 push local 0
@@ -241,47 +291,45 @@ gt
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push pointer 0
 push constant 0
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push pointer 0
-push this 0
-push this 1
+push static 0
+push static 1
 push constant 1
 sub
 call Player.update 3
 pop temp 0
-push pointer 0
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push constant 20
 call Sys.wait 1
 pop temp 0
-push this 1
-push static 2
+push static 1
+push static 4
 sub
 pop local 0
 push constant 0
-pop this 5
+pop this 4
 goto IF_END3
 label IF_FALSE3
 push constant 0
 not
-pop this 5
+pop this 4
 label IF_END3
 goto IF_END2
 label IF_FALSE2
-push static 0
+push static 2
 push constant 3
 eq
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push static 2
-push this 0
+push static 4
+push static 0
 sub
 pop local 0
 push local 0
@@ -290,41 +338,39 @@ gt
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
-push pointer 0
 push constant 0
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push pointer 0
-push this 0
+push static 0
 push constant 1
 add
-push this 1
+push static 1
 call Player.update 3
 pop temp 0
-push pointer 0
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push constant 20
 call Sys.wait 1
 pop temp 0
-push static 2
-push this 0
+push static 4
+push static 0
 sub
 pop local 0
 push constant 0
-pop this 5
+pop this 4
 goto IF_END5
 label IF_FALSE5
 push constant 0
 not
-pop this 5
+pop this 4
 label IF_END5
 goto IF_END4
 label IF_FALSE4
-push this 0
-push static 2
+push static 0
+push static 4
 sub
 pop local 0
 push local 0
@@ -333,36 +379,34 @@ gt
 if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
-push pointer 0
 push constant 0
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push pointer 0
-push this 0
+push static 0
 push constant 1
 sub
-push this 1
+push static 1
 call Player.update 3
 pop temp 0
-push pointer 0
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push constant 20
 call Sys.wait 1
 pop temp 0
-push this 0
-push static 2
+push static 0
+push static 4
 sub
 pop local 0
 push constant 0
-pop this 5
+pop this 4
 goto IF_END6
 label IF_FALSE6
 push constant 0
 not
-pop this 5
+pop this 4
 label IF_END6
 label IF_END4
 label IF_END2
@@ -372,50 +416,50 @@ return
 function Player.on_ground 1
 push argument 0
 pop pointer 0
-push static 0
+push static 2
 push constant 1
 eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 1
-push static 2
+push static 1
+push static 4
 eq
 pop local 0
 goto IF_END0
 label IF_FALSE0
-push static 0
+push static 2
 push constant 2
 eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 1
-push static 2
+push static 1
+push static 4
 eq
 pop local 0
 goto IF_END1
 label IF_FALSE1
-push static 0
+push static 2
 push constant 3
 eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
-push this 0
-push static 2
+push static 0
+push static 4
 eq
 pop local 0
 goto IF_END2
 label IF_FALSE2
-push static 0
+push static 2
 push constant 4
 eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 0
-push static 2
+push static 0
+push static 4
 eq
 pop local 0
 label IF_FALSE3
@@ -427,24 +471,24 @@ return
 function Player.collision 1
 push argument 0
 pop pointer 0
-push static 0
+push static 2
 push constant 1
 eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 1
+push static 1
 push constant 15
 lt
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 16384
-push this 1
+push static 1
 push constant 512
 call Math.multiply 2
 add
-push this 0
+push static 0
 push constant 1
 add
 add
@@ -463,11 +507,11 @@ not
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 1
-pop static 2
+push static 1
+pop static 4
 push constant 0
 not
-pop this 5
+pop this 4
 push pointer 0
 push constant 0
 call Player.set_jumping_height 2
@@ -477,7 +521,7 @@ return
 goto IF_END3
 label IF_FALSE3
 push constant 15
-pop static 2
+pop static 4
 label IF_END3
 goto IF_END2
 label IF_FALSE2
@@ -488,11 +532,11 @@ eq
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push this 1
-pop static 2
+push static 1
+pop static 4
 push constant 0
 not
-pop this 5
+pop this 4
 push pointer 0
 push constant 0
 call Player.set_jumping_height 2
@@ -502,30 +546,30 @@ return
 goto IF_END4
 label IF_FALSE4
 push constant 15
-pop static 2
+pop static 4
 label IF_END4
 label IF_END2
 label IF_FALSE1
 goto IF_END0
 label IF_FALSE0
-push static 0
+push static 2
 push constant 2
 eq
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
-push this 1
+push static 1
 push constant 0
 gt
 if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
 push constant 16384
-push this 1
+push static 1
 push constant 512
 call Math.multiply 2
 add
-push this 0
+push static 0
 push constant 1
 add
 add
@@ -544,11 +588,11 @@ not
 if-goto IF_TRUE8
 goto IF_FALSE8
 label IF_TRUE8
-push this 1
-pop static 2
+push static 1
+pop static 4
 push constant 0
 not
-pop this 5
+pop this 4
 push pointer 0
 push constant 0
 call Player.set_jumping_height 2
@@ -558,7 +602,7 @@ return
 goto IF_END8
 label IF_FALSE8
 push constant 0
-pop static 2
+pop static 4
 label IF_END8
 goto IF_END7
 label IF_FALSE7
@@ -569,11 +613,11 @@ eq
 if-goto IF_TRUE9
 goto IF_FALSE9
 label IF_TRUE9
-push this 1
-pop static 2
+push static 1
+pop static 4
 push constant 0
 not
-pop this 5
+pop this 4
 push pointer 0
 push constant 0
 call Player.set_jumping_height 2
@@ -583,30 +627,30 @@ return
 goto IF_END9
 label IF_FALSE9
 push constant 0
-pop static 2
+pop static 4
 label IF_END9
 label IF_END7
 label IF_FALSE6
 goto IF_END5
 label IF_FALSE5
-push static 0
+push static 2
 push constant 3
 eq
 if-goto IF_TRUE10
 goto IF_FALSE10
 label IF_TRUE10
-push this 0
+push static 0
 push constant 31
 lt
 if-goto IF_TRUE11
 goto IF_FALSE11
 label IF_TRUE11
 push constant 16384
-push this 1
+push static 1
 push constant 512
 call Math.multiply 2
 add
-push this 0
+push static 0
 add
 push constant 257
 add
@@ -623,11 +667,11 @@ not
 if-goto IF_TRUE13
 goto IF_FALSE13
 label IF_TRUE13
-push this 0
-pop static 2
+push static 0
+pop static 4
 push constant 0
 not
-pop this 5
+pop this 4
 push pointer 0
 push constant 0
 call Player.set_jumping_height 2
@@ -637,7 +681,7 @@ return
 goto IF_END13
 label IF_FALSE13
 push constant 31
-pop static 2
+pop static 4
 label IF_END13
 goto IF_END12
 label IF_FALSE12
@@ -648,11 +692,11 @@ eq
 if-goto IF_TRUE14
 goto IF_FALSE14
 label IF_TRUE14
-push this 0
-pop static 2
+push static 0
+pop static 4
 push constant 0
 not
-pop this 5
+pop this 4
 push pointer 0
 push constant 0
 call Player.set_jumping_height 2
@@ -662,30 +706,30 @@ return
 goto IF_END14
 label IF_FALSE14
 push constant 31
-pop static 2
+pop static 4
 label IF_END14
 label IF_END12
 label IF_FALSE11
 goto IF_END10
 label IF_FALSE10
-push static 0
+push static 2
 push constant 4
 eq
 if-goto IF_TRUE15
 goto IF_FALSE15
 label IF_TRUE15
-push this 0
+push static 0
 push constant 0
 gt
 if-goto IF_TRUE16
 goto IF_FALSE16
 label IF_TRUE16
 push constant 16384
-push this 1
+push static 1
 push constant 512
 call Math.multiply 2
 add
-push this 0
+push static 0
 add
 push constant 257
 sub
@@ -702,11 +746,11 @@ not
 if-goto IF_TRUE18
 goto IF_FALSE18
 label IF_TRUE18
-push this 0
-pop static 2
+push static 0
+pop static 4
 push constant 0
 not
-pop this 5
+pop this 4
 push pointer 0
 push constant 0
 call Player.set_jumping_height 2
@@ -716,7 +760,7 @@ return
 goto IF_END18
 label IF_FALSE18
 push constant 0
-pop static 2
+pop static 4
 label IF_END18
 goto IF_END17
 label IF_FALSE17
@@ -727,11 +771,11 @@ eq
 if-goto IF_TRUE19
 goto IF_FALSE19
 label IF_TRUE19
-push this 0
-pop static 2
+push static 0
+pop static 4
 push constant 0
 not
-pop this 5
+pop this 4
 push pointer 0
 push constant 0
 call Player.set_jumping_height 2
@@ -741,7 +785,7 @@ return
 goto IF_END19
 label IF_FALSE19
 push constant 0
-pop static 2
+pop static 4
 label IF_END19
 label IF_END17
 label IF_FALSE16
@@ -764,7 +808,7 @@ not
 return
 goto IF_END0
 label IF_FALSE0
-push this 2
+push this 0
 push constant 0
 gt
 if-goto IF_TRUE1
@@ -774,17 +818,17 @@ push constant 0
 return
 goto IF_END1
 label IF_FALSE1
-push this 5
+push this 4
 return
 label IF_END1
 label IF_END0
 function Player.get_time 0
-push static 1
+push static 3
 return
 function Player.has_gravity_cooldown 0
 push argument 0
 pop pointer 0
-push this 4
+push this 2
 push constant 0
 gt
 return
@@ -792,25 +836,25 @@ function Player.set_gravity_cooldown 0
 push argument 0
 pop pointer 0
 push constant 10200
-pop this 4
+pop this 2
 push constant 0
 return
 function Player.stimulate_time 0
 push argument 0
 pop pointer 0
-push static 1
+push static 3
 push constant 13000
 gt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 9
-pop static 1
+pop static 3
 label IF_FALSE0
-push static 1
+push static 3
 push constant 1
 add
-pop static 1
+pop static 3
 push this 7
 push constant 0
 eq
@@ -911,28 +955,49 @@ call Player.jump 1
 pop temp 0
 label IF_END5
 label IF_FALSE4
-push this 3
+push this 1
 push constant 0
 gt
 if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
-push this 3
+push this 1
 push constant 50
 sub
-pop this 3
+pop this 1
 label IF_FALSE6
-push this 4
+push this 2
 push constant 0
 gt
 if-goto IF_TRUE7
 goto IF_FALSE7
 label IF_TRUE7
-push this 4
+push this 2
 push constant 17
 sub
-pop this 4
+pop this 2
 label IF_FALSE7
+push this 3
+push constant 0
+gt
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push this 3
+push constant 34
+sub
+pop this 3
+label IF_FALSE8
+push this 3
+push constant 9000
+eq
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push constant 50
+call GameController.setDelay 1
+pop temp 0
+label IF_FALSE9
 push pointer 0
 call Player.collision 1
 pop temp 0
@@ -941,25 +1006,24 @@ return
 function Player.dash 0
 push argument 0
 pop pointer 0
-push this 3
+push this 1
 push constant 0
 eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 10000
-pop this 3
-push pointer 0
+pop this 1
 push constant 0
-call Player.draw 2
+call Player.draw 1
 pop temp 0
-push static 0
+push static 2
 push constant 1
 eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 0
+push static 0
 push constant 5
 add
 push constant 31
@@ -968,24 +1032,24 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push constant 19
-pop this 0
+pop static 0
 label IF_FALSE2
 push pointer 0
-push this 0
+push static 0
 push constant 5
 add
-push this 1
+push static 1
 call Player.update 3
 pop temp 0
 goto IF_END1
 label IF_FALSE1
-push static 0
+push static 2
 push constant 2
 eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 0
+push static 0
 push constant 5
 add
 push constant 31
@@ -994,24 +1058,24 @@ if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
 push constant 19
-pop this 0
+pop static 0
 label IF_FALSE4
 push pointer 0
-push this 0
+push static 0
 push constant 5
 add
-push this 1
+push static 1
 call Player.update 3
 pop temp 0
 goto IF_END3
 label IF_FALSE3
-push static 0
+push static 2
 push constant 3
 eq
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
-push this 1
+push static 1
 push constant 5
 sub
 push constant 0
@@ -1020,24 +1084,24 @@ if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
 push constant 19
-pop this 1
+pop static 1
 label IF_FALSE6
 push pointer 0
-push this 0
-push this 1
+push static 0
+push static 1
 push constant 5
 sub
 call Player.update 3
 pop temp 0
 goto IF_END5
 label IF_FALSE5
-push static 0
+push static 2
 push constant 4
 eq
 if-goto IF_TRUE7
 goto IF_FALSE7
 label IF_TRUE7
-push this 1
+push static 1
 push constant 5
 sub
 push constant 0
@@ -1046,13 +1110,13 @@ if-goto IF_TRUE8
 goto IF_FALSE8
 label IF_TRUE8
 push constant 19
-pop this 1
+pop static 1
 label IF_FALSE8
 push pointer 0
-push this 0
+push static 0
 push constant 5
 add
-push this 1
+push static 1
 push constant 5
 sub
 call Player.update 3
@@ -1061,10 +1125,9 @@ label IF_FALSE7
 label IF_END5
 label IF_END3
 label IF_END1
-push pointer 0
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 label IF_FALSE0
 push constant 0
@@ -1072,95 +1135,122 @@ return
 function Player.summon_ground_ability 0
 push argument 0
 pop pointer 0
+push this 5
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+pop this 5
+push constant 0
+not
+pop this 4
+label IF_FALSE0
+push constant 0
+return
+function Player.slow_time 0
+push argument 0
+pop pointer 0
+push this 3
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 13500
+pop this 3
+push constant 200
+call GameController.setDelay 1
+pop temp 0
+label IF_FALSE0
 push constant 0
 return
 function Player.jump 0
 push argument 0
 pop pointer 0
-push this 2
+push this 0
 push constant 0
 gt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push pointer 0
 push constant 0
-call Player.draw 2
+call Player.draw 1
 pop temp 0
-push static 0
+push static 2
 push constant 1
 eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push pointer 0
-push this 0
-push this 1
+push static 0
+push static 1
 push constant 1
 sub
 call Player.update 3
 pop temp 0
 goto IF_END1
 label IF_FALSE1
-push static 0
+push static 2
 push constant 2
 eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push pointer 0
-push this 0
-push this 1
+push static 0
+push static 1
 push constant 1
 add
 call Player.update 3
 pop temp 0
 goto IF_END2
 label IF_FALSE2
-push static 0
+push static 2
 push constant 3
 eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push pointer 0
-push this 0
+push static 0
 push constant 1
 sub
-push this 1
+push static 1
 call Player.update 3
 pop temp 0
 goto IF_END3
 label IF_FALSE3
-push static 0
+push static 2
 push constant 4
 eq
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
 push pointer 0
-push this 0
+push static 0
 push constant 1
 add
-push this 1
+push static 1
 call Player.update 3
 pop temp 0
 label IF_FALSE4
 label IF_END3
 label IF_END2
 label IF_END1
-push pointer 0
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push constant 20
 call Sys.wait 1
 pop temp 0
-push this 2
+push this 0
 push constant 1
 sub
-pop this 2
+pop this 0
 label IF_FALSE0
 push constant 0
 return
@@ -1204,7 +1294,7 @@ push constant 10
 call Math.divide 2
 push argument 2
 add
-pop static 3
+pop static 5
 push constant 0
 return
 label IF_FALSE2
@@ -1213,23 +1303,21 @@ push constant 10
 call Math.multiply 2
 push argument 2
 add
-pop static 3
+pop static 5
 push constant 0
 return
 function Player.draw 2
-push argument 0
-pop pointer 0
-push this 1
+push static 1
 push constant 512
 call Math.multiply 2
-push this 0
+push static 0
 add
 pop local 1
 push constant 16384
 push local 1
 add
 pop local 0
-push argument 1
+push argument 0
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
@@ -1237,7 +1325,7 @@ call GameController.getIsDay 0
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push static 3
+push static 5
 push constant 0
 eq
 if-goto IF_TRUE2
@@ -1341,7 +1429,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END2
 label IF_FALSE2
-push static 3
+push static 5
 push constant 1
 eq
 if-goto IF_TRUE3
@@ -1447,7 +1535,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END3
 label IF_FALSE3
-push static 3
+push static 5
 push constant 900
 eq
 if-goto IF_TRUE4
@@ -1558,7 +1646,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END4
 label IF_FALSE4
-push static 3
+push static 5
 push constant 901
 eq
 if-goto IF_TRUE5
@@ -1669,7 +1757,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END5
 label IF_FALSE5
-push static 3
+push static 5
 push constant 1800
 eq
 if-goto IF_TRUE6
@@ -1775,7 +1863,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END6
 label IF_FALSE6
-push static 3
+push static 5
 push constant 1801
 eq
 if-goto IF_TRUE7
@@ -1879,7 +1967,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END7
 label IF_FALSE7
-push static 3
+push static 5
 push constant 2700
 eq
 if-goto IF_TRUE8
@@ -1990,7 +2078,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END8
 label IF_FALSE8
-push static 3
+push static 5
 push constant 2701
 eq
 if-goto IF_TRUE9
@@ -2109,7 +2197,7 @@ label IF_END3
 label IF_END2
 goto IF_END1
 label IF_FALSE1
-push static 3
+push static 5
 push constant 0
 eq
 if-goto IF_TRUE10
@@ -2229,7 +2317,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END10
 label IF_FALSE10
-push static 3
+push static 5
 push constant 1
 eq
 if-goto IF_TRUE11
@@ -2347,7 +2435,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END11
 label IF_FALSE11
-push static 3
+push static 5
 push constant 900
 eq
 if-goto IF_TRUE12
@@ -2460,7 +2548,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END12
 label IF_FALSE12
-push static 3
+push static 5
 push constant 901
 eq
 if-goto IF_TRUE13
@@ -2573,7 +2661,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END13
 label IF_FALSE13
-push static 3
+push static 5
 push constant 1800
 eq
 if-goto IF_TRUE14
@@ -2691,7 +2779,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END14
 label IF_FALSE14
-push static 3
+push static 5
 push constant 1801
 eq
 if-goto IF_TRUE15
@@ -2811,7 +2899,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END15
 label IF_FALSE15
-push static 3
+push static 5
 push constant 2700
 eq
 if-goto IF_TRUE16
@@ -2924,7 +3012,7 @@ call Memory.poke 2
 pop temp 0
 goto IF_END16
 label IF_FALSE16
-push static 3
+push static 5
 push constant 2701
 eq
 if-goto IF_TRUE17

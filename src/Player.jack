@@ -100,8 +100,8 @@ class Player
                 let rotation = 1801;
 
                 do Player.draw(false);
-                let xpos = 15;
-                let ypos = 14;
+                let xpos = 20;
+                let ypos = 9;
                 do Player.draw(true);
 
             } else {

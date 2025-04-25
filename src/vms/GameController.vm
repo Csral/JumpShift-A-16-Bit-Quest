@@ -61,8 +61,6 @@ push static 8
 return
 function GameController.setDelay 0
 push argument 0
-pop pointer 0
-push argument 1
 pop static 2
 push constant 0
 return
@@ -5162,10 +5160,9 @@ push constant 5
 push constant 14
 call Player.new 2
 pop local 2
-push local 2
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push local 0
 push constant 0
@@ -5183,10 +5180,9 @@ push constant 5
 push constant 13
 call Player.new 2
 pop local 2
-push local 2
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push local 0
 push constant 0
@@ -5299,10 +5295,9 @@ pop local 3
 push pointer 0
 call GameController.handlePlatform 1
 pop temp 0
-push local 2
 push constant 0
 not
-call Player.draw 2
+call Player.draw 1
 pop temp 0
 push pointer 0
 call GameController.updateTime 1
@@ -5435,7 +5430,31 @@ pop temp 0
 push local 2
 call Player.set_gravity_cooldown 1
 pop temp 0
+goto IF_END10
 label IF_FALSE10
+push local 3
+push constant 84
+eq
+if-goto IF_TRUE11
+goto IF_FALSE11
+label IF_TRUE11
+push local 2
+call Player.slow_time 1
+pop temp 0
+goto IF_END11
+label IF_FALSE11
+push local 3
+push constant 82
+eq
+if-goto IF_TRUE12
+goto IF_FALSE12
+label IF_TRUE12
+push local 2
+call Player.summon_ground_ability 1
+pop temp 0
+label IF_FALSE12
+label IF_END11
+label IF_END10
 label IF_END9
 label IF_END8
 label IF_END7
@@ -5474,9 +5493,9 @@ label WHILE_END3
 goto WHILE_EXP0
 label WHILE_END0
 push this 0
-if-goto IF_TRUE11
-goto IF_FALSE11
-label IF_TRUE11
+if-goto IF_TRUE13
+goto IF_FALSE13
+label IF_TRUE13
 call Screen.clearScreen 0
 pop temp 0
 call Platform.disposeAll 0
@@ -5520,12 +5539,12 @@ pop temp 0
 push static 5
 push static 6
 gt
-if-goto IF_TRUE12
-goto IF_FALSE12
-label IF_TRUE12
+if-goto IF_TRUE14
+goto IF_FALSE14
+label IF_TRUE14
 push static 5
 pop static 6
-label IF_FALSE12
+label IF_FALSE14
 push constant 12
 push constant 27
 call Output.moveCursor 2
@@ -5622,12 +5641,12 @@ push local 3
 push constant 89
 eq
 not
-if-goto IF_TRUE13
-goto IF_FALSE13
-label IF_TRUE13
+if-goto IF_TRUE15
+goto IF_FALSE15
+label IF_TRUE15
 push constant 0
 pop static 8
-label IF_FALSE13
+label IF_FALSE15
 label WHILE_EXP5
 push local 3
 push constant 0
@@ -5639,7 +5658,7 @@ call Keyboard.keyPressed 0
 pop local 3
 goto WHILE_EXP5
 label WHILE_END5
-label IF_FALSE11
+label IF_FALSE13
 push constant 0
 return
 function GameController.updateTime 0
@@ -5806,14 +5825,14 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 15
-push constant 15
+push constant 6
 push constant 5
 push static 1
 push static 0
 call Platform.new 5
 pop local 2
 push constant 7
-push constant 15
+push constant 7
 push constant 5
 push static 1
 push static 0
