@@ -1,0 +1,118 @@
+class Cutscene {
+
+    function void pre_start() {
+        var int key;
+
+        do Output.printString("It all started when our company hit rock bottom — deals dried up, and bankruptcy loomed.");
+        do Output.println();
+        do Output.printString("The manager, under immense pressure, began pushing the burden onto us employees. The pressure became unbearable. I was tired.");
+        do Output.println();
+        do Output.println();
+
+        do Output.printString("For many years, my health had been on a slow decline, and this crisis pushed me past the edge. Between the constant stress, sleepless nights, and a mind stretched thin, paired with the recent loss of my family I started searching for a way out — an end to the pain.");
+        do Output.println();
+
+        do Output.println();
+        do Output.println();
+        do Output.println();
+        do Output.println();
+        do Output.println();
+        do Output.println();
+        do Output.println();
+
+        do Output.printString("Press ENTER to Continue");
+
+        let key = 0;   
+
+        // wait for the enter key to be pressed
+        while(~(key = 128)) {
+            let key = Keyboard.keyPressed();         
+        }
+        
+        // wait enter key to be released
+        while(~(key = 0)) {
+            let key = Keyboard.keyPressed();         
+        }
+
+        do Screen.clearScreen();
+        do Output.moveCursor(0,0);
+        do Output.printString("In a moment of desperation, I took far more paracetamol than I should have, thinking it would all just fade away - that all the pain would leave me. But it didn't. Instead, I ended up in the hospital, my liver damaged beyond repair. My body was trying to fight, but my mind was starting to slip — memory lapses, confusion, disconnection from reality. I mean I had no purpose left to live.");
+
+        do Output.println();
+        do Output.println();
+
+        do Output.printString("Somewhere during that haze, I drifted into this dreamlike realm… a place that felt peaceful, yet eerily endless. It was beautiful, surreal — but there was no way back. At start, it was soft and merciful but now it's dangerous and torturing not to mention there's this dark entity chasing me constantly making me turn into a spirit but somewhere along the way… I couldn't see it anymore.");
+
+        do Output.println();
+        do Output.println();
+        do Output.println();
+        do Output.println();
+        do Output.println();
+        do Output.println();
+        do Output.println();
+
+        do Output.printString("Press ENTER to Continue");
+
+        let key = 0;   
+
+        // wait for the enter key to be pressed
+        while(~(key = 128)) {
+            let key = Keyboard.keyPressed();         
+        }
+        
+        // wait enter key to be released
+        while(~(key = 0)) {
+            let key = Keyboard.keyPressed();         
+        }
+
+        return;
+    }
+
+    function void flicker_screen(int count) {
+
+        //* Count / 2 flickers
+
+        var boolean x;
+        var int y;
+
+        let x = true;
+        let y = count;
+
+        while (y > 0) {
+            let x = ~x;
+            //let x = ~(Rd.mod(y,2) = 0);
+
+            do Screen.setColor(x);
+            do Screen.drawRectangle(0, 0, 511, 255);
+
+            let y = y - 1;
+
+            do Sys.wait(200);
+
+        }
+
+        do Screen.setColor(false);
+        do Screen.clearScreen();
+
+        return;
+
+    }
+
+    function void start() {
+        
+        do Screen.clearScreen();
+        do Output.moveCursor(0,0);
+
+        do Cutscene.flicker_screen(10);
+
+        do Cutscene.pre_start();
+        do Screen.clearScreen();
+        do Output.moveCursor(0,0);
+
+        do Cutscene.flicker_screen(4);
+
+        return;
+
+    }
+
+}

@@ -1,9 +1,9 @@
 //todo: implement player class
 class Player
 {
-    static int gravity_direction, uptime, ground_level;
-    field int xpos, ypos, jump_height, dash_cooldown, gravity_cooldown; // player's x and y position
-    field boolean is_on_surface;
+    static int xpos, ypos, gravity_direction, uptime, ground_level;
+    field int jump_height, dash_cooldown, gravity_cooldown, slow_time_cooldown; // player's x and y position
+    field boolean is_on_surface, ground_used;
     field Rd rand;
 
     static int rotation; //* Degree rotation! (Only effects drawing, i.e., draw() )
@@ -31,6 +31,7 @@ class Player
         let uptime = 0;
         let gravity_cooldown = 0;
         let ground_level = 15;
+        let ground_used = false;
 
         do rand.seed(7978);
 
@@ -49,7 +50,7 @@ class Player
 
     method void dispose()
     {
-        do draw(false); // remove player from screen
+        do Player.draw(false); // remove player from screen
         do Memory.deAlloc(this);
         return;
     }
@@ -60,6 +61,12 @@ class Player
         let ypos = y;
         return;
 
+    }
+
+    function void update_static(int x, int y) {
+        let xpos = x;
+        let ypos = y;
+        return;
     }
 
     method void set_jumping_height(int h) {
@@ -81,18 +88,42 @@ class Player
         if (dir = 1) {
             let ground_level = 15;
             let rotation = 0;
+
+            do Player.draw(false);
+            let xpos = 15;
+            let ypos = 14;
+            do Player.draw(true);
+
         } else {
             if (dir = 2) {
                 let ground_level = -1;
                 let rotation = 1801;
+
+                do Player.draw(false);
+                let xpos = 20;
+                let ypos = 9;
+                do Player.draw(true);
+
             } else {
                 if (dir = 3) {
                     let ground_level = 31;
                     let rotation = 2700;
+
+                    do Player.draw(false);
+                    let xpos = 13;
+                    let ypos = 8;
+                    do Player.draw(true);
+
                 } else {
                     if (dir = 4) {
                         let ground_level = -1; 
                         let rotation = 2701; //* Vertical mirror + 270 deg.
+
+                        do Player.draw(false);
+                        let xpos = 17;
+                        let ypos = 13;
+                        do Player.draw(true);
+
                     }
                 }
             }
@@ -118,9 +149,9 @@ class Player
 
             if (looper > 0) {
 
-                do draw(false);
+                do Player.draw(false);
                 do update(xpos, ypos+1);
-                do draw(true);
+                do Player.draw(true);
 
                 do Sys.wait(20);
 
@@ -138,9 +169,9 @@ class Player
 
                 if (looper > 0) {
 
-                    do draw(false);
+                    do Player.draw(false);
                     do update(xpos, ypos-1);
-                    do draw(true);
+                    do Player.draw(true);
 
                     do Sys.wait(20);
 
@@ -160,9 +191,9 @@ class Player
 
                     if (looper > 0) {
 
-                        do draw(false);
+                        do Player.draw(false);
                         do update(xpos+1, ypos);
-                        do draw(true);
+                        do Player.draw(true);
 
                         do Sys.wait(20);
 
@@ -180,9 +211,9 @@ class Player
 
                     if (looper > 0) {
 
-                        do draw(false);
+                        do Player.draw(false);
                         do update(xpos-1, ypos);
-                        do draw(true);
+                        do Player.draw(true);
 
                         do Sys.wait(20);
 
@@ -479,6 +510,7 @@ class Player
             * Cooldown guide: (precision errors of 0-1)
             * Dash: 10-11 secs (200 rotations)
             * Gravity Control: 30-31 secs (600 rotations) -> (10200 ; -17 per rotation)
+            * Slow Time Cooldown: 15-16 secs (300 rotation) -> (13500 ; - 45 per rotation)
 
         */
 
@@ -486,9 +518,16 @@ class Player
             let dash_cooldown = dash_cooldown - 50;
         }
 
-        
         if (gravity_cooldown > 0) {
             let gravity_cooldown = gravity_cooldown - 17;
+        }
+
+        if (slow_time_cooldown > 0) {
+            let slow_time_cooldown = slow_time_cooldown - 34;
+        }
+
+        if (slow_time_cooldown = 9000) { //* 5 secs have passed
+            do GameController.setDelay(50);
         }
 
         do collision();
@@ -503,7 +542,7 @@ class Player
 
             let dash_cooldown = 10000; //10 secs.
 
-            do draw(false); //* remove player's current position
+            do Player.draw(false); //* remove player's current position
             
             if (gravity_direction = 1) {
                 if (xpos+5 > 31) {let xpos = 19;}
@@ -528,7 +567,7 @@ class Player
                 }
             }
 
-            do draw(true);
+            do Player.draw(true);
 
         }
 
@@ -537,6 +576,26 @@ class Player
     }
 
     method void summon_ground_ability() {
+
+        if (~ground_used) {
+            let ground_used = true;
+            let is_on_surface = true;
+        }
+
+        return;
+
+    }
+
+    method void slow_time() {
+
+        //* Stays for 5 secs.
+        
+        if (slow_time_cooldown = 0) {
+
+            let slow_time_cooldown = 13500; //* This specific no. has many advantages; Main: Same variable tracks 5s and 15s.
+            do GameController.setDelay(200);
+
+        }
 
         return;
 
@@ -554,7 +613,7 @@ class Player
 
             */
 
-            do draw(false);
+            do Player.draw(false);
 
             if (gravity_direction = 1) {
                 do update(xpos, ypos-1); //* Update xpos and ypos.
@@ -572,7 +631,7 @@ class Player
                 }
             }
 
-            do draw(true);
+            do Player.draw(true);
 
             do Sys.wait(20); //* Wait 1s before continuing. Adjust for animation
             let jump_height = jump_height - 1; //* Adjust 1 for smoother/rougher animation
@@ -610,7 +669,7 @@ class Player
 
     }
 
-    method void draw(boolean show) {
+    function void draw(boolean show) {
         var int memAddress, loc;
         let loc = (ypos * 512) + xpos; // 32*16 = 512
 		let memAddress = 16384 + loc;
@@ -1058,4 +1117,3 @@ class Player
 		return;
     }
 }
-
