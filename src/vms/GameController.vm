@@ -1,5 +1,5 @@
 function GameController.new 0
-push constant 6
+push constant 7
 call Memory.alloc 1
 pop pointer 0
 push constant 0
@@ -33,9 +33,9 @@ push constant 0
 not
 pop static 7
 push constant 15
+pop this 6
+push this 6
 pop this 5
-push this 5
-pop this 4
 push constant 0
 not
 pop static 8
@@ -4910,6 +4910,8 @@ push static 3
 push local 1
 add
 pop static 3
+push constant 1
+pop this 4
 push constant 0
 pop static 9
 call Screen.clearScreen 0
@@ -5228,14 +5230,14 @@ push constant 0
 not
 pop this 0
 label IF_FALSE0
-push this 4
+push this 5
 push constant 0
 eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 5
-pop this 4
+push this 6
+pop this 5
 push static 7
 not
 pop static 7
@@ -5282,10 +5284,10 @@ call Platform.draw 2
 pop temp 0
 goto IF_END1
 label IF_FALSE1
-push this 4
+push this 5
 push constant 1
 sub
-pop this 4
+pop this 5
 label IF_END1
 push local 2
 call Player.stimulate_time 1
@@ -5496,6 +5498,24 @@ push this 0
 if-goto IF_TRUE13
 goto IF_FALSE13
 label IF_TRUE13
+push this 4
+push constant 1
+sub
+pop this 4
+push this 4
+push constant 0
+eq
+if-goto IF_TRUE14
+goto IF_FALSE14
+label IF_TRUE14
+push constant 0
+pop static 8
+call Platform.disposeAll 0
+pop temp 0
+call Cutscene.start 0
+pop temp 0
+goto IF_END14
+label IF_FALSE14
 call Screen.clearScreen 0
 pop temp 0
 call Platform.disposeAll 0
@@ -5539,12 +5559,12 @@ pop temp 0
 push static 5
 push static 6
 gt
-if-goto IF_TRUE14
-goto IF_FALSE14
-label IF_TRUE14
+if-goto IF_TRUE15
+goto IF_FALSE15
+label IF_TRUE15
 push static 5
 pop static 6
-label IF_FALSE14
+label IF_FALSE15
 push constant 12
 push constant 27
 call Output.moveCursor 2
@@ -5641,12 +5661,12 @@ push local 3
 push constant 89
 eq
 not
-if-goto IF_TRUE15
-goto IF_FALSE15
-label IF_TRUE15
+if-goto IF_TRUE16
+goto IF_FALSE16
+label IF_TRUE16
 push constant 0
 pop static 8
-label IF_FALSE15
+label IF_FALSE16
 label WHILE_EXP5
 push local 3
 push constant 0
@@ -5658,6 +5678,7 @@ call Keyboard.keyPressed 0
 pop local 3
 goto WHILE_EXP5
 label WHILE_END5
+label IF_END14
 label IF_FALSE13
 push constant 0
 return
@@ -5825,14 +5846,14 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 15
-push constant 6
+push constant 7
 push constant 5
 push static 1
 push static 0
 call Platform.new 5
 pop local 2
 push constant 7
-push constant 7
+push constant 8
 push constant 5
 push static 1
 push static 0
