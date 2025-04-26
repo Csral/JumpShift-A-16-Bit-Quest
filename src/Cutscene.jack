@@ -98,18 +98,173 @@ class Cutscene {
 
     }
 
+    function void resetCursor() {
+
+        do Screen.clearScreen();
+        do Cutscene.wiseman(28,15);
+        do Cutscene.player(25, 15, true);
+        do Output.moveCursor(7,0);
+        return;
+
+    }
+
     function void start() {
         
         do Screen.clearScreen();
         do Output.moveCursor(0,0);
-
         do Cutscene.flicker_screen(10);
 
         do Cutscene.pre_start();
         do Screen.clearScreen();
-        do Output.moveCursor(0,0);
+        do Cutscene.resetCursor();
 
-        do Cutscene.flicker_screen(4);
+        do Cutscene.flicker_screen(2);
+
+        do Cutscene.wiseman(28,15);
+        do Cutscene.player(3, 15, true);
+
+        do Output.printString("???: Welcome.");
+        do Output.println();
+        do Output.printString("Player: Who are you and what is this place...");
+
+        do Sys.wait(6000);
+
+        do Cutscene.resetCursor();
+
+        do Output.printString("Wiseman: Call my whatever you want. Souls about to lose their lives encounter me. Come, lets have a talk.");
+        do Output.println();
+        do Output.printString("Player: So I am going to die...");
+
+        do Sys.wait(12000);
+
+        do Cutscene.resetCursor();
+
+        do Cutscene.player(3, 15, false);
+        do Cutscene.player(25, 15, true);
+
+        do Output.printString("Wiseman: I exist to ask people like you a single question. Why end your life?");
+        do Output.println();
+        do Output.printString("Player: My life had no meaning. I lost my purpose to live.");
+        
+        do Sys.wait(10000);
+
+        do Cutscene.resetCursor();
+
+        do Output.printString("Wiseman: Truly, life never has a meaning. You make the meaning to your life all by yourself and purpose... Suicide is never an option. You have a purpose, even if you haven't found it yet. If you feel lost, your mission is to discover what makes your life meaningful. If you think you have no purpose, it becomes your responsibility to find one. And if that purpose remains elusive, your journey is to keep seeking it until your last breath. Never give up on yourself...");
+        do Sys.wait(28000);
+
+        do Cutscene.resetCursor();
+
+        do Output.printString("... A person who knows his purpose from birth and a person who dies without ever knowing it, both are equally unfortunate. The former always chases behind it, he never truly has peace and the later couldn't truly enjoy life eventually giving up on it.");
+        do Sys.wait(10000);
+        do Cutscene.resetCursor();
+
+        do Output.printString("Wiseman: Is that all your reason to die?");
+        do Output.println();
+        do Output.printString("Player: Yes.");
+
+        do Sys.wait(10000);
+
+        do Cutscene.resetCursor();
+
+        do Output.printString("Wiseman: May you find peace in your next life. I bid thee adieu.");
+        do Output.println();
+        do Output.printString("Player: ...");
+        do Sys.wait(10000);
+
+        do Cutscene.resetCursor();
+
+        do Output.printString("Wiseman: Also keep in mind...");
+
+        do Sys.wait(9000);
+
+        do Cutscene.resetCursor();
+
+        do Cutscene.flicker_screen(2);
+
+        do Output.moveCursor(9, 5);
+        do Output.printString("As long as the fire in you stays, no wind can kneel you down.");
+
+        do Sys.wait(12000);
+
+        do Cutscene.flicker_screen(2);
+
+        return;
+
+    }
+
+    function void player(int xpos, int ypos, boolean draw) {
+
+        var int memAddress, loc;
+        let loc = (ypos * 512) + xpos; // 32*16 = 512
+		let memAddress = 16384 + loc;
+
+        if (draw) {
+
+            do Memory.poke(memAddress + 0, 1016);
+            do Memory.poke(memAddress + 32, 4092);
+            do Memory.poke(memAddress + 64, 4060);
+            do Memory.poke(memAddress + 96, 26284);
+            do Memory.poke(memAddress + 128, 8780);
+            do Memory.poke(memAddress + 160, 21068);
+            do Memory.poke(memAddress + 192, 21428);
+            do Memory.poke(memAddress + 224, 20913);
+            do Memory.poke(memAddress + 256, 8471);
+            do Memory.poke(memAddress + 288, 12220);
+            do Memory.poke(memAddress + 320, 14832);
+            do Memory.poke(memAddress + 352, 12720);
+            do Memory.poke(memAddress + 384, 8632);
+            do Memory.poke(memAddress + 416, 20976);
+            do Memory.poke(memAddress + 448, 9144);
+            do Memory.poke(memAddress + 480, 1976);
+
+        } else {
+
+            do Memory.poke(memAddress + 0, 0);
+            do Memory.poke(memAddress + 32, 0);
+            do Memory.poke(memAddress + 64, 0);
+            do Memory.poke(memAddress + 96, 0);
+            do Memory.poke(memAddress + 128, 0);
+            do Memory.poke(memAddress + 160, 0);
+            do Memory.poke(memAddress + 192, 0);
+            do Memory.poke(memAddress + 224, 0);
+            do Memory.poke(memAddress + 256, 0);
+            do Memory.poke(memAddress + 288, 0);
+            do Memory.poke(memAddress + 320, 0);
+            do Memory.poke(memAddress + 352, 0);
+            do Memory.poke(memAddress + 384, 0);
+            do Memory.poke(memAddress + 416, 0);
+            do Memory.poke(memAddress + 448, 0);
+            do Memory.poke(memAddress + 480, 0);
+
+        }
+
+        return;
+
+    }
+
+    function void wiseman(int xpos, int ypos) {
+
+        var int memAddress, loc;
+        let loc = (ypos * 512) + xpos; // 32*16 = 512
+		let memAddress = 16384 + loc;
+
+        do Memory.poke(memAddress + 0, 384);
+        do Memory.poke(memAddress + 32, 2448);
+        do Memory.poke(memAddress + 64, 5064);
+        do Memory.poke(memAddress + 96, 9828);
+        do Memory.poke(memAddress + 128, 3120);
+        do Memory.poke(memAddress + 160, 8184);
+        do Memory.poke(memAddress + 192, 13740);
+        do Memory.poke(memAddress + 224, 1056);
+        do Memory.poke(memAddress + 256, 960);
+        do Memory.poke(memAddress + 288, 2064);
+        do Memory.poke(memAddress + 320, 6552);
+        do Memory.poke(memAddress + 352, 13260);
+        do Memory.poke(memAddress + 384, 10212);
+        do Memory.poke(memAddress + 416, 2640);
+        do Memory.poke(memAddress + 448, 5064);
+        do Memory.poke(memAddress + 480, 384);
 
         return;
 
