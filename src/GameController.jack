@@ -951,7 +951,7 @@ class GameController
    method void startScreen() // returns the randomizer value
    {
       var Rd tempRd;     
-      var int t, key; 
+      var int t, key;
 
       do printGameName(8, 1, true, 0);
       do printGameName(8, 1, false, -128);
@@ -980,7 +980,7 @@ class GameController
          let isFirstTime = false;
          do Screen.clearScreen();
          do Output.moveCursor(2, 0);
-         do Output.printString("Waiting for Backstory...");
+         do Output.printString("Life had been falling apart for a while... work, health, and everything in between. All sorts of pressure kept building around me, and I kept breaking, quietly, trying to make it through. But, one night, it became too much. I couldn't think logically anymore. The decisions taken in anger or sorrow are wrong 99 percent of the time and in the remaining 1%, they were never truly yours to make. A man's greatest sin is the ignorance of his own knowledge. I am no god... but again my mind wasn't in right place either. Somewhere during that haze, I drifted into this dreamlike realm... a place that felt peaceful, yet eerily endless. It was beautiful, surreal ... but there was no way back. At start, it was soft and merciful but now it is dangerous and torturing not to mention there is this dark entity chasing me constantly making me turn into a spirit but somewhere along the way... I could not see it anymore.");
          do Output.moveCursor(22, 18);
          do Output.printString("Press Enter to start the game...");
          
