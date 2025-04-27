@@ -975,7 +975,7 @@ class GameController
 
          let randomizer = randomizer + t;
 
-         let max_death = 1; //Rd.mod(tempRd.between(1,randomizer, 923), 100);
+         let max_death = Rd.mod(tempRd.between(1,randomizer, 923), 100);
 
          let isFirstTime = false;
          do Screen.clearScreen();

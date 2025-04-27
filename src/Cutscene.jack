@@ -131,7 +131,7 @@ class Cutscene {
 
         do Cutscene.resetCursor();
 
-        do Output.printString("Wiseman: Call my whatever you want. Souls about to lose their lives encounter me. Come, lets have a talk.");
+        do Output.printString("Wiseman: Call my whatever you want. Souls about to lose their life encounter me. Come, lets have a talk.");
         do Output.println();
         do Output.printString("Player: So I am going to die...");
 
@@ -163,7 +163,7 @@ class Cutscene {
         do Output.println();
         do Output.printString("Player: Yes.");
 
-        do Sys.wait(10000);
+        do Sys.wait(7000);
 
         do Cutscene.resetCursor();
 
@@ -176,14 +176,16 @@ class Cutscene {
 
         do Output.printString("Wiseman: Also keep in mind...");
 
-        do Sys.wait(9000);
+        do Sys.wait(5000);
 
         do Cutscene.resetCursor();
 
         do Cutscene.flicker_screen(2);
 
-        do Output.moveCursor(9, 5);
-        do Output.printString("As long as the fire in you stays, no wind can kneel you down.");
+        do Output.moveCursor(9, 12);
+        do Output.printString("As long as the fire in you stays, no wind");
+        do Output.moveCursor(10,22);
+        do Output.printString("can kneel you down.");
 
         do Sys.wait(12000);
 

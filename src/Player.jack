@@ -471,6 +471,8 @@ class Player
 
         */
 
+        do collision();
+
         if (uptime > 13000) {
             let uptime = 9;
         }
@@ -495,7 +497,7 @@ class Player
         } else {
             let timer = timer - 1;
         }
-
+        
         if (~on_ground()) {
             if (~is_jumping()) {
                 do enforce_gravity();

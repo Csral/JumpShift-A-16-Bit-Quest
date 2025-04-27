@@ -4910,7 +4910,13 @@ push static 3
 push local 1
 add
 pop static 3
+push local 0
 push constant 1
+push static 3
+push constant 923
+call Rd.between 4
+push constant 100
+call Rd.mod 2
 pop this 4
 push constant 0
 pop static 9
